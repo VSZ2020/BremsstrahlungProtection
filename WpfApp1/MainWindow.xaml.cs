@@ -98,10 +98,6 @@ namespace BSP
 				InitializeChangelog();
 			});
 			th.Start();
-			//DispatcherTimer timer = new DispatcherTimer();
-   //         timer.Tick += new EventHandler(Timer_Tick);
-			//timer.Interval = new TimeSpan(0, 0, 1);
-			//timer.Start();
         }
 
 		public static void SaveApplicationPreferences()
