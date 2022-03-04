@@ -1,0 +1,171 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    <v:String x:Key="ApplicationTitle">Bremsstrahlung Protection (BSP)</v:String>
+    <!--Menu items description-->
+    <!--
+        mm - main menu, 
+        mi - menu item-->
+    <v:String x:Key="mmProgram">Application</v:String>
+    <v:String x:Key="miDbReset">Reset Databases</v:String>
+    <v:String x:Key="miLanguage">Language</v:String>
+    <v:String x:Key="miExit">Exit</v:String>
+    <v:String x:Key="mmLaunch">Launch</v:String>
+    <v:String x:Key="mmEdit">Edit</v:String>
+    <v:String x:Key="miEdit_Add">Add</v:String>
+    <v:String x:Key="miEdit_Edit">Edit</v:String>
+    <v:String x:Key="miEdit_Remove">Remove</v:String>
+    <v:String x:Key="miLaunchCalc">Start calculation</v:String>
+    <v:String x:Key="miStopCalc">Stop calculation</v:String>
+    <v:String x:Key="miLaunchInterpViewer">Interpolation Viewer</v:String>
+    <v:String x:Key="miLaunchNuclidesEditor">Nuclides editor</v:String>
+    <v:String x:Key="mmHelp">?</v:String>
+    <v:String x:Key="miHelp">Help</v:String>
+    <v:String x:Key="miShowChangelog">Show changelog</v:String>
+    <v:String x:Key="miAbout">About</v:String>
+    
+    <!--Tab Headers-->
+    <v:String x:Key="tabRadSource">Radiation Source</v:String>
+    <v:String x:Key="tabShield">Shield</v:String>
+    <v:String x:Key="tabOutValue">Output value</v:String>
+    
+    <!--Tab "Radiation source" labels-->
+    <v:String x:Key="tabRadsource_NuclidesListLabel">Radiation source nuclides</v:String>
+    <v:String x:Key="tabRadsource_SumActivityLabel">Summary activity, Bq</v:String>
+    <v:String x:Key="tabRadsource_IbetaMaxLabel">Ibeta maximum, MeV/s</v:String>
+    <v:String x:Key="tabRadsource_NuclidesListColumnNuclideHeader">Nuclide</v:String>
+    <v:String x:Key="tabRadsource_NuclidesListColumnActivityHeader">Activity, Bq</v:String>
+    <v:String x:Key="tabRadsource_SourceGeometryBox">Source geometry</v:String>
+    <v:String x:Key="tabRadsource_SourceFormLabel">Source form</v:String>
+    <v:String x:Key="tabRadsource_SourceLengthLabel">Length (up X), cm</v:String>
+    <v:String x:Key="tabRadsource_SourceWidthLabel">Width  (up Y), cm</v:String>
+    <v:String x:Key="tabRadsource_SourceHeightLabel">Height (up Z), cm</v:String>
+    <v:String x:Key="tabRadsource_RadDirectionBox">Radiation direction</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialBox">Source material</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialChangeBtn">Change</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialZeffLabel">Zeff</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialDensityLabel">Density, g/cm³</v:String>
+
+    <!--Tab "Shield" labels-->
+    <v:String x:Key="tabShield_TopNotice">Select shield layers there</v:String>
+    <v:String x:Key="tabShield_LayersListColumnMaterial">Shield material</v:String>
+    <v:String x:Key="tabShield_LayersListColumnDepth">Depth, cm</v:String>
+    <v:String x:Key="tabShield_LayersListColumnDensity">Density, g/cm³</v:String>
+
+    <!--Tab "Output value" labels-->
+    <v:String x:Key="tabOutputValue_BoxOutput">Output dose type</v:String>
+    <v:String x:Key="tabOutputValue_RadiationGeometryComboBoxLabel">Radiation geometry</v:String>
+    <v:String x:Key="tabOutputValue_IrradiatedOrganComboBoxLabel">Target organ/tissue</v:String>
+    <v:String x:Key="tabOutputValue_BoxCalculationPrefs">Calculation settings</v:String>
+    <v:String x:Key="tabOutputValue_LabelDivByX">Subdivision by X</v:String>
+    <v:String x:Key="tabOutputValue_LabelDivByY">Subdivision by Y</v:String>
+    <v:String x:Key="tabOutputValue_LabelDivByZ">Subdivision by Z</v:String>
+    <v:String x:Key="tabOutputValue_LabelCommaSigns">Number of decimal places</v:String>
+    <v:String x:Key="tabOutputValue_LabelCalcDistance">Calculation distance, cm</v:String>
+    <v:String x:Key="tabOutputValue_OutputResultBox">Calculation results</v:String>
+    <v:String x:Key="tabOutputValue_BuildupCalcTypeBox">Way of buildup calculation</v:String>
+    <v:String x:Key="tabOutputValue_BuildupCalcTypeBoxItemJapan">Japan formula</v:String>
+    <v:String x:Key="tabOutputValue_BuildupCalcTypeBoxItemTaylor">Taylor formula</v:String>
+
+    <!--Source forms-->
+    <v:String x:Key="SourceFormCylinder">Cylinder</v:String>
+    <v:String x:Key="SourceFormParallelepiped">Parallelepiped</v:String>
+
+    <!--Radiation directions-->
+    <v:String x:Key="RadDirectionX">Along to X axis</v:String>
+    <v:String x:Key="RadDirectionY">Along to Y axis</v:String>
+    <v:String x:Key="RadDirectionZ">Along to Z axis</v:String>
+    
+    <!--Dose Rate Names-->
+    <v:String x:Key="DoseRate_Title">Rate of</v:String>
+    <v:String x:Key="DoseNameEffective">Effective dose</v:String>
+    <v:String x:Key="DoseNameEquivalent">Equivalent dose</v:String>
+    <v:String x:Key="DoseNameExposed">Exposed dose</v:String>
+    <v:String x:Key="DoseNameAirKerma">Air Kerma</v:String>
+    <v:String x:Key="DoseNameAmbientEquivalent">H*(10)</v:String>
+    
+    <!--Dose Rate Units-->
+    <v:String x:Key="DoseUnitSvPerH">Sv/h</v:String>
+    <v:String x:Key="DoseUnitExposed">R/h</v:String>
+    <v:String x:Key="DoseUnitGyPerH">Gy/h</v:String>
+
+    <!--Source materials window-->
+    <v:String x:Key="SourceMaterialWindowsTitle">Source material</v:String>
+    <v:String x:Key="ComboboxSourceMaterials_TextBox">Select material from the list</v:String>
+    <v:String x:Key="Button_OK">OK</v:String>
+    
+    <!--Tooltips-->
+    <v:String x:Key="tooltipIncludeScatter">Include radiation scattering</v:String>
+    <v:String x:Key="tooltipLaunchCalc">Launch calculation</v:String>
+    <v:String x:Key="tooltipStopCalc">Stop the current calculation</v:String>
+    <v:String x:Key="tooltipIncludePartial">Printing the dose rates for each bremsstrahlung energy group</v:String>
+    <v:String x:Key="tooltipIsPointSource">Supposing of radiation source as point source</v:String>
+    <v:String x:Key="tooltipSumActivityBox">Indicates the 'Summary Activity' of selected nuclides</v:String>
+    <v:String x:Key="tooltipSumIbetaBox">Indicates the 'Summary Energy Flow' for selected radionuclides</v:String>
+    
+    <!--Contex Menu Items-->
+    <!--OutputBox menu-->
+    <v:String x:Key="ctxMenuSaveToFile">Save text to file</v:String>
+    <v:String x:Key="ctxMenuClear">Clear output</v:String>
+    
+    <!--Messages of Error-->
+    <v:String x:Key="msgError_Title">Error</v:String>
+    <v:String x:Key="msgWarning_Title">Warning</v:String>
+    <v:String x:Key="msgError_NuclideAlreadyExists">Nuclide {0} is already on the list</v:String>
+    <v:String x:Key="msgError_NothingDelete">Nothing to delete</v:String>
+    <v:String x:Key="msgError_NothingEdit">Nothing to edit</v:String>
+    <v:String x:Key="msgError_NothingSelected">No one item was selected</v:String>
+    <v:String x:Key="msgError_IncorrectValueFormat">Incorrect value format</v:String>
+    <v:String x:Key="msgError_ValueBetween">The value must be between {0} and {1}</v:String>
+    <v:String x:Key="msgError_ValueMoreThan">The value must be more than {0}</v:String>
+    <v:String x:Key="msgError_TheLaunchError">The calculation wasn't started due to error: {0}</v:String>
+    <v:String x:Key="msgError_NullOrZeroNuclides">Nuclides amount can't be zero or null!</v:String>
+    <v:String x:Key="msgError_No_BSData_File">File 'data\BS_data.txt' was not found! Default values are used.</v:String>
+    <v:String x:Key="msgError_ErrorDuringFileReading">An error is occured during the reading of '{0}' file! Check file data.</v:String>
+    <v:String x:Key="msgError_AbsensePrimeFiles">It's impossible to launch the BSP, because of one or a few essential files are absent or corrupted! Check the files at 'data' folder. Application will be terminated!</v:String>
+
+
+    <!--Statusbar messages-->
+    <v:String x:Key="msgStatus_Ready">Ready</v:String>
+    <v:String x:Key="msgStatus_Calc">Calculating</v:String>
+    <v:String x:Key="msgStatus_Cancel">Cancelled</v:String>
+    <v:String x:Key="msgStatus_ValidationProcess">Validation process</v:String>
+    <v:String x:Key="msgStatus_ValidationProcessError">Validation process was unsuccess. Check input fields</v:String>
+    
+    <!--Outputbox messages-->
+    <v:String x:Key="msgOutputBox_ErrorIn">An error occurred in '{0}' field</v:String>
+    
+    <!--Application Global messages-->
+    <v:String x:Key="title_UpdateDialogTitle">Software update</v:String>
+    <v:String x:Key="title_RestartApplication">To apply all changes, restart this application!</v:String>
+    <v:String x:Key="msgQuestion_UpdateApp">The new version ({0}) of app was found. Do you want to update application?</v:String>
+    <v:String x:Key="label_CheckUpdates">Cheking updates</v:String>
+    <v:String x:Key="label_LoadGroupCoefficients">Loading energy group coefficients</v:String>
+    <v:String x:Key="label_LoadNuclides">Loading nuclides</v:String>
+    <v:String x:Key="label_LoadMaterials">Loading materials</v:String>
+    <v:String x:Key="label_LoadDoseFactors">Loading dose factors</v:String>
+    <v:String x:Key="label_InitUserInterface">Initialize user interface</v:String>
+    
+    <!--Updater window-->
+    <v:String x:Key="updaterWindow_ProgressTitle">Downloading in progress</v:String>
+    <v:String x:Key="updaterWindow_msgError">An error occurred during download. See log file.</v:String>
+    <!--Changelog messages-->
+    <v:String x:Key="changelog_Title">BSP v{0}. Changelog</v:String>
+    
+    <!--Splash labels-->
+    <v:String x:Key="splashScreen_Loading">Loading user interface and data ...</v:String>
+
+    <!--AboutWindow messages-->
+    <v:String x:Key="aboutWnd_Authors">Author(s):</v:String>
+    <v:String x:Key="aboutWnd_AuthorsName">Izgagin Vyacheslav, Michael Zhukovsky</v:String>
+    <v:String x:Key="aboutWnd_Affiliation">Organization:</v:String>
+    <v:String x:Key="aboutWnd_AffiliationContent">The Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
+
+    <!--Changelog messages-->
+    <v:String x:Key="changelog_whatsNewTitle">What's new</v:String>
+    <v:String x:Key="changelog_criticalTitle">Critical changes</v:String>
+    <v:String x:Key="changelog_changesTitle">Changes</v:String>
+    <v:String x:Key="changelog_whatsNew">New user interface and .NET Framework 4.8 platform were introduced</v:String>
+    <v:String x:Key="changelog_critical">_</v:String>
+    <v:String x:Key="changelog_changes">_</v:String>
+</ResourceDictionary>

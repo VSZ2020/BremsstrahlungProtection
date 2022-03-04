@@ -1,0 +1,32 @@
+﻿<Window x:Class="BSP.Source.XAML_Forms.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BSP.Source.XAML_Forms"
+        mc:Ignorable="d"
+        Title="{DynamicResource miAbout}" Height="180.261" Width="358.654" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel>
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="Bremsstrahlung protection (BSP)" FontWeight="Bold" TextAlignment="Center" FontSize="18" Margin="0,10,0,5"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="labelVersion" Text="v1.0.0.0" TextAlignment="Center" Margin="0,0,0,5"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="{StaticResource aboutWnd_Authors}" TextWrapping="Wrap"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{StaticResource aboutWnd_AuthorsName}" TextWrapping="Wrap"/>
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="{StaticResource aboutWnd_Affiliation}" TextWrapping="Wrap"/>
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="{StaticResource aboutWnd_AffiliationContent}" TextWrapping="Wrap"/>
+            </Grid>
+            
+        </StackPanel>
+    </Grid>
+</Window>
