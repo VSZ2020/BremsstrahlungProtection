@@ -59,21 +59,13 @@ namespace BSP
 					_energyFactors = value;
 			}
 		}
-		
-		//Задание дефолтных значений долей от полного выхода ТИ
+
+		/// <summary>
+		/// Задание дефолтных значений долей от полного выхода ТИ
+		/// </summary>
 		public static void SetDefaultBSFactors()
 		{
-			_BsFactor = new double[10];
-			_BsFactor[0] = 0.435;
-			_BsFactor[1] = 0.258;
-			_BsFactor[2] = 0.152;
-			_BsFactor[3] = 0.083;
-			_BsFactor[4] = 0.043;
-			_BsFactor[5] = 0.02;
-			_BsFactor[6] = 7E-3;
-			_BsFactor[7] = 2E-3;
-			_BsFactor[8] = 3E-4;
-			_BsFactor[9] = 0;
+			_BsFactor = new double[] { 0.435, 0.258, 0.152, 0.083, 0.043, 0.02, 7.0E-3, 2.0E-3, 3.0E-4,0 };
 		}
 		
 		public static double[,] SetDefaultEnergyFactors()
@@ -129,7 +121,7 @@ namespace BSP
 				sumI += PrimaryNuclide.listMeanEnergy[i] * PrimaryNuclide.listMeanEnergy[i] * PrimaryNuclide.listEnergyYield[i];
 			}
 
-			return (8.5E-4) * ((double)Z_eff + 3) * sumI;
+			return (8.5E-4) * ((double)Z_eff + 3.0) * sumI;
 
 		}
 

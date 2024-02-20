@@ -1,12 +1,10 @@
 ﻿using BSP.Source.Calculation.CalcDirections;
 using System;
-using System.Reflection.Emit;
 using System.Windows;
-using System.Windows.Input;
 
 namespace BSP
 {
-	public class Cylinder: ASourceForm
+    public class Cylinder: ASourceForm
 	{
 		public Cylinder()
 		{
@@ -34,7 +32,7 @@ namespace BSP
 			}
 		}
 
-		private static double CylinderRadial(ref InputData input, uint EnergyIndex)
+		private static double CylinderRadial(InputData input, uint EnergyIndex)
 		{
 			//Задаем размеры источника
 			double R = CalcParams.Source.Geometry.Y / 2.0;
@@ -52,25 +50,23 @@ namespace BSP
 			double dFi = Math.PI / InputData.Nx;                               //0 - Division by X
 
 			double currIntegral = 0.0;
-			for (int i = 0; i < InputData.Ny; i++)                             //Цикл по радиусу
-			{
-				_ro = dro / 2 + dro * i;
-				for (int j = 0; j < InputData.Nz; j++)                         //Цикл по высоте
+			for(int i = 0; i < InputData.Ny && !input.token.IsCancellationRequested;  i++){
+				_ro = dro / 2.0 + dro * i;
+				for (int j = 0; j < InputData.Nz && !input.token.IsCancellationRequested; j++)                         //Цикл по высоте
 				{
-					_z = dz / 2 + dz * j;
-					for (int l = 0; l < InputData.Nx; l++)                     //Цикл по углу
+					_z = dz / 2.0 + dz * j;
+					for (int l = 0; l < InputData.Nx && !input.token.IsCancellationRequested; l++)                     //Цикл по углу
 					{
-						_Fi = dFi / 2 + dFi * l;
+						_Fi = dFi / 2.0 + dFi * l;
 
-						double _cFull = _z * _z + _ro * _ro + b * b - 2 * _ro * b * Math.Cos(_Fi);
+						double _cFull = _z * _z + _ro * _ro + b * b - 2.0 * _ro * b * Math.Cos(_Fi);
 						double _c = _ro * _ro + b * b - 2 * _ro * b * Math.Cos(_Fi);
-
+						
 						//x - длина поглощения в источнике
 						double _x = (_ro * _ro - _ro * b * Math.Cos(_Fi) +
 										Math.Sqrt(R * R * _c - _ro * _ro * b * b * Math.Sin(_Fi) * Math.Sin(_Fi)))
 										/ _c * Math.Sqrt(_cFull);
-
-						double[] UD = AccessoryFunctions.GetUDForEnergy(ref input.UD[EnergyIndex], _x, Math.Sqrt(_cFull) / (b - _ro * Math.Cos(_Fi)));
+						double[] UD = AccessoryFunctions.GetUDForEnergy(input.UD[EnergyIndex], _x, Math.Sqrt(_cFull) / (b - _ro * Math.Cos(_Fi)));
 
 						double sumUD = AccessoryFunctions.GetSumUD(UD);                        //Сумма всех UD по слоям для данной энергии
 
@@ -80,24 +76,24 @@ namespace BSP
 						double sumB = 1.0;                                                     //Равно 1.0 на случай, если не будет слагаемых
 						if (input.IncludeScattering)
 						{
-							sumB = Buildup.GetGeteroBuildup(ref input, EnergyIndex, ref UD, ref input.token, Calculation.BuildupCalculationType);
+							sumB = Buildup.GetGeteroBuildup(input, EnergyIndex, UD, ref input.token, Calculation.BuildupCalculationType);
 						}
 
 						//Текущее значение интеграла
 						currIntegral += (double)CalcParams.multiplier * _ro / _cFull * dro * dz * dFi * looseExp * sumB;
-
-						if (input.token.IsCancellationRequested)
-						{
-							return -1;
-						}
-
+						//if (double.IsNaN(currIntegral))
+						//	Debug.WriteLine($"In i={i}, j={j}, l={l} was found NaN value currIntegral. [dro={dro}, dz={dz}, dFi={dFi}], _ro={_ro}, _c={_c}, cFull={_cFull}, _x={_x}, looseExp={looseExp}, sumID={sumUD}, sumB={sumB}", "Nan FOUND");
 					}
 				}
 			}
+			if (input.token.IsCancellationRequested)
+				return -1;
+			
+
 			return currIntegral * 4.0;
 		}
 
-		static public double CylinderAxial(ref InputData input, uint EnergyIndex)
+		static public double CylinderAxial(InputData input, uint EnergyIndex)
 		{
 			//Переопределяем значения констант
 			double cylR = CalcParams.Source.Geometry.Y / 2.0;
@@ -110,7 +106,7 @@ namespace BSP
 
 			double externalIntergaral = 0.0;
 
-			for (int i = 0; i < InputData.Nx; i++)                                                             //Цикл по углам "тета"
+			for(int i=0; i<InputData.Nx && !input.token.IsCancellationRequested; i++)                                                          //Цикл по углам "тета"
 			{
 				double thetaI_1 = dtheta_1 / 2.0 + dtheta_1 * i;                                                //Итерируемая тета для первого интеграла
 				double thetaI_2 = O_1 + dtheta_2 / 2.0 + dtheta_2 * i;                                          //Итерируемая тета для второго интеграла
@@ -122,7 +118,7 @@ namespace BSP
 				double dr_1 = ((b + CalcParams.Source.Geometry.Z) / Math.Cos(thetaI_1) - a_1) / InputData.Ny;  //Шаг интегрирования для первого внутр. интеграла
 				double dr_2 = (cylR * AccessoryFunctions.cosec(thetaI_2) - a_2) / InputData.Ny;                                //Шаг интегрирования для второго внутр. интеграла
 
-				for (int j = 0; j < InputData.Ny; j++)                                                             //Цикл по радиусу (Y)
+				for (int j = 0; j < InputData.Ny && !input.token.IsCancellationRequested; j++)                                                             //Цикл по радиусу (Y)
 				{
 					double _r_1 = a_1 + dr_1 / 2 + dr_1 * j;
 					double _r_2 = a_2 + dr_2 / 2 + dr_2 * j;
@@ -134,8 +130,8 @@ namespace BSP
 					//double UDFactor_2 = 1.0 / Math.Cos(thetaI_2);													//Коэф. перехода к эффективному значению толщины
 
 					//Рассчитываем начальные проихведения u*d для всех слоев защиты, включая материал источника
-					double[] UD_1 = AccessoryFunctions.GetUDForEnergy(ref input.UD[EnergyIndex], _r_1 - a_1, AccessoryFunctions.sec(thetaI_1));
-					double[] UD_2 = AccessoryFunctions.GetUDForEnergy(ref input.UD[EnergyIndex], _r_2 - a_2, AccessoryFunctions.sec(thetaI_2));
+					double[] UD_1 = AccessoryFunctions.GetUDForEnergy(input.UD[EnergyIndex], _r_1 - a_1, AccessoryFunctions.sec(thetaI_1));
+					double[] UD_2 = AccessoryFunctions.GetUDForEnergy(input.UD[EnergyIndex], _r_2 - a_2, AccessoryFunctions.sec(thetaI_2));
 
 					double sumUD_1 = AccessoryFunctions.GetSumUD(UD_1);
 					double sumUD_2 = AccessoryFunctions.GetSumUD(UD_2);
@@ -149,16 +145,18 @@ namespace BSP
 					double sumB_2 = 1.0;                                                                            //Равно 1.0 на случай, если не будет слагаемых
 					if (input.IncludeScattering)
 					{
-						sumB_1 = Buildup.GetGeteroBuildup(ref input, EnergyIndex, ref UD_1, ref input.token, Calculation.BuildupCalculationType);
-						sumB_2 = Buildup.GetGeteroBuildup(ref input, EnergyIndex, ref UD_2, ref input.token, Calculation.BuildupCalculationType);
+						sumB_1 = Buildup.GetGeteroBuildup(input, EnergyIndex, UD_1, ref input.token, Calculation.BuildupCalculationType);
+						sumB_2 = Buildup.GetGeteroBuildup(input, EnergyIndex, UD_2, ref input.token, Calculation.BuildupCalculationType);
 						if (double.IsNaN(sumB_1) || double.IsInfinity(sumB_1)) sumB_1 = 1;
 						if (double.IsNaN(sumB_2) || double.IsInfinity(sumB_2)) sumB_2 = 1;
 					}
 
 					externalIntergaral += cI_1 * sumB_1 + cI_2 * sumB_2;                                            //Суммируем расчетные значения в один общий интеграл
-
-					if (input.token.IsCancellationRequested) { return -1.0; }
+					
 				}
+			}
+			if (input.token.IsCancellationRequested) { 
+				return -1.0; 
 			}
 			return externalIntergaral * 2.0 * Math.PI;
 		}

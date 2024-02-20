@@ -1,16 +1,18 @@
-﻿using BSP.Source.Calculation.CalcDirections;
-using System;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BSP
 {
-	public class Calculation
+    public class Calculation
 	{
 		/*
 		 * Вести расчет только воздушной кермы. Если пользователь потребует, то домножать все результаты на модифицирующий коэффициент
 		 * 
 		 */
-		
+		public delegate void SendTextToOutput(OutputValue result);
+		public event SendTextToOutput OnDoseResultAppear;
 		public enum BuildupCalcType
 		{
 			Taylor = 0,
@@ -31,7 +33,7 @@ namespace BSP
 		/// </summary>
 		public const double BUILDUP_DOWN_ENERGY_LIMIT = 0.015;
 
-		public delegate double CalculationIntegral(ref InputData Data, uint EnergyIndex);
+		public delegate double CalculationIntegral(InputData Data, uint EnergyIndex);
 
 		public Calculation()
 		{
@@ -48,31 +50,41 @@ namespace BSP
 			OutputValue doseRate = new OutputValue();
 			doseRate.DoseRatePart = new double[EnergiesCount];
 
-			for (uint EnergyIndex = 0; EnergyIndex < EnergiesCount; EnergyIndex++)                  //Цикл по энергиям
+			var calcTask = Task.Run(() =>
 			{
-				//Вычисляем интеграл в другом потоке
-				double Integral = await Task.Run(() => cFunction(ref input, EnergyIndex));
-				
-				//Вычисляем парциальную мощность воздушной кермы: K = [МэВ/(с * г) → Гр/ч] / (4 * pi) * k * Am * Ib * um(air) * Intergral
-				doseRate.DoseRatePart[EnergyIndex] =
-					(1.6E-10) / (4.0 * Math.PI) * 3600 * input.interpData.DoseFactor[EnergyIndex] * CalcParams.Source.SpecificActivity * CalcParams.Source.Ib[EnergyIndex] * input.interpData.um_absorbtion_air[EnergyIndex] * Integral;
+				int energiesCalculated = 0;
+                //Цикл по энергиям
+                Parallel.For(0, EnergiesCount, (EnergyIndex) =>
+                {
+                    Debug.WriteLine($"Thread {EnergyIndex} was started! Thread ID = {Thread.CurrentThread.ManagedThreadId}");
+                    //Вычисляем интеграл в другом потоке
+                    //double Integral = await Task.Run(() => cFunction(input, (uint)EnergyIndex));
+                    double Integral = cFunction(input, (uint)EnergyIndex);
 
-				//Если значение NaN, то ...
-				if (double.IsNaN(doseRate.DoseRatePart[EnergyIndex]))
-				{
-					doseRate.DoseRatePart[EnergyIndex] = 0.0;
-					//Записываем в лог
-				}
-				//Если значение Inf, то ...
-				if (double.IsInfinity(doseRate.DoseRatePart[EnergyIndex]))
-				{
-					doseRate.DoseRatePart[EnergyIndex] = 0.0;
-					//Записываем в лог
-				}
+                    //Вычисляем парциальную мощность воздушной кермы: K = [МэВ/(с * г) → Гр/ч] / (4 * pi) * k * Am * Ib * um(air) * Intergral
+                    doseRate.DoseRatePart[EnergyIndex] =
+                            (1.6E-10) / (4.0 * Math.PI) * 3600.0 * input.interpData.DoseFactor[EnergyIndex] * CalcParams.Source.SpecificActivity * CalcParams.Source.Ib[EnergyIndex] * input.interpData.um_absorbtion_air[EnergyIndex] * Integral;
 
-				if (input.progressUpdater != null) input.progressUpdater.Report((int)EnergyIndex + 1);
-			}
-
+                    //Если значение NaN, то ...
+                    if (double.IsNaN(doseRate.DoseRatePart[EnergyIndex]))
+                    {
+                        doseRate.DoseRatePart[EnergyIndex] = 0.0;
+                        //Записываем в лог
+                    }
+                    //Если значение Inf, то ...
+                    if (double.IsInfinity(doseRate.DoseRatePart[EnergyIndex]))
+                    {
+                        doseRate.DoseRatePart[EnergyIndex] = 0.0;
+                        //Записываем в лог
+                    }
+                    Debug.WriteLine($"Thread {EnergyIndex} was finished!");
+                    energiesCalculated++;
+                    input.progressUpdater?.Report(energiesCalculated);
+                });
+            });
+			
+			await calcTask;
+			OnDoseResultAppear?.Invoke(doseRate);
 			return doseRate;
 		}
 	}

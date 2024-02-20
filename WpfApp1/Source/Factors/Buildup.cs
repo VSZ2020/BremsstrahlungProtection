@@ -5,6 +5,8 @@ namespace BSP
 {
 	public static class Buildup
 	{
+		public const double tanh2_1 = 1.96402758007581688395;
+		public const double tanh2 = -0.96402758007581688395;
 		/// <summary>
 		/// Расчет фактора накопления по формуле из Radiological Toolbox
 		/// </summary>
@@ -17,8 +19,10 @@ namespace BSP
 		/// <returns></returns>
 		private static double JapanBuildup(ref InterpolatedKFactors f, uint EnergyIndex, double ud)
 		{
-			double K = f.c[EnergyIndex] * Math.Pow(ud, f.a[EnergyIndex]) + f.d[EnergyIndex] * (Math.Tanh(ud / f.xk[EnergyIndex] - 2) - Math.Tanh(-2)) / (1 - Math.Tanh(-2));
-			return (K == 1) ? 1 + (f.b[EnergyIndex] - 1) * ud : 1 + (f.b[EnergyIndex] - 1) * (Math.Pow(K, ud) - 1) / (K - 1);
+			double K = f.c[EnergyIndex] * Math.Pow(ud, f.a[EnergyIndex]) + f.d[EnergyIndex] * (Math.Tanh(ud / f.xk[EnergyIndex] - 2.0) - tanh2) / tanh2_1;
+			//if (double.IsNaN(K))
+			//	System.Diagnostics.Debug.WriteLine($"NaN value for K: c={f.c[EnergyIndex]}, ud={ud}, d={f.d[EnergyIndex]}, a={f.a[EnergyIndex]}, mathPow={Math.Pow(ud, f.a[EnergyIndex])}, tanh={Math.Tanh(ud / f.xk[EnergyIndex] - 2.0)}, tanh2Big={(Math.Tanh(ud / f.xk[EnergyIndex] - 2.0) - tanh2)}", "JapanFormula");
+			return (K == 1) ? 1.0 + (f.b[EnergyIndex] - 1.0) * ud : 1.0 + (f.b[EnergyIndex] - 1.0) * (Math.Pow(K, ud) - 1.0) / (K - 1.0);
 		}
 
 		private static double TaylorBuildup(ref InterpolatedTaylor f, uint EnergyIndex, double ud)
@@ -33,7 +37,7 @@ namespace BSP
 		/// <param name="EnergyIndex"></param>
 		/// <param name="BuildupType"></param>
 		/// <returns></returns>
-		public static double GetGeteroBuildup(ref InputData Data, uint EnergyIndex, ref double[] ud, ref CancellationToken token, Calculation.BuildupCalcType BuildupType)
+		public static double GetGeteroBuildup(InputData Data, uint EnergyIndex, double[] ud, ref CancellationToken token, Calculation.BuildupCalcType BuildupType)
 		{
 			//Проверяем флаг, что источник точечный и слоев защите нет и флаг того, что энергия излучения слишком мала и всё поглотится
 			if ((Calculation.IsPointSource && ud.Length == 1) || Data.interpData.Energy[EnergyIndex] <= Calculation.BUILDUP_DOWN_ENERGY_LIMIT)
@@ -89,7 +93,7 @@ namespace BSP
 			int layersCount = Data.Layers.Count;
 
 			double sumB = JapanBuildup(ref Data.interpData.MaterialData[layersCount - 1].KFactor, EnergyIndex,	AccessoryFunctions.GetSumUD(ud)) * Data.interpData.MaterialData[layersCount - 1].Taylor.Delta[EnergyIndex];
-
+			
 			//Последующие слагаемые формулы Бродера 
 			//[Внешняя сумма]
 			for (int layerIndex = 0; layerIndex < layersCount - 1; layerIndex++)

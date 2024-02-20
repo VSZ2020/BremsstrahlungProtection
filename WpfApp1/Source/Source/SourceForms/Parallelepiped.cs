@@ -1,5 +1,6 @@
 ﻿
 using BSP.Source.Calculation.CalcDirections;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace BSP
@@ -39,8 +40,13 @@ namespace BSP
 			}
 			return CubeRadial;
 		}
-
-		private double CubeRadial(ref InputData input, uint EnergyIndex)
+		/// <summary>
+		/// Вычисление радиальной составляющей излучения от прямоугольного параллелепипеда
+		/// </summary>
+		/// <param name="input"></param>
+		/// <param name="EnergyIndex"></param>
+		/// <returns></returns>
+		private double CubeRadial(InputData input, uint EnergyIndex)
 		{
 			//Расстояние до точки детектирования
 			double _b = CalcParams.CalculationDistance + input.Layers.D;
@@ -61,18 +67,18 @@ namespace BSP
 
 			double sumIntegral = 0.0;
 
-			for (int i = 0; i < InputData.Nx; i++)
+			for(int i = 0; i < InputData.Nx && !input.token.IsCancellationRequested ;i++)
 			{
-				double _x = dx / 2 + dx * i;
-				for (int j = 0; j < InputData.Ny; j++)
-				{
-					double _y = dy / 2 + dy * j;
-					for (int _l = 0; _l < InputData.Nz; _l++)
-					{
-						double _z = dz / 2 + dz * _l;
-						double _c = 1.0;                                                                                    //Переменнная, определяемая направлением точки регистрации
+				  double _x = dx / 2 + dx * i;
+				  for (int j = 0; j < InputData.Ny && !input.token.IsCancellationRequested; j++)
+				  {
+					  double _y = dy / 2 + dy * j;
+					  for (int _l = 0; _l < InputData.Nz && !input.token.IsCancellationRequested; _l++)
+					  {
+						  double _z = dz / 2 + dz * _l;
+						  double _c = 1.0;                                                                                    //Переменнная, определяемая направлением точки регистрации
 						if (DirectionFlag == 1) { _c = CalcParams.Source.Geometry.X - _x; }
-						if (DirectionFlag == 2) { _c = CalcParams.Source.Geometry.Y - _y; }                                 //2 - вдоль оси Y,
+						  if (DirectionFlag == 2) { _c = CalcParams.Source.Geometry.Y - _y; }                                 //2 - вдоль оси Y,
 						if (DirectionFlag == 3) { _c = CalcParams.Source.Geometry.Z - _z; }                                 //3 - вдоль оси Z
 
 						double R2 = (_x - x0) * (_x - x0) + (_y - y0) * (_y - y0) + (_z - z0) * (_z - z0);                  //Квадрат расстояния от объема до точки регистрации R
@@ -80,23 +86,24 @@ namespace BSP
 
 						//Рассчитываем начальные проихведения u*d для всех слоев защиты, включая материал источника
 						double UDFactor = R2 / (_b + _c);                                                                   //Коэф. перехода к эффективному значению u*d
-						double[] UD = AccessoryFunctions.GetUDForEnergy(ref input.UD[EnergyIndex], xe, UDFactor);
+						double[] UD = AccessoryFunctions.GetUDForEnergy(input.UD[EnergyIndex], xe, UDFactor);
 
-						double sumUD = AccessoryFunctions.GetSumUD(UD);
-						double looseExp = System.Math.Exp(-sumUD);
+						  double sumUD = AccessoryFunctions.GetSumUD(UD);
+						  double looseExp = System.Math.Exp(-sumUD);
 
 						//Расчет вклада поля рассеянного излучения
 						double sumB = 1.0;                                                                                  //Равно 1.0 на случай, если не будет слагаемых
 						if (input.IncludeScattering)
-						{
-							sumB = Buildup.GetGeteroBuildup(ref input, EnergyIndex, ref UD, ref input.token, Calculation.BuildupCalculationType);
-						}
+						  {
+							  sumB = Buildup.GetGeteroBuildup(input, EnergyIndex, UD, ref input.token, Calculation.BuildupCalculationType);
+						  }
 
-						sumIntegral += (double)CalcParams.multiplier * looseExp / R2 * dx * dy * dz * sumB;
-
-						if (input.token.IsCancellationRequested) { return -1.0; }
-					}
-				}
+						  sumIntegral += (double)CalcParams.multiplier * looseExp / R2 * dx * dy * dz * sumB;
+					  }
+				  }
+			}
+			if (input.token.IsCancellationRequested) { 
+				return -1.0;
 			}
 			return sumIntegral;
 		}

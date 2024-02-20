@@ -113,15 +113,6 @@ namespace BSP
 			}
 		}
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-			InitializeChangelog();
-			var timer = (DispatcherTimer)sender;
-			timer.Stop();
-			timer.Tick -= Timer_Tick;
-			timer.IsEnabled = false;
-		}
-
 		private void App_LanguageChanged(object sender, EventArgs e)
 		{
 			CultureInfo info = App.Language;

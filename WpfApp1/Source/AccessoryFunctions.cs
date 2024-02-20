@@ -21,7 +21,7 @@ namespace BSP
 		/// <param name="source_d_factor">Модифицирующий фактор для толщины источника</param>
 		/// <param name="shield_d_factor">Модифицирующий фактор для толщины защиты</param>
 		/// <returns>Новый массив U*D</returns>
-		public static double[] GetUDForEnergy(ref double[] UD_InputArray, double source_d_factor, double shield_d_factor)
+		public static double[] GetUDForEnergy(double[] UD_InputArray, double source_d_factor, double shield_d_factor)
 		{
 			var UD = new double[UD_InputArray.Length];
 			if (!Calculation.IsPointSource)
@@ -31,7 +31,6 @@ namespace BSP
 			}
 			else
 				UD[0] = 0;
-			                                 
 
 			for (int layerIndex = 1; layerIndex < UD.Length; layerIndex++)
 			{

@@ -124,8 +124,8 @@
     <v:String x:Key="msgError_AbsensePrimeFiles">Программа не может быть запущена из-за отсутствия или повреждения одного или нескольких важных файлов из папки 'data'. Приложение будет закрыто!</v:String>
 
     <!--Statusbar messages-->
-    <v:String x:Key="msgStatus_Ready">Готов</v:String>
-    <v:String x:Key="msgStatus_Calc">Расчет</v:String>
+    <v:String x:Key="msgStatus_Ready">Готов к расчету</v:String>
+    <v:String x:Key="msgStatus_Calc">Идет вычисление. Пожалуйста, подождите!</v:String>
     <v:String x:Key="msgStatus_Cancel">Отменено</v:String>
     <v:String x:Key="msgStatus_ValidationProcess">Процесс валидации</v:String>
     <v:String x:Key="msgStatus_ValidationProcessError">Верификация входных данных не пройдена. Проверьте поля ввода</v:String>

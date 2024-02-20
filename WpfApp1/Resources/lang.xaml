@@ -126,8 +126,8 @@
 
 
     <!--Statusbar messages-->
-    <v:String x:Key="msgStatus_Ready">Ready</v:String>
-    <v:String x:Key="msgStatus_Calc">Calculating</v:String>
+    <v:String x:Key="msgStatus_Ready">Ready to start</v:String>
+    <v:String x:Key="msgStatus_Calc">Calculating... Please wait!</v:String>
     <v:String x:Key="msgStatus_Cancel">Cancelled</v:String>
     <v:String x:Key="msgStatus_ValidationProcess">Validation process</v:String>
     <v:String x:Key="msgStatus_ValidationProcessError">Validation process was unsuccess. Check input fields</v:String>

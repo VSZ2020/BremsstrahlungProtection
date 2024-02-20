@@ -83,7 +83,7 @@ namespace BSP
 		//public static Nuclides SelectedNuclidesList;
 		public static ShieldLayers SelectedLayersList;                      //Массив выбранных слоев защиты
 		
-		public static string environmentKey = "Воздух";                     //Хранит ключ текущего материала среды
+		public static string environmentKey = "Air";                     //Хранит ключ текущего материала среды
 		public static string generalNuclideKey = "";						//Хранит ключ доминирующего нуклида в наборе
 	}
 }
