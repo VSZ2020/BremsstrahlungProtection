@@ -1,0 +1,174 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    <!--Menu items description-->
+    <!--
+        mm - main menu, 
+        mi - menu item-->
+    <v:String x:Key="mmProgram">Приложение</v:String>
+    <v:String x:Key="miDbReset">Сброс баз даннных</v:String>
+    <v:String x:Key="miLanguage">Язык</v:String>
+    <v:String x:Key="miExit">Выход</v:String>
+    <v:String x:Key="mmLaunch">Запуск</v:String>
+    <v:String x:Key="mmEdit">Редактировать</v:String>
+    <v:String x:Key="miEdit_Add">Добавить</v:String>
+    <v:String x:Key="miEdit_Edit">Редактировать</v:String>
+    <v:String x:Key="miEdit_Remove">Удалить</v:String>
+    <v:String x:Key="miLaunchCalc">Запуск расчета</v:String>
+    <v:String x:Key="miStopCalc">Остановка расчета</v:String>
+    <v:String x:Key="miLaunchInterpViewer">Просмотр интерполяций</v:String>
+    <v:String x:Key="miLaunchNuclidesEditor">Редактор радионуклидов</v:String>
+    <v:String x:Key="mmHelp">?</v:String>
+    <v:String x:Key="miHelp">Помощь</v:String>
+    <v:String x:Key="miShowChangelog">Показать список изменений</v:String>
+    <v:String x:Key="miAbout">О программе</v:String>
+
+    <!--Tab Headers-->
+    <v:String x:Key="tabRadSource">Источник излучения</v:String>
+    <v:String x:Key="tabShield">Защита</v:String>
+    <v:String x:Key="tabOutValue">Выходное значение</v:String>
+
+    <!--Tab "Radiation source" labels-->
+    <v:String x:Key="tabRadsource_NuclidesListLabel">Радионуклиды источника</v:String>
+    <v:String x:Key="tabRadsource_SumActivityLabel">Суммарная активность, Бк</v:String>
+    <v:String x:Key="tabRadsource_IbetaMaxLabel">Ibeta макс., МэВ/с</v:String>
+    <v:String x:Key="tabRadsource_NuclidesListColumnNuclideHeader">Радионуклид</v:String>
+    <v:String x:Key="tabRadsource_NuclidesListColumnActivityHeader">Активность, Бк</v:String>
+    <v:String x:Key="tabRadsource_SourceGeometryBox">Геометрия источника</v:String>
+    <v:String x:Key="tabRadsource_SourceFormLabel">Форма</v:String>
+    <v:String x:Key="tabRadsource_SourceLengthLabel">Длина (X), см</v:String>
+    <v:String x:Key="tabRadsource_SourceWidthLabel">Ширина (Y), см</v:String>
+    <v:String x:Key="tabRadsource_SourceHeightLabel">Высота (Z), см</v:String>
+    <v:String x:Key="tabRadsource_RadDirectionBox">Направление излучения</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialBox">Материал источника</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialChangeBtn">Изменить</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialZeffLabel">Zэфф</v:String>
+    <v:String x:Key="tabRadsource_SourceMaterialDensityLabel">Плотность, г/см³</v:String>
+    <v:String x:Key="tabRadsource_HeaderSourceGeometry">Плотность, г/см³</v:String>
+    
+    <!--Tab "Shield" labels-->
+    <v:String x:Key="tabShield_TopNotice">Выберите слои защиты</v:String>
+    <v:String x:Key="tabShield_LayersListColumnMaterial">Материал защиты</v:String>
+    <v:String x:Key="tabShield_LayersListColumnDepth">Толщина, см</v:String>
+    <v:String x:Key="tabShield_LayersListColumnDensity">Плотность, г/см³</v:String>
+
+    <!--Tab "Output value" labels-->
+    <v:String x:Key="tabOutputValue_BoxOutput">Мощность выходной величины</v:String>
+    <v:String x:Key="tabOutputValue_RadiationGeometryComboBoxLabel">Геометрия облучения</v:String>
+    <v:String x:Key="tabOutputValue_IrradiatedOrganComboBoxLabel">Целевой орган/ткань</v:String>
+    <v:String x:Key="tabOutputValue_BoxCalculationPrefs">Настройки расчета</v:String>
+    <v:String x:Key="tabOutputValue_LabelDivByX">Разбивка по оси X</v:String>
+    <v:String x:Key="tabOutputValue_LabelDivByY">Разбивка по оси Y</v:String>
+    <v:String x:Key="tabOutputValue_LabelDivByZ">Разбивка по оси Z</v:String>
+    <v:String x:Key="tabOutputValue_LabelCommaSigns">Количество значащих цифр</v:String>
+    <v:String x:Key="tabOutputValue_LabelCalcDistance">Расстояние до точки измерения, см</v:String>
+    <v:String x:Key="tabOutputValue_OutputResultBox">Результаты расчета</v:String>
+    <v:String x:Key="tabOutputValue_BuildupCalcTypeBox">Способ вычисления фактора накопления</v:String>
+    <v:String x:Key="tabOutputValue_BuildupCalcTypeBoxItemJapan">Формула Yoshiko Harima и др.</v:String>
+    <v:String x:Key="tabOutputValue_BuildupCalcTypeBoxItemTaylor">Формула Тейлора</v:String>
+
+    <!--Source forms-->
+    <v:String x:Key="SourceFormCylinder">Цилиндр</v:String>
+    <v:String x:Key="SourceFormParallelepiped">Параллелепипед</v:String>
+
+    <!--Radiation directions-->
+    <v:String x:Key="RadDirectionX">Вдоль оси X</v:String>
+    <v:String x:Key="RadDirectionY">Вдоль оси Y</v:String>
+    <v:String x:Key="RadDirectionZ">Вдоль оси Z</v:String>
+
+    <!--Dose Rate Names-->
+    <v:String x:Key="DoseRate_Title">Мощность</v:String>
+    <v:String x:Key="DoseNameEffective">Эффективной дозы</v:String>
+    <v:String x:Key="DoseNameEquivalent">Эквивалентной дозы</v:String>
+    <v:String x:Key="DoseNameExposed">Экспозиционной дозы</v:String>
+    <v:String x:Key="DoseNameAirKerma">Воздушной кермы</v:String>
+    <v:String x:Key="DoseNameAmbientEquivalent">H*(10)</v:String>
+
+    <!--Dose Rate Units-->
+    <v:String x:Key="DoseUnitSvPerH">Зв/ч</v:String>
+    <v:String x:Key="DoseUnitExposed">Р/ч</v:String>
+    <v:String x:Key="DoseUnitGyPerH">Гр/ч</v:String>
+
+    <!--Source materials window-->
+    <v:String x:Key="SourceMaterialWindowsTitle">Материал источника</v:String>
+    <v:String x:Key="ComboboxSourceMaterials_TextBox">Выберите материал из списка</v:String>
+    <v:String x:Key="Button_OK">OK</v:String>
+
+    <!--Tooltips-->
+    <v:String x:Key="tooltipIncludeScatter">Учитывать рассеянное излучение</v:String>
+    <v:String x:Key="tooltipLaunchCalc">Запустить расчет</v:String>
+    <v:String x:Key="tooltipStopCalc">Остановить текущий расчет</v:String>
+    <v:String x:Key="tooltipIncludePartial">Вывести мощность дозы для каждой группы излучения</v:String>
+    <v:String x:Key="tooltipIsPointSource">Считать источник точечным</v:String>
+    <v:String x:Key="tooltipSumActivityBox">Показывает 'Суммарную активность' выбранных радионуклидов</v:String>
+    <v:String x:Key="tooltipSumIbetaBox">Показывает 'Суммарный поток энергии' для выбранных радионуклидов</v:String>
+
+    <!--Contex Menu Items-->
+    <!--OutputBox menu-->
+    <v:String x:Key="ctxMenuSaveToFile">Сохранить текст в файл</v:String>
+    <v:String x:Key="ctxMenuClear">Очистить поле вывода</v:String>
+
+    <!--Messages of Error-->
+    <v:String x:Key="msgError_Title">Ошибка</v:String>
+    <v:String x:Key="msgWarning_Title">Предупреждение</v:String>
+    <v:String x:Key="msgError_NuclideAlreadyExists">Радионуклид {0} уже в списке</v:String>
+    <v:String x:Key="msgError_NothingDelete">Нечего удалять</v:String>
+    <v:String x:Key="msgError_NothingEdit">Нечего редактировать</v:String>
+    <v:String x:Key="msgError_NothingSelected">Ничего не выбрано</v:String>
+    <v:String x:Key="msgError_IncorrectValueFormat">Неверный формат числа</v:String>
+    <v:String x:Key="msgError_ValueBetween">Значение должно быть между {0} и {1}</v:String>
+    <v:String x:Key="msgError_ValueMoreThan">Значение должно быть больше, чем {0}</v:String>
+    <v:String x:Key="msgError_TheLaunchError">Расчет не был запущен из-за ошибки: {0}</v:String>
+    <v:String x:Key="msgError_NullOrZeroNuclides">Количество радионуклидов не может быть нулевым!</v:String>
+    <v:String x:Key="msgError_No_BSData_File">Не найден файл 'data\BS_data.txt'! Используются значения по-умолчанию.</v:String>
+    <v:String x:Key="msgError_ErrorDuringFileReading">Произошла ошибка при чтении файла '{0}'. Проверьте правильность данных файла.</v:String>
+    <v:String x:Key="msgError_AbsensePrimeFiles">Программа не может быть запущена из-за отсутствия или повреждения одного или нескольких важных файлов из папки 'data'. Приложение будет закрыто!</v:String>
+
+    <!--Statusbar messages-->
+    <v:String x:Key="msgStatus_Ready">Готов к расчету</v:String>
+    <v:String x:Key="msgStatus_Calc">Идет вычисление. Пожалуйста, подождите!</v:String>
+    <v:String x:Key="msgStatus_Cancel">Отменено</v:String>
+    <v:String x:Key="msgStatus_ValidationProcess">Процесс валидации</v:String>
+    <v:String x:Key="msgStatus_ValidationProcessError">Верификация входных данных не пройдена. Проверьте поля ввода</v:String>
+
+    <!--Outputbox messages-->
+    <v:String x:Key="msgOutputBox_ErrorIn">Возникла ошибка в '{0}' поле</v:String>
+    
+    <!--Results view-->
+    <v:String x:Key="resultsView_DoseRateResult">Мощность дозы, Зв/ч</v:String>
+    <v:String x:Key="resultsView_CalculationDate">Время запуска</v:String>
+
+    <!--Application Global messages-->
+    <v:String x:Key="title_UpdateDialogTitle">Обновление программы</v:String>
+    <v:String x:Key="title_RestartApplication">Чтобы изменения полностью вступили в силу, перезапустите приложение!</v:String>
+    <v:String x:Key="msgQuestion_UpdateApp">Обнаружена новая версия приложения ({0}). Желаете обновиться?</v:String>
+    <v:String x:Key="label_CheckUpdates">Проверка обновлений</v:String>
+    <v:String x:Key="label_LoadGroupCoefficients">Загрузка коэффициентов для энергетических групп</v:String>
+    <v:String x:Key="label_LoadNuclides">Загрузка радионуклидов</v:String>
+    <v:String x:Key="label_LoadMaterials">Загрузка материалов</v:String>
+    <v:String x:Key="label_LoadDoseFactors">Загрузка дозовых коэффициентов</v:String>
+    <v:String x:Key="label_InitUserInterface">Инициализация пользовательского интерфейса</v:String>
+
+    <!--Updater window-->
+    <v:String x:Key="updaterWindow_ProgressTitle">Идет загрузка</v:String>
+    <v:String x:Key="updaterWindow_msgError">Во время загрузки новой версии произошла ошибка. Для подробностей смотри лог-файл.</v:String>
+    <!--Changelog messages-->
+    <v:String x:Key="changelog_Title">BSP v{0}. Список изменений</v:String>
+
+    <!--Splash labels-->
+    <v:String x:Key="splashScreen_Loading">Загрузка данных и пользовательского интерфейса ...</v:String>
+
+    <!--AboutWindow messages-->
+    <v:String x:Key="aboutWnd_Authors">Автор(ы):</v:String>
+    <v:String x:Key="aboutWnd_AuthorsName">Вячеслав Изгагин, Михаил Жуковский</v:String>
+    <v:String x:Key="aboutWnd_Affiliation">Организация:</v:String>
+    <v:String x:Key="aboutWnd_AffiliationContent">Институт промышленной экологии Уральского отделения Российской академии наук</v:String>
+
+    <!--Changelog messages-->
+    <v:String x:Key="changelog_whatsNewTitle">Что нового</v:String>
+    <v:String x:Key="changelog_criticalTitle">Критические изменения</v:String>
+    <v:String x:Key="changelog_changesTitle">Изменения</v:String>
+    <v:String x:Key="changelog_whatsNew">Переход на новый пользовательский интерфейс и .NET Framework 4.8</v:String>
+    <v:String x:Key="changelog_critical">_</v:String>
+    <v:String x:Key="changelog_changes">_</v:String>
+</ResourceDictionary>

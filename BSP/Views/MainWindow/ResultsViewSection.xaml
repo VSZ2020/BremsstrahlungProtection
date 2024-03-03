@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="BSP.Views.MainWindow.ResultsViewSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BSP.Views.MainWindow">
+    <Grid>
+        <GroupBox Header="{StaticResource ResultsView_GroupHeader}" Style="{StaticResource DefaultGroupBox}">
+            <RichTextBox
+                 VerticalScrollBarVisibility="Auto">
+                <RichTextBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{StaticResource contextMenu_ExportToTextFile}" Command="{Binding ExportResultsToTextFile}"/>
+                        <MenuItem Header="{StaticResource contextMenu_ClearResults}" Command="{Binding ClearResultsCommand}"/>
+                    </ContextMenu>
+                </RichTextBox.ContextMenu>
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text="{Binding ResultsText}"/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </GroupBox>
+    </Grid>
+</UserControl>

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="BSP.Views.MainWindow.MainMenuSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BSP.Views"
+             mc:Ignorable="d">
+    <Menu Background="{x:Null}">
+        <MenuItem Header="{StaticResource menu_Program}">
+            <MenuItem Header="{StaticResource menu_Program_Language}" 
+                      IsEnabled="{Binding IsEvaluationNotInProgress}" 
+                      ItemsSource="{Binding LanguagesVM.AvailableLanguages}" 
+                      DisplayMemberPath="Header">
+            </MenuItem>
+            <MenuItem Header="{StaticResource menu_Program_Open}" IsEnabled="False"/>
+            <MenuItem Header="{StaticResource menu_Program_Save}" IsEnabled="False"/>
+            <MenuItem Header="{StaticResource menu_Program_SaveAs}" IsEnabled="False"/>
+            <Separator/>
+            <MenuItem Header="{StaticResource menu_Program_Exit}"/>
+        </MenuItem>
+
+        <!--<MenuItem Header="{StaticResource menu_Edit}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <MenuItem Header="{StaticResource menu_Edit_Add}"/>
+            <MenuItem Header="{StaticResource menu_Edit_Edit}"/>
+            <MenuItem Header="{StaticResource menu_Edit_Remove}"/>
+            <Separator/>
+            <MenuItem Header="{StaticResource menu_Edit_Preferences}" IsEnabled="false"/>
+        </MenuItem>-->
+
+        <!--<MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <MenuItem Header="{StaticResource menu_Tools_Interpolations}"/>
+            <MenuItem Header="{StaticResource menu_Tools_NuclidesEditor}"/>
+        </MenuItem>-->
+
+        <MenuItem Header="{StaticResource menu_Calculation}">
+            <MenuItem Header="{StaticResource menu_Calculation_Start}" Command="{Binding StartCommand}"/>
+            <MenuItem Header="{StaticResource menu_Calculation_Abort}" Command="{Binding StopCommand}"/>
+        </MenuItem>
+
+        <MenuItem Header="{StaticResource menu_Help}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>
+            <MenuItem Header="{StaticResource menu_Help_Changelog}"/>
+            <Separator/>
+            <MenuItem Header="{StaticResource menu_Help_About}" Command="{Binding AboutCommand}"/>
+        </MenuItem>
+    </Menu>
+</UserControl>

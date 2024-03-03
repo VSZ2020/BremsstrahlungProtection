@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 
+# Materials and dose factors data
+Data/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

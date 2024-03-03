@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="BSP.Views.MainWindow.ShieldingSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:BSP.ViewModels"
+             xmlns:local="clr-namespace:BSP.Views.MainWindow"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" MinHeight="23"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" 
+                   Text="{StaticResource tab_Shielding_Hint}" 
+                   VerticalAlignment="Center"
+                   Margin="0,0,0,5"/>
+
+        <DataGrid Grid.Row="1" Grid.Column="0" 
+                  HorizontalContentAlignment="Stretch" 
+                  Margin="0,0,0,5"
+                  ItemsSource="{Binding ShieldingTab.ShieldLayers}"
+                  SelectedItem="{Binding ShieldingTab.SelectedShieldLayer}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Style="{StaticResource DefaultDataGrid}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{StaticResource tab_Shielding_Material}" 
+                                    Binding="{Binding Name}"
+                                    Width="0.6*"/>
+                <DataGridTextColumn Header="{StaticResource tab_Shielding_Thickness}" 
+                                    Binding="{Binding D}" 
+                                    Width="0.3*"/>
+                <DataGridTextColumn Header="{StaticResource tab_Shielding_Density}" 
+                                    Binding="{Binding Density}" 
+                                    Width="0.3*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--Add BTN-->
+            <Button Grid.Column="0" Grid.Row="0" 
+                    Margin="0,0,5,0" 
+                    Command="{Binding ShieldingTab.AddCommand}" 
+                    Style="{StaticResource DefaultButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Resources/Images/add.png" Margin="0,0,5,0"/>
+                    <TextBlock Text="{StaticResource btn_Add}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            
+            <!--Edit BTN-->
+            <Button Grid.Column="1" Grid.Row="0" 
+                    Margin="0,0,0,0" 
+                    Command="{Binding ShieldingTab.EditCommand}" 
+                    Style="{StaticResource DefaultButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Resources/Images/edit.png" Margin="0,0,5,0"/>
+                    <TextBlock Text="{StaticResource btn_Edit}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            
+            <!--Remove BTN-->
+            <Button Grid.Column="2" Grid.Row="0" 
+                    Margin="5,0,0,0" 
+                    Command="{Binding ShieldingTab.RemoveCommand}" 
+                    Style="{StaticResource DefaultButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Resources/Images/remove.png" Margin="0,0,5,0"/>
+                    <TextBlock Text="{StaticResource btn_Remove}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="BSP.Views.MainWindow.SourceMaterialSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:BSP.ViewModels"
+             xmlns:local="clr-namespace:BSP.Views.MainWindow"
+             mc:Ignorable="d">
+    <GroupBox Header="{StaticResource tab_Source_SourceMaterial_GroupHeader}" Style="{StaticResource DefaultGroupBox}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" 
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding Source={x:Static vm:AvailableDataController.AvailableMaterials}}"
+                      SelectedItem="{Binding SourceTab.SelectedSourceMaterial}"
+                      Margin="0,0,0,5"
+                      Style="{StaticResource DefaultCombobox}"/>
+            
+            <TextBlock Text="{StaticResource tab_Source_SourceMaterial_Z}" 
+                       Grid.Row="1" Grid.Column="0" 
+                       VerticalAlignment="Center"
+                       ToolTip="{StaticResource tooltipSourceMaterialZeff}"/>
+            <TextBox Text="{Binding SourceTab.SourceZ, Mode=OneWay}" 
+                     Grid.Row="1" Grid.Column="1" 
+                     VerticalAlignment="Center"
+                     Margin="5,0,0,0"
+                     Style="{StaticResource DefaultTextBox}"
+                     ToolTip="{StaticResource tooltipSourceMaterialZeff}"/>
+
+            <TextBlock Text="{StaticResource tab_Source_SourceMaterial_Density}" 
+                       Grid.Row="2" Grid.Column="0"
+                       Padding="0,5,5,0"
+                       VerticalAlignment="Center"
+                       ToolTip="{StaticResource tooltipSourceMaterialDensity}"/>
+            <TextBox Text="{Binding SourceTab.SourceDensity, Mode=OneWay}" 
+                     Grid.Row="2" Grid.Column="1" MinWidth="{StaticResource TextBoxMinWidth}" 
+                     VerticalAlignment="Center" 
+                     Margin="5,5,0,0"
+                     Style="{StaticResource DefaultTextBox}"
+                     ToolTip="{StaticResource tooltipSourceMaterialDensity}"/>
+        </Grid>
+    </GroupBox>
+</UserControl>

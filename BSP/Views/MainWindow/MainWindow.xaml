@@ -1,0 +1,136 @@
+﻿<Window x:Class="BSP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:BSP.Views.MainWindow"
+        xmlns:vm="clr-namespace:BSP.ViewModels"
+        xmlns:local="clr-namespace:BSP"
+        mc:Ignorable="d"
+        Title="" Width="830" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Height="712" MinHeight="450">
+    <Grid Background="#FFF0F0F0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <uc:MainMenuSection Grid.Row="0" Grid.RowSpan="1"/>
+        <uc:ToolbarMainWindowSection Grid.Row="1"/>
+        
+        <TabControl Grid.Row="2" Grid.Column="0" 
+                    Margin="0" 
+                    Padding="2,2,2,4" 
+                    Background="{x:Null}"
+                    IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <TabItem Header="{StaticResource tab_Header_Source}" Margin="0">
+                <uc:TabSourceSection Margin="5"/>
+            </TabItem>
+            
+            <TabItem Header="{StaticResource tab_Header_Shielding}" Margin="0">
+                <uc:ShieldingSection Margin="5"/>
+            </TabItem>
+            
+            <TabItem Header="{StaticResource tab_Header_Buildup}">
+                <uc:BuildupSection Margin="5"/>
+            </TabItem>
+            
+            <TabItem Header="{StaticResource tab_Header_Output}">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!--Dose factors-->
+                    <uc:TabDoseSection Grid.Row="0" Grid.Column="0" />
+
+                    <GroupBox Header="{StaticResource tab_Output_Evaluation_GroupName}"
+                              Grid.Row="0" Grid.Column="1"
+                              VerticalAlignment="Top" Margin="5,0,0,0"
+                              Style="{StaticResource DefaultGroupBox}">
+                        <StackPanel>
+                            <TextBlock Text="{StaticResource tab_Output_CalculationDistance}"
+                                       Margin="0,0,0,3"/>
+                            <TextBox  Text="{Binding CalculationDistance}" 
+                                      Style="{StaticResource DefaultTextBox}"
+                                      ToolTip=""/>
+
+                            <CheckBox IsChecked="{Binding IsPointSource}" 
+                                      Content="{StaticResource tab_Output_IsPointSource}" Margin="0,10,0,0" 
+                                      ToolTip=""/>
+                            
+                            <CheckBox IsChecked="{Binding IsShowPartialDoseRates}" 
+                                      Content="{StaticResource tab_Output_PartialDoseRates}" Margin="0,10,0,0" 
+                                      ToolTip=""/>
+                        </StackPanel>
+                    </GroupBox>
+                    
+                    <!--Environment material-->
+                    <GroupBox Grid.Row="1" Header="{StaticResource tab_Output_Environment_GroupHeader}" 
+                              Style="{StaticResource DefaultGroupBox}"
+                              IsEnabled="False">
+                        <StackPanel>
+                            <ComboBox ItemsSource="{Binding Source={x:Static vm:AvailableDataController.AvailableMaterials}}"
+                                      SelectedItem="{Binding SelectedEnvironmentMaterial}"
+                                      Style="{StaticResource DefaultCombobox}"
+                                      DisplayMemberPath="Name"
+                                      Name="EnvironmentMaterials"
+                                      Margin="0,0,0,5"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="0.4*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{StaticResource tab_Source_SourceMaterial_Z}" Margin="0,0,0,3"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" 
+                                         Text="{Binding ElementName=EnvironmentMaterials, Path=SelectedItem.Z, Mode=OneWay}"
+                                         Style="{StaticResource DefaultTextBox}"
+                                         Margin="0,0,0,5"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{StaticResource tab_Source_SourceMaterial_Density}" Margin="0,0,0,3"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" 
+                                         Text="{Binding ElementName=EnvironmentMaterials, Path=SelectedItem.Density, Mode=OneWay}"
+                                         Style="{StaticResource DefaultTextBox}"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="1" Grid.Column="1" 
+                              Header="{StaticResource tab_Output_OutputValue_GroupName}" 
+                              Margin="5,0,0,0"
+                              Style="{StaticResource DefaultGroupBox}">
+                        <StackPanel>
+                            <TextBlock Text="{StaticResource tab_Output_Precision}"
+                                       Margin="0,0,0,3"/>
+                            <TextBox Text="{Binding Precision}" 
+                                     Style="{StaticResource DefaultTextBox}"
+                                     ToolTip=""/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+        <GridSplitter Grid.Column="0" Grid.Row="3" Height="3" HorizontalAlignment="Stretch" ShowsPreview="False"/>
+        
+        <!--Results Region-->
+        <uc:ResultsViewSection Grid.Column="0" Grid.Row="4" Margin="5" VerticalAlignment="Stretch"/>
+
+        <!--Status bar-->
+        <uc:StatusBarSection Grid.Row="5" Grid.Column="0"/>
+    </Grid>
+
+</Window>

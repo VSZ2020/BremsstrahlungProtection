@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="BSP.Views.MainWindow.ToolbarMainWindowSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BSP.Views"
+             mc:Ignorable="d" >
+    <ToolBarTray Style="{StaticResource MainToolbarTray}">
+        <ToolBar Margin="-2,-1,0,0" Padding="0" VerticalContentAlignment="Center" Style="{StaticResource MainToolbar}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <!--Buildup-->
+            <ToggleButton IsChecked="{Binding BuildupTab.IsIncludeBuildup}" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" Margin="0" ToolTip="{StaticResource tooltipIncludeScatter}">
+                <Image Source="/Resources/Images/iconScattering.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </ToggleButton>
+
+            <!--Partial Dose Rates-->
+            <ToggleButton IsChecked="{Binding IsShowPartialDoseRates}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipIncludePartial}">
+                <Image Source="/Resources/Images/iconPartials.png"></Image>
+            </ToggleButton>
+
+            <!--Point source-->
+            <ToggleButton IsChecked="{Binding IsPointSource}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipIsPointSource}">
+                <Image Source="/Resources/Images/iconPointSource.png"></Image>
+            </ToggleButton>
+        </ToolBar>
+        <ToolBar Style="{StaticResource MainToolbar}">
+            <!--Run calculation-->
+            <Button Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipLaunchCalc}" Command="{Binding StartCommand}">
+                <Image Source="/Resources/Images/iconPlay.png"/>
+            </Button>
+
+            <!--Abort calculation-->
+            <Button Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipStopCalc}" Command="{Binding StopCommand}">
+                <Image Source="/Resources/Images/iconStop.png"  Stretch="Fill"/>
+            </Button>
+        </ToolBar>
+    </ToolBarTray>
+</UserControl>

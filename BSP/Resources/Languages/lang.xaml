@@ -1,0 +1,247 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    <v:String x:Key="ApplicationTitle">Bremsstrahlung Protection (BSP)</v:String>
+
+    <!--#region Common -->
+    <v:String x:Key="btn_Add">Add</v:String>
+    <v:String x:Key="btn_Edit">Edit</v:String>
+    <v:String x:Key="btn_Remove">Remove</v:String>
+    
+    <!--#endregion-->
+
+    
+    <!--#region Main menu -->
+    <!--Main menu-->
+    <v:String x:Key="menu_Program">_Application</v:String>
+    <v:String x:Key="menu_Program_Language">_Language</v:String>
+    <v:String x:Key="menu_Program_Open">_Open</v:String>
+    <v:String x:Key="menu_Program_Save">_Save</v:String>
+    <v:String x:Key="menu_Program_SaveAs">_SaveAs</v:String>
+    <v:String x:Key="menu_Program_Exit">Exit</v:String>
+
+    <v:String x:Key="menu_Edit">Edit</v:String>
+    <v:String x:Key="menu_Edit_Add">Add</v:String>
+    <v:String x:Key="menu_Edit_Edit">Edit</v:String>
+    <v:String x:Key="menu_Edit_Remove">Remove</v:String>
+    <v:String x:Key="menu_Edit_Preferences">Preferences</v:String>
+
+    <v:String x:Key="menu_Calculation">Calculation</v:String>
+    <v:String x:Key="menu_Calculation_Start">Launch calculation</v:String>
+    <v:String x:Key="menu_Calculation_Abort">Abort calculation</v:String>
+
+    <v:String x:Key="menu_Tools">Tools</v:String>
+    <v:String x:Key="menu_Tools_Interpolations">Interpolations Viewer</v:String>
+    <v:String x:Key="menu_Tools_NuclidesEditor">Nuclides editor</v:String>
+
+    <v:String x:Key="menu_Help">?</v:String>
+    <v:String x:Key="menu_Help_Manual">User manual</v:String>
+    <v:String x:Key="menu_Help_Changelog">Show changelog</v:String>
+    <v:String x:Key="menu_Help_About">About</v:String>
+    <!--#endregion-->
+
+
+    <!--#region Context menu -->
+    <v:String x:Key="contextMenu_ExportToTextFile">Save text to file</v:String>
+    <v:String x:Key="contextMenu_ClearResults">Clear results</v:String>
+    <!--#endregion-->
+
+    
+    <!--#region Tabs Headers -->
+    <!-- Headers of Tabs -->
+    <v:String x:Key="tab_Header_Source">Source</v:String>
+    <v:String x:Key="tab_Header_Shielding">Shielding</v:String>
+    <v:String x:Key="tab_Header_Buildup">Buildups</v:String>
+    <v:String x:Key="tab_Header_Doses">Doses</v:String>
+    <v:String x:Key="tab_Header_Output">Output</v:String>
+    <!--#endregion-->
+
+
+    <!--#region Tab 'Source' -->
+    <v:String x:Key="tab_Source_SelectedRadionuclides">Radionuclides content in source</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_TotalActivity">Total Activity, Bq</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_TotalEnergyFlux">Total Yield, MeV/decay</v:String>
+
+    <v:String x:Key="tab_Source_SelectedRadionuclides_NuclideHeader">Radionuclide</v:String>
+    <v:String x:Key="tab_Source_SelectedRadionuclides_ActivityHeader">Activity, Bq</v:String>
+
+    <v:String x:Key="tab_Source_Bremsstrahlung_GroupHeader">Bremsstrahlung</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_Hint">Yields per average energy group</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_Energy">Energy, MeV</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_Yield">Yield, MeV/decay</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_Btn_UpdateYields">Update</v:String>
+
+    <v:String x:Key="tab_Source_SourceGeometry_GroupHeader">Source Geometry</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Form">Form</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Dimensions">Dimensions</v:String>
+
+    <v:String x:Key="tab_Source_SourceGeometry_DimensionName">Name</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Value">Value, cm</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Discreteness">Discreteness</v:String>
+
+    <v:String x:Key="tab_Source_SourceGeometry_Length">Length</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Width">Width</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Height">Height</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Radius">Radius</v:String>
+    <v:String x:Key="tab_Source_SourceGeometry_Angle">Angle</v:String>
+
+    <v:String x:Key="tab_Source_SourceMaterial_GroupHeader">Source Material</v:String>
+    <v:String x:Key="tab_Source_SourceMaterial_Z">Z</v:String>
+    <v:String x:Key="tab_Source_SourceMaterial_Density">Density, g/cm³</v:String>
+
+    <v:String x:Key="tab_Source_CutoffEnergy_GroupName">Bremsstrahlung cutoff energy (MeV)</v:String>
+    <v:String x:Key="tab_Source_CutoffEnergy_Hint">Bremsstrahlung with photon energies less than 'Cutoff value' are not included in dose rate calculation</v:String>
+    <!--#endregion-->
+
+
+    <!--#region Tab 'Shielding' -->
+    <v:String x:Key="tab_Shielding_Hint">Set shield layers</v:String>
+    <v:String x:Key="tab_Shielding_Material">Material</v:String>
+    <v:String x:Key="tab_Shielding_Thickness">Thickness, cm</v:String>
+    <v:String x:Key="tab_Shielding_Density">Density, g/cm³</v:String>
+    <!--#endregion-->
+
+    
+    <!--#region Tab 'Buildup' -->
+    <v:String x:Key="tab_Buildup_IncludeScatterCheckbox">Include scattered radiation</v:String>
+    <v:String x:Key="tab_Buildup_GroupName">Buildup evaluation method for</v:String>
+    <v:String x:Key="tab_Buildup_HomogeneousBuildup">Homogeneous medium</v:String>
+    <v:String x:Key="tab_Buildup_HeterogeneousBuildup">Heterogeneous medium</v:String>
+    <!--#endregion-->
+
+    
+    <!--#region Tab 'Output'-->
+    <v:String x:Key="tab_DoseFactors_GroupName">Dose factor type</v:String>
+    <v:String x:Key="tab_DoseFactors_ExposureGeometry">Exposure geometry</v:String>
+    <v:String x:Key="tab_DoseFactors_OrganOrTissue">Organ/Tissue</v:String>
+
+    <v:String x:Key="tab_Output_Evaluation_GroupName">Evaluation parameters</v:String>
+    <v:String x:Key="tab_Output_Precision">Number of decimal places</v:String>
+    <v:String x:Key="tab_Output_IsPointSource">Point source approximation</v:String>
+    <v:String x:Key="tab_Output_PartialDoseRates">ShowPartialDoseRates</v:String>
+
+    <v:String x:Key="tab_Output_OutputValue_GroupName">Output value parameters</v:String>
+    <v:String x:Key="tab_Output_CalculationDistance">Calculation distance, cm</v:String>
+
+    <v:String x:Key="tab_Output_Environment_GroupHeader">Environment material</v:String>
+    <!--#endregion-->
+
+
+    <!--#region Results view -->
+    <v:String x:Key="ResultsView_GroupHeader">Launch results</v:String>
+    <v:String x:Key="ResultsView_LaunchTime">Launch time</v:String>
+    <v:String x:Key="ResultsView_SourceForm">Form</v:String>
+    <v:String x:Key="ResultsView_SourceMaterial">Source material</v:String>
+    <v:String x:Key="ResultsView_CalculationPoint">Distance</v:String>
+    <v:String x:Key="ResultsView_Energy">Energy, MeV</v:String>
+    <v:String x:Key="ResultsView_DoseRate">Dose rate</v:String>
+    <!--#endregion-->
+
+    
+    <!--#region Tooltips -->
+    <v:String x:Key="tooltipIncludeScatter">Include scattered radiation</v:String>
+    <v:String x:Key="tooltipLaunchCalc">Launch calculation</v:String>
+    <v:String x:Key="tooltipStopCalc">Abort the current calculation</v:String>
+    <v:String x:Key="tooltipIncludePartial">Print dose rates for each bremsstrahlung energy group</v:String>
+    <v:String x:Key="tooltipIsPointSource">Point source approximation, when calculating dose rate</v:String>
+    <v:String x:Key="tooltipSumActivityBox">Total activity of selected radionuclides</v:String>
+    <v:String x:Key="tooltipSumIbetaBox">Total bremsstrahlung spectrum yield</v:String>
+    <v:String x:Key="tooltipSourceMaterialZeff">Effective atomic number of material</v:String>
+    <v:String x:Key="tooltipSourceMaterialDensity">Density of material</v:String>
+    <!--#endregion-->
+
+
+    <!--#region Source geometries names -->
+    <v:String x:Key="SourceFormCylinderRadial">Cylinder Radial</v:String>
+    <v:String x:Key="SourceFormCylinderAxial">Cylinder Axial</v:String>
+    <v:String x:Key="SourceFormParallelepiped">Parallelepiped</v:String>
+    <!--#endregion-->
+
+    <!--#region Buildup names -->
+    <v:String x:Key="BuildupNameBroder">Broder</v:String>
+
+    <v:String x:Key="BuildupNameGeometricProgression">Geometric Progression</v:String>
+    <v:String x:Key="BuildupNameTaylor2EXP">Taylor (2-exponential approximation)</v:String>
+    <!--#endregion-->
+
+    <!--#region Dose factors names -->
+    <v:String x:Key="DoseNameEffective">Effective dose</v:String>
+    <v:String x:Key="DoseNameEquivalent">Equivalent dose</v:String>
+    <v:String x:Key="DoseNameExposure">Exposure dose</v:String>
+    <v:String x:Key="DoseNameAirKerma">Air Kerma</v:String>
+    <v:String x:Key="DoseNameAmbientEquivalent">Ambient dose equivalent H*(10)</v:String>
+    <v:String x:Key="DoseNameHp10">Hp(10)</v:String>
+    <v:String x:Key="DoseNameHp007">Hp(0.07)</v:String>
+    <!--#endregion-->
+
+    <!--#region Exposure Geometries names -->
+    <v:String x:Key="ExposureGeometry_Name_ISO">Isotropic</v:String>
+    <v:String x:Key="ExposureGeometry_Name_ROT">Rotational</v:String>
+    <v:String x:Key="ExposureGeometry_Name_LLAT">Left lateral</v:String>
+    <v:String x:Key="ExposureGeometry_Name_RLAT">Right lateral</v:String>
+    <v:String x:Key="ExposureGeometry_Name_AP">Antero-Posterier</v:String>
+    <v:String x:Key="ExposureGeometry_Name_PA">Postero-Anterier</v:String>
+    <!--#endregion-->
+
+    <!--#region OrganTissue names -->
+    <v:String x:Key="organTissue_Name_UB">Urinary Bladder</v:String>
+    <v:String x:Key="organTissue_Name_RM">Red Marrow</v:String>
+    <v:String x:Key="organTissue_Name_BS">Bone Surface</v:String>
+    <v:String x:Key="organTissue_Name_Breast">Breast</v:String>
+    <v:String x:Key="organTissue_Name_Colon">Colon</v:String>
+    <v:String x:Key="organTissue_Name_Gonads">Gonads</v:String>
+    <v:String x:Key="organTissue_Name_Liver">Liver</v:String>
+    <v:String x:Key="organTissue_Name_Lung">Lung</v:String>
+    <v:String x:Key="organTissue_Name_Esophagus">Esophagus</v:String>
+    <v:String x:Key="organTissue_Name_Skin">Skin</v:String>
+    <v:String x:Key="organTissue_Name_Stomach">Stomach</v:String>
+    <v:String x:Key="organTissue_Name_Thyroid">Thyroid</v:String>
+    <v:String x:Key="organTissue_Name_Lens">Lens of the Eye</v:String>
+    <v:String x:Key="organTissue_Name_Thymus">Thymus</v:String>
+    <v:String x:Key="organTissue_Name_Uterus">Uterus</v:String>
+    <v:String x:Key="organTissue_Name_Remainder">Remainder</v:String>
+    <!--#endregion-->
+    
+
+    <!--#region Validation errors -->
+    <v:String x:Key="msg_Error_CalculationCantBeStarted">Calculation can't be launched due to error(s):</v:String>
+    <v:String x:Key="msg_Error_NoSelectedRadionuclides">No one radionuclide was selected for calculations</v:String>
+    <v:String x:Key="msg_Error_DimensionDiscreteness">Dimension discreteness should be greated zero</v:String>
+    <v:String x:Key="msg_Error_ZeroDimension">Dimension should be greated zero</v:String>
+    <v:String x:Key="msg_Error_EmptyEnergyYieldData">Energy and Yield data are empty. Click update to generate data or enter it manually</v:String>
+    <v:String x:Key="msg_Error_ZeroTotalActivity">Source total activity is zero or empty</v:String>
+    <v:String x:Key="msg_Error_ZeroCalculationDistance">Calculation distance have to be greater zero</v:String>
+    <v:String x:Key="msg_Error_ZeroOrLessDecimalPlaces">Number of decimal places is less zero</v:String>
+    <!--#endregion-->
+
+
+    <v:String x:Key="msgError_Title">Error</v:String>
+    
+    <!--Statusbar messages-->
+    <v:String x:Key="msg_Progress">Progress</v:String>
+    <v:String x:Key="msg_Status_Ready">Ready to start</v:String>
+    <v:String x:Key="msg_Status_Cancel">Cancelled by user</v:String>
+    <v:String x:Key="msg_Status_ValidationProcess">Validation process</v:String>
+    <v:String x:Key="msg_Status_ValidationProcessError">Validation finished with errors. Check input fields</v:String>
+    
+
+    <!--Application Global messages-->
+    <v:String x:Key="msg_Welcome">Welcome to the 'Bremsstrahlung protection' computer code!</v:String>
+    
+    <v:String x:Key="msg_RestartApplication">To apply all changes, restart this application!</v:String>
+
+    <v:String x:Key="msg_CheckUpdates">Cheking updates</v:String>
+    <v:String x:Key="msg_InitUserInterface">Initialize user interface</v:String>
+    
+    <!--Updater window-->
+    <v:String x:Key="updaterDialogTitle">Software update</v:String>
+    <v:String x:Key="updaterWindow_ProgressTitle">Download in progress</v:String>
+    <v:String x:Key="updaterWindow_msgError">An error occurred during download. See log file.</v:String>
+    <v:String x:Key="msg_UpdateApp">The new version ({0}) of app was found. Do you want to update application?</v:String>
+        
+    <!--About Window-->
+    <v:String x:Key="wnd_About_Authors">Author(s):</v:String>
+    <v:String x:Key="wnd_About_AuthorsName">Izgagin Vyacheslav, Michael Zhukovsky</v:String>
+    <v:String x:Key="wnd_About_Affiliation">Organization:</v:String>
+    <v:String x:Key="wnd_About_AffiliationContent">The Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
+</ResourceDictionary>

@@ -1,0 +1,26 @@
+﻿using BSP.ViewModels;
+using System.Reflection;
+using System.Windows;
+
+namespace BSP
+{
+    /// <summary>
+    /// Логика взаимодействия для MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private MainWindowViewModel vm;
+
+        public MainWindow()
+        {
+            vm = App.GetService<MainWindowViewModel>();
+            DataContext = vm;
+
+            InitializeComponent();
+
+#if DEBUG
+            this.Title += $" v{Assembly.GetExecutingAssembly().GetName().Version} [DEBUG MODE]";
+#endif
+        }
+    }
+}

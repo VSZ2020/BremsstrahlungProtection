@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="BSP.Views.MainWindow.StatusBarSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BSP.Views.MainWindow"
+             mc:Ignorable="d">
+    <Grid>
+        <StatusBar>
+            <StatusBar.Background>
+                <SolidColorBrush Color="#FFF0F0F0"/>
+            </StatusBar.Background>
+
+            <StatusBarItem>
+                <ProgressBar MinWidth="150" MinHeight="16" Value="{Binding ProgressValue}" Maximum="100"/>
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <TextBlock Text="{Binding MessageContent}" MinWidth="120"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</UserControl>
