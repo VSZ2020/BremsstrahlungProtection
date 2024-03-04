@@ -5,14 +5,5 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:Double x:Key="TextBoxMinWidth">80</system:Double>
     <system:Double x:Key="ToolBarButtonSize">26</system:Double>
-    <Style TargetType="TextBox" x:Key="textboxErrorStyle">
-        <Style.Triggers>
-            <Trigger Property="Validation.HasError" Value="True">
-                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
-                <Setter Property="Foreground" Value="Red" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <conv:InversedBoolConverter x:Key="InversedBooleanConverter"/>
 </ResourceDictionary>

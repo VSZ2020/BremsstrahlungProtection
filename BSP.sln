@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSP", "BSP\BSP.csproj", "{0422C370-4984-4FA2-85A9-07CFF6DAEA71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP", "BSP\BSP.csproj", "{0422C370-4984-4FA2-85A9-07CFF6DAEA71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSP.Data", "BSP.Data\BSP.Data.csproj", "{8DED183D-7C59-4CBD-BFA2-52FAA92E92DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.Data", "BSP.Data\BSP.Data.csproj", "{8DED183D-7C59-4CBD-BFA2-52FAA92E92DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSP.BL", "BSP.BL\BSP.BL.csproj", "{1033D6DE-CFC2-458F-B05A-69529148254E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.BL", "BSP.BL\BSP.BL.csproj", "{1033D6DE-CFC2-458F-B05A-69529148254E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSP.DatabaseFiller", "BSP.DatabaseFiller\BSP.DatabaseFiller.csproj", "{88A7A15E-EADB-42A4-897E-342F1AB161E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.DatabaseFiller", "BSP.DatabaseFiller\BSP.DatabaseFiller.csproj", "{88A7A15E-EADB-42A4-897E-342F1AB161E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.Launcher", "BSP.Launcher\BSP.Launcher.csproj", "{74E9FAA0-E943-4CF2-9CEE-5EC540989588}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSP.Tests", "BSP.Tests\BSP.Tests.csproj", "{2CAE8020-1475-415C-B499-EA0B69C9C341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{88A7A15E-EADB-42A4-897E-342F1AB161E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88A7A15E-EADB-42A4-897E-342F1AB161E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88A7A15E-EADB-42A4-897E-342F1AB161E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E9FAA0-E943-4CF2-9CEE-5EC540989588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E9FAA0-E943-4CF2-9CEE-5EC540989588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E9FAA0-E943-4CF2-9CEE-5EC540989588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E9FAA0-E943-4CF2-9CEE-5EC540989588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CAE8020-1475-415C-B499-EA0B69C9C341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CAE8020-1475-415C-B499-EA0B69C9C341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CAE8020-1475-415C-B499-EA0B69C9C341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CAE8020-1475-415C-B499-EA0B69C9C341}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

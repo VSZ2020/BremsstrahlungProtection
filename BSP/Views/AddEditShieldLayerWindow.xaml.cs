@@ -11,14 +11,15 @@ namespace BSP.Views
     {
         private AddEditShieldLayerVM vm;
 
-        public AddEditShieldLayerWindow(ShieldLayer layer = null)
+        public AddEditShieldLayerWindow(ShieldLayer? layer = null)
         {
             vm = new AddEditShieldLayerVM(layer);
             DataContext = vm;
             InitializeComponent();
+            this.Title = layer == null ? "Add new shield layer" : $"Edit shield layer {layer.Name}";
         }
 
-        public ShieldLayer Layer => vm.Layer;
+        public ShieldLayer? Layer => vm.Layer;
         public bool IsAppliedChanges => vm.IsAppliedChanges;
 
     }

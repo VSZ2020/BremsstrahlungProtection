@@ -35,9 +35,18 @@
                       ItemsSource="{Binding SourceTab.SourceDimensions}"
                       Style="{StaticResource DefaultDataGrid}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_DimensionName}" Binding="{Binding Name}" IsReadOnly="True" Width="0.3*"/>
-                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_Value}" Binding="{Binding Value}" Width="0.3*"/>
-                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_Discreteness}" Binding="{Binding Discreteness}" Width="0.4*"/>
+                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_DimensionName}" 
+                                        Binding="{Binding Name}" 
+                                        IsReadOnly="True" 
+                                        Width="0.3*"/>
+                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_Value}" 
+                                        Binding="{Binding Value, ValidatesOnDataErrors=True}"
+                                        EditingElementStyle="{StaticResource textboxWithError}"
+                                        Width="0.3*"/>
+                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_Discreteness}" 
+                                        Binding="{Binding Path=Discreteness, ValidatesOnDataErrors=True}" 
+                                        EditingElementStyle="{StaticResource textboxWithError}"
+                                        Width="0.4*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

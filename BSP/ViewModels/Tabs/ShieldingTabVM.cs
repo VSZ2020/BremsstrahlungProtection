@@ -6,7 +6,7 @@ using BSP.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace BSP.ViewModels
+namespace BSP.ViewModels.Tabs
 {
     public class ShieldingTabVM : BaseViewModel
     {

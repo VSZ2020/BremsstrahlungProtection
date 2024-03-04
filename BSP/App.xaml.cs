@@ -1,16 +1,10 @@
 ﻿using BSP.BL.Calculation;
 using BSP.BL.Services;
 using BSP.Data;
-using BSP.Source.XAML_Forms;
-using BSP.Updater;
 using BSP.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading;
 using System.Windows;
 
 namespace BSP
@@ -101,13 +95,6 @@ namespace BSP
             LoadServices();
 
             this.MainWindow = new MainWindow();
-
-            AppSplashScreen screen = new AppSplashScreen();
-            screen.Show();
-            var updater = new ApplicationUpdater();
-            updater.CheckApplicationUpdate();
-            screen.Close();
-
             this.MainWindow.Show();
         }
 

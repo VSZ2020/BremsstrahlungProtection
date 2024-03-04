@@ -6,10 +6,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Images\BSP_Icon.ico</ApplicationIcon>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\BSP_Icon.ico" />
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\iconPartials.png" />
     <None Remove="Resources\Images\iconPlay.png" />
@@ -21,11 +24,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Images\BSP_Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BSP.BL\BSP.BL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Images\add.png" />
+    <Resource Include="Resources\Images\BSP_Icon.ico" />
     <Resource Include="Resources\Images\edit.png" />
     <Resource Include="Resources\Images\iconPartials.png" />
     <Resource Include="Resources\Images\iconPlay.png" />

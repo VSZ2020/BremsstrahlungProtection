@@ -59,7 +59,7 @@
                         <StackPanel>
                             <TextBlock Text="{StaticResource tab_Output_CalculationDistance}"
                                        Margin="0,0,0,3"/>
-                            <TextBox  Text="{Binding CalculationDistance}" 
+                            <TextBox  Text="{Binding CalculationDistance, ValidatesOnDataErrors=True}" 
                                       Style="{StaticResource DefaultTextBox}"
                                       ToolTip=""/>
 

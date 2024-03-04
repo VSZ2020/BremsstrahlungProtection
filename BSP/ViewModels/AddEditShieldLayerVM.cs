@@ -1,14 +1,16 @@
 ﻿using BSP.BL.DTO;
 using BSP.BL.Materials;
 using BSP.Common;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace BSP.ViewModels
 {
-    public class AddEditShieldLayerVM : BaseValidationViewModel
+    public class AddEditShieldLayerVM : BaseValidationViewModel, IDataErrorInfo
     {
-        public AddEditShieldLayerVM(ShieldLayer layer = null)
+        public AddEditShieldLayerVM(ShieldLayer? layer = null)
         {
             if (layer != null)
             {
@@ -30,15 +32,15 @@ namespace BSP.ViewModels
 
         }
 
-        private float thickness = 0;
-        private float density = 0;
-        private MaterialDto selectedMaterial;
+        private float thickness = 1;
+        private float density = 1;
+        private MaterialDto? selectedMaterial;
 
         public float Thickness { get => thickness; set { thickness = value; OnChanged(); } }
         public float Density { get => density; set { density = value; OnChanged(); } }
-        public MaterialDto SelectedMaterial { get => selectedMaterial; set { selectedMaterial = value; OnChanged(); Density = selectedMaterial?.Density ?? 0; } }
+        public MaterialDto? SelectedMaterial { get => selectedMaterial; set { selectedMaterial = value; OnChanged(); Density = selectedMaterial?.Density ?? 0; } }
 
-        public ShieldLayer Layer { get; set; }
+        public ShieldLayer? Layer { get; set; }
 
         public bool IsAppliedChanges { get; private set; } = false;
 
@@ -54,10 +56,10 @@ namespace BSP.ViewModels
                 base.AddError("Choose material");
 
             if (thickness <= 0)
-                base.AddError("Thickness should be greater zero");
+                base.AddError((Application.Current.TryFindResource("msg_ValidationGreaterZero") as string) ?? "Incorrect value");
 
             if (density <= 0)
-                base.AddError("Density should be greater zero");
+                base.AddError((Application.Current.TryFindResource("msg_ValidationGreaterZero") as string) ?? "Incorrect value");
 
             return IsValid;
         }
@@ -68,7 +70,7 @@ namespace BSP.ViewModels
             {
                 Layer = new ShieldLayer()
                 {
-                    Id = selectedMaterial.Id,
+                    Id = selectedMaterial!.Id,
                     Name = selectedMaterial.Name,
                     Z = selectedMaterial.Z,
                     Weight = selectedMaterial.Weight,
@@ -80,5 +82,27 @@ namespace BSP.ViewModels
                 w?.Close();
             }
         }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string error = string.Empty;
+                switch (columnName)
+                {
+                    case nameof(Thickness):
+                        if (Thickness <= 0)
+                            error =(Application.Current.TryFindResource("msg_ValidationGreaterZero") as string) ?? "Incorrect value";
+                        break;
+                    case nameof(Density):
+                        if (Density <= 0)
+                            error = (Application.Current.TryFindResource("msg_ValidationGreaterZero") as string) ?? "Incorrect value";
+                        break;
+                }
+
+                return error;
+            }
+        }
+        public string Error => throw new NotImplementedException();
     }
 }

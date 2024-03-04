@@ -23,7 +23,7 @@ namespace BSP.BL.Calculation
             {
                 int calculatedEnergiesCount = 0;
 
-                for (var EnergyIndex = 0; EnergyIndex < EnergiesCount; EnergyIndex++)
+                Parallel.For(0, EnergiesCount, EnergyIndex =>
                 {
                     //Вычисляем интеграл
                     double Integral = form.GetFluence(input.BuildSingleEnergyInputData(EnergyIndex));
@@ -47,7 +47,7 @@ namespace BSP.BL.Calculation
 
                     calculatedEnergiesCount++;
                     input.Progress?.Report(calculatedEnergiesCount * 100 / EnergiesCount);
-                }
+                });
             });
 
             await calcTask;

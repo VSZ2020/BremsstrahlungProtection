@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+                    xmlns:v="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:BSP.ViewModels.InterpolatedDataViewer">
     <v:String x:Key="ApplicationTitle">Bremsstrahlung Protection (BSP)</v:String>
 
     <!--#region Common -->
@@ -202,6 +203,7 @@
     <v:String x:Key="organTissue_Name_Remainder">Remainder</v:String>
     <!--#endregion-->
     
+    
 
     <!--#region Validation errors -->
     <v:String x:Key="msg_Error_CalculationCantBeStarted">Calculation can't be launched due to error(s):</v:String>
@@ -212,6 +214,14 @@
     <v:String x:Key="msg_Error_ZeroTotalActivity">Source total activity is zero or empty</v:String>
     <v:String x:Key="msg_Error_ZeroCalculationDistance">Calculation distance have to be greater zero</v:String>
     <v:String x:Key="msg_Error_ZeroOrLessDecimalPlaces">Number of decimal places is less zero</v:String>
+
+    <v:String x:Key="msg_ValidationDimension">{0} must be greater zero</v:String>
+    <v:String x:Key="msg_ValidationDiscreteness">{0} must be greater or equal to 1</v:String>
+    <v:String x:Key="msg_ValidationEnergy">Energy must be greater zero</v:String>
+    <v:String x:Key="msg_ValidationEnergyYield">Energy yield must be positive or zero value</v:String>
+    <v:String x:Key="msg_ValidationActivity">Activity for {0} must be positive value</v:String>
+    <v:String x:Key="msg_ValidationTotalActivity">Activity must be positive value</v:String>
+    <v:String x:Key="msg_ValidationGreaterZero">Value must be greater zero</v:String>
     <!--#endregion-->
 
 

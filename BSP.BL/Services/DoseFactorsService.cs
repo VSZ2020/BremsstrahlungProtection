@@ -43,6 +43,21 @@ namespace BSP.BL.Services
             return "";
         }
 
+        public static string GetDoseConversionFactorUnits(Type doseFactorType)
+        {
+            switch (doseFactorType)
+            {
+                case Type e when e == typeof(EffectiveDoseEntity): return "Sv/Gy";
+                case Type e when e == typeof(AirKermaEntity): return "pGy*cm^2";
+                case Type e when e == typeof(EquivalentDoseEntity): return "Sv/Gy";
+                case Type e when e == typeof(AmbientDoseEquivalentEntity): return "Sv/Gy";
+                case Type e when e == typeof(ExposureDoseEntity): return "R/Gy";
+                case Type e when e == typeof(Hp10Entity): return "Sv/Gy";
+                case Type e when e == typeof(Hp007Entity): return "Sv/Gy";
+            };
+            return "";
+        }
+
         public static Dictionary<Type, string> DoseFactors => _availableDoseFactors;
 
         /// <summary>
@@ -65,7 +80,7 @@ namespace BSP.BL.Services
             };
         }
 
-        public float[] GetDoseConversionFactors(Type doseConversionFactorType, float[] energies, int exposureGeometryId, int organTissueId, InterpolationType interpolatorType = InterpolationType.Cubic)
+        public float[] GetDoseConversionFactors(Type doseConversionFactorType, float[] energies, int exposureGeometryId, int organTissueId, InterpolationType interpolatorType = InterpolationType.Linear)
         {
             List<BaseDoseFactorEntity> table_entities = new List<BaseDoseFactorEntity>();
 

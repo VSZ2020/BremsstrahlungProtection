@@ -18,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BSP.Core\BSP.BL.csproj" />
+    <ProjectReference Include="..\BSP.BL\BSP.BL.csproj" />
+    <ProjectReference Include="..\BSP.Data\BSP.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

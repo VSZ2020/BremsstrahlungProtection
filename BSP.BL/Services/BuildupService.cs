@@ -119,6 +119,7 @@ namespace BSP.BL.Services
             for (var i = 0; i < materialsIds.Length; i++)
             {
                 (var table_energies, var table_coeffs) = GetTableFactors(buildupType, materialsIds[i]);
+
                 //Транспонируем матрицу коэффициентов. Теперь структура индексов следующая: float[CoefficientIndex][EnergyIndex]
                 var transposedTableCoeffs = TransposeCoefficientsArray(table_coeffs, coefficientsCount);
 

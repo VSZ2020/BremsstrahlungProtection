@@ -36,8 +36,14 @@
                       SelectionMode="Extended" SelectionUnit="Cell"
                       Style="{StaticResource DefaultDataGrid}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_Energy}" Binding="{Binding Energy, StringFormat={}{0:G3}}" Width="*"/>
-                    <DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_Yield}" Binding="{Binding EnergyYield, StringFormat={}{0:e3}}" Width="*"/>
+                    <DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_Energy}" 
+                                        Binding="{Binding Energy, StringFormat={}{0:G3}, ValidatesOnDataErrors=True}"
+                                        EditingElementStyle="{StaticResource textboxWithError}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_Yield}" 
+                                        Binding="{Binding EnergyYield, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
+                                        EditingElementStyle="{StaticResource textboxWithError}"
+                                        Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

@@ -57,8 +57,9 @@ namespace BSP.Updater
                     appLink = reader.ReadLine();                            //Получаем ссылку на новую версию файла
                 }
 
-                if (string.IsNullOrEmpty(newerVersionCode)) throw new Exception("Version code field is null or empty!");
-                if (!AppUpdater.IsNewer(Assembly.GetExecutingAssembly().GetName().Version, Version.Parse(newerVersionCode))) return false;
+                if (string.IsNullOrEmpty(newerVersionCode)) return false;//throw new Exception("Version code field is null or empty!");
+                var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                if (!AppUpdater.IsNewer(currentVersion, Version.Parse(newerVersionCode))) return false;
             }
             catch (Exception ex)
             {

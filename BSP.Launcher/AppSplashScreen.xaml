@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:BSP.Source.XAML_Forms"
         mc:Ignorable="d"
         Title="AppSplashScreen" Height="349.762" Width="624.052" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Window.Background>
+        <ImageBrush ImageSource="/Resources/Images/Logo.png"/>
+    </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -14,6 +17,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image Source="/../../Resources/Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="1"/>
+        <!--<Image Source="/../../Resources/Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="1" HorizontalAlignment="Stretch"/>-->
     </Grid>
 </Window>

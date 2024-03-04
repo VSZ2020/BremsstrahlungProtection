@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BSP.ViewModels
+namespace BSP.ViewModels.Tabs
 {
     public class BuildupTabVM : BaseViewModel
     {

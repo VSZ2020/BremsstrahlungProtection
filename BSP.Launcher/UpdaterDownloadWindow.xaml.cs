@@ -49,8 +49,8 @@ namespace BSP.Source.XAML_Forms
             {
                 // TODO: Save exception to log
                 MessageBox.Show(
-                    (string)App.Current.Resources["updaterWindow_msgError"],
-                    (string)App.Current.Resources["msgError_Title"],
+                    "An error occuired when update",
+                    "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }

@@ -3,7 +3,7 @@ using BSP.Common;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BSP.ViewModels
+namespace BSP.ViewModels.Tabs
 {
     /// <summary>
     /// Модель представления для вкладки с дозовыми коэффициентами и их зависимостями
