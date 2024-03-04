@@ -5,17 +5,12 @@ namespace BSP.BL.Calculation
 {
     public class Calculation
     {
-        /// <summary>
-        /// Энергетический порог, ниже которого все излучение поглощается полностью, а значит фактор накопления равен 1.
-        /// </summary>
-        public const double BUILDUP_DOWN_ENERGY_LIMIT = 0.015;
-
-        private const double CONVERSION_CONST = 1.6E-10 * 3600 /*сек*/;
+        private const double CONVERSION_CONST = 1.6E-10 * 3600; //(Дж/кг)/(МэВ/г) * (ч/сек)
 
         public static async Task<OutputValue> StartAsync(InputData input, BaseGeometry form)
         {
             //Создаем выходной массив
-            int EnergiesCount = input.BremsstrahlungYields.Length;
+            int EnergiesCount = input.BremsstrahlungFlux.Length;
             OutputValue doseRate = new OutputValue();
             doseRate.PartialDoseRates = new double[EnergiesCount];
 
@@ -26,11 +21,11 @@ namespace BSP.BL.Calculation
                 Parallel.For(0, EnergiesCount, EnergyIndex =>
                 {
                     //Вычисляем интеграл
-                    double Integral = form.GetFluence(input.BuildSingleEnergyInputData(EnergyIndex));
+                    double Fluence = form.GetFluence(input.BuildSingleEnergyInputData(EnergyIndex));
 
                     //Вычисляем парциальную мощность воздушной кермы: K = [МэВ/(с * г) → Гр/ч] / (4 * pi) * k * Am * Ib * um(air) * Intergral
                     doseRate.PartialDoseRates[EnergyIndex] =
-                            CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[EnergyIndex] * input.SourceActivity * input.BremsstrahlungYields[EnergyIndex] * Integral * input.DoseConversionFactors[EnergyIndex];
+                            CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[EnergyIndex] * input.BremsstrahlungFlux[EnergyIndex] * Fluence;
 
                     //Если значение NaN, то ...
                     if (double.IsNaN(doseRate.PartialDoseRates[EnergyIndex]))

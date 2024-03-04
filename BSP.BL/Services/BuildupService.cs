@@ -88,6 +88,14 @@ namespace BSP.BL.Services
             };
         }
 
+        public static string[] GetBuildupCoefficientsNames(Type selectedHomogeneousBuildupType)
+        {
+            if (selectedHomogeneousBuildupType == typeof(BuildupTaylor))
+                return ["A1", "Alpha1", "Alpha2", "Delta"];
+
+            return ["A", "B", "C", "D", "Xi", "Delta"];
+        }
+
         /// <summary>
         /// 
         /// </summary>

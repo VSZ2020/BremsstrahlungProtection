@@ -125,6 +125,7 @@
     <v:String x:Key="tab_Output_CalculationDistance">Calculation distance, cm</v:String>
 
     <v:String x:Key="tab_Output_Environment_GroupHeader">Environment material</v:String>
+    <v:String x:Key="tab_Output_ShowInterpolatedInput">Show input data in results box</v:String>
     <!--#endregion-->
 
 
@@ -149,6 +150,7 @@
     <v:String x:Key="tooltipSumIbetaBox">Total bremsstrahlung spectrum yield</v:String>
     <v:String x:Key="tooltipSourceMaterialZeff">Effective atomic number of material</v:String>
     <v:String x:Key="tooltipSourceMaterialDensity">Density of material</v:String>
+    <v:String x:Key="tooltipShowInterpolatedInputInResults">Prints interpolated values of input coefficients for each materials and energy</v:String>
     <!--#endregion-->
 
 

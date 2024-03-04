@@ -3,18 +3,19 @@ using BSP.BL.Materials;
 using BSP.BL.Services;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 
 namespace BSP.BL.Calculation
 {
     public class InputDataBuilder
     {
-        public InputDataBuilder(RadionuclidesService radionuclidesService, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService dcfService)
+        public InputDataBuilder(RadionuclidesService radionuclidesService, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService)
         {
             this.materialsService = materialsService;
             this.radionuclidesService = radionuclidesService;
             this.buildupService = buildupService;
-            this.doseFactorsService = dcfService;
+            this.doseFactorsService = doseFactorsService;
         }
 
         private readonly RadionuclidesService radionuclidesService;
@@ -25,11 +26,8 @@ namespace BSP.BL.Calculation
         public float[] massEnvironmentAbsorptionFactors;
         public float[][] massAttenuationFactors;
         public float[][][] BuildupFactors;
-        public float[] DoseConversionFactors;
 
         public List<ShieldLayer> Layers = new List<ShieldLayer>();
-
-        public double SourceActivity = 0;
 
         public float SourceDensity = 0;
 
@@ -46,7 +44,7 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Рассчитанные выходы энергий тормозного излучения [МэВ/распад]
         /// </summary>
-        public double[] BremsstrahlungYields;
+        public double[] BremsstrahlungFluxes;
 
         /// <summary>
         /// Класс, содержащий метод расчета фактора накопления для гетерогенной защиты. Внутри него хранится ссылка на метод расчета фактора накопления для гомогенной защиты
@@ -58,17 +56,18 @@ namespace BSP.BL.Calculation
         public IProgress<int> Progress;
 
 
-        public InputDataBuilder WithBremsstrahlungYields(int[] selectedRadionuclidesIds, float sourceZeff)
+        public InputDataBuilder WithBremsstrahlungEnergyFluxes(int[] selectedRadionuclidesIds, float sourceZeff, double activity)
         {
             (_, var energies, var yields) = radionuclidesService.GetEnergyIntensityDataArrays(selectedRadionuclidesIds);
             var bremsstrahlungEnergyYields = Bremsstrahlung.GetBremsstrahlungEnergyYields(energies, yields, sourceZeff);
-            this.BremsstrahlungYields = bremsstrahlungEnergyYields;
+            
+            this.BremsstrahlungFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(bremsstrahlungEnergyYields, activity);
             return this;
         }
 
-        public InputDataBuilder WithBremsstrahlungYields(double[] yields)
+        public InputDataBuilder WithBremsstrahlungEnergyFluxes(double[] fluxes)
         {
-            this.BremsstrahlungYields = yields;
+            this.BremsstrahlungFluxes = fluxes;
             return this;
         }
 
@@ -113,15 +112,9 @@ namespace BSP.BL.Calculation
             return this;
         }
 
-        public InputDataBuilder WithDoseConversionFactors(Type dcfType, float[] energies, int geometryId, int organId)
-        {
-            this.DoseConversionFactors = doseFactorsService.GetDoseConversionFactors(dcfType, energies, geometryId, organId);
-            return this;
-        }
 
-        public InputDataBuilder WithSourceActivityAndDensity(double activity, float density)
+        public InputDataBuilder WithSourceDensity(float density)
         {
-            this.SourceActivity = activity;
             this.SourceDensity = density;
             return this;
         }
@@ -138,14 +131,12 @@ namespace BSP.BL.Calculation
             {
                 massEnvironmentAbsorptionFactors = this.massEnvironmentAbsorptionFactors,
                 massAttenuationFactors = this.massAttenuationFactors,
-                DoseConversionFactors = this.DoseConversionFactors ?? new float[massAttenuationFactors.Length],
-                BremsstrahlungYields = this.BremsstrahlungYields,
+                BremsstrahlungFlux = this.BremsstrahlungFluxes,
                 BuildupFactors = this.BuildupFactors,
                 BuildupProcessor = this.BuildupProcessor,
                 CalculationDistance = this.CalculationDistance,
                 CancellationToken = this.CancellationToken,
                 SourceDensity = this.SourceDensity,
-                SourceActivity = this.SourceActivity,
                 Layers = this.Layers ?? new List<ShieldLayer>(),
                 Progress = this.Progress,
             };
@@ -158,6 +149,102 @@ namespace BSP.BL.Calculation
             for (var i = 1; i < layersIds.Length + 1; i++)
                 ids[i] = layersIds[i];
             return ids;
+        }
+
+        public string ExportToString(float[] energies, int environmentMaterialId, int sourceMaterialId, int[] selectedMaterialsIds, Type? homogeneousBuildupType = null, Type? doseFactorType = null, int exposureGeometryId = 1, int organId = 1,  bool exportAllowed = false)
+        {
+            if (exportAllowed)
+            {
+                char colDelimeter = '\t';
+
+                string envMaterialName = materialsService.GetMaterialById(environmentMaterialId).Name;
+                int[] materialsIds = CombineIds(sourceMaterialId, selectedMaterialsIds);
+                var materialsNames = materialsService.GetMaterialsById(materialsIds).Select(m => m.Name).ToArray();
+                var buildupCoefficientsNames = BuildupService.GetBuildupCoefficientsNames(homogeneousBuildupType);
+
+                StringBuilder builder = new();
+                builder.AppendLine("\n===== Interpolated Input Data ====="); 
+                builder.AppendLine("Designations: BEF - Bremsstrahlung energy flux; MEAF - mass environments absorption factor; MAF - mass attenuation factor.");
+
+                //Заголовок данных по тормозному излучению
+                builder.AppendLine(string.Format("{0}{1}{2}", "Energy(MeV)", colDelimeter, "BEF(MeV/s)"));
+                //Записываем данные по тормозному излучению
+                for (var i = 0; i < energies.Length; i++)
+                {
+                    builder.AppendLine(string.Format("{0:e3}{1}{2:e3}", energies[i], colDelimeter, this.BremsstrahlungFluxes[i]));
+                }
+
+
+                builder.AppendLine();
+                //Записываем заголовок для коэффициента поглощения в среде
+                builder.Append(string.Format("{0}{1}{2}-{3}{4}", "Energy(MeV)", colDelimeter, "MEAF(cm2/g)", envMaterialName, colDelimeter));
+
+                //Записываем заголовки данных по коэффициентам ослабления для каждого материала
+                for (var j = 0; j < materialsNames.Length; j++)
+                {
+                    builder.Append(string.Format("MAF(cm2/g)-{0}{1}", materialsNames[j], colDelimeter));
+                }
+                builder.Append("\n");
+
+                //Записываем данные по коэффициентам ослабления для каждого материала
+                for (var i = 0; i < energies.Length; i++)
+                {
+                    //Записываем значение для коэффициента поглощения в среде
+                    builder.Append(string.Format("{0:e3}{1}{2:e3}{3}", energies[i], colDelimeter, this.massEnvironmentAbsorptionFactors[i], colDelimeter));
+
+                    //Записываем значения коэффициентов ослабления для каждого материала
+                    for (var j = 0; j < materialsNames.Length; j++)
+                        builder.Append(string.Format("{0:e3}{1}", this.massAttenuationFactors[i][j], colDelimeter));
+
+                    builder.Append("\n");
+                }
+
+
+                if (this.BuildupProcessor != null)
+                {
+                    builder.AppendLine();
+
+                    builder.Append(string.Format("{0}{1}", "Energy(MeV)", colDelimeter));
+                    //Записываем заголовки для коэффициентов формулы фактора накопления для каждого материала
+                    for (var j = 0; j < materialsNames.Length; j++)
+                        for (var k = 0; k < buildupCoefficientsNames.Length; k++)
+                            builder.Append(string.Format("{0}({1}){2}", buildupCoefficientsNames[k], materialsNames[j], colDelimeter));
+                    builder.Append("\n");
+
+                    //Записываем значения коэффициентов формулы расчета фактора накопления для каждой энергии
+                    for (var i = 0; i < energies.Length; i++)
+                    {
+                        builder.Append(string.Format("{0:e3}{1}", energies[i], colDelimeter));
+
+                        //Записываем значения коэффициентов расчета фактора накопления для каждого материала
+                        for (var j = 0; j < materialsNames.Length; j++)
+                            for (var k = 0; k < buildupCoefficientsNames.Length; k++)
+                                builder.Append(string.Format("{0:e3}{1}", this.BuildupFactors[i][j][k], colDelimeter));
+
+                        builder.Append("\n");
+                    }
+                }
+
+                if (doseFactorType != null)
+                {
+                    builder.AppendLine();
+                    var doseFactors = doseFactorsService.GetDoseConversionFactors(doseFactorType, energies, exposureGeometryId, organId);
+                    var doseFactorName = DoseFactorsService.DoseFactors[doseFactorType];
+                    var units = DoseFactorsService.GetDoseConversionFactorUnits(doseFactorType);
+
+                    builder.Append(string.Format("{0}{1}{2}\n", "Energy(MeV)", colDelimeter, $"{doseFactorName} ({units})"));
+                    for (var i = 0; i < energies.Length; i++)
+                    {
+                        builder.AppendLine(string.Format("{0:e3}{1}{2:e3}{3}", energies[i], colDelimeter, doseFactors[i], colDelimeter));
+                    }
+                }
+
+                builder.AppendLine("\n===== End of Interpolated Input Data =====");
+                builder.AppendLine();
+
+                return builder.ToString();
+            }
+            return "";
         }
     }
 }

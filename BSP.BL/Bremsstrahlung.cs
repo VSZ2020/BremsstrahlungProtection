@@ -129,6 +129,17 @@ namespace BSP.BL
 
 
         /// <summary>
+        /// Рассчитывает поток энергии тормозного излучения для указанных энергетических групп [МэВ/с]
+        /// </summary>
+        /// <param name="bremsstrahlungYields">Выходы тормозного излучения на распад</param>
+        /// <param name="Activity">Активность источника в Беккерелях</param>
+        /// <returns></returns>
+        public static double[] GetBremsstrahlungFluxOfEnergy(double[] bremsstrahlungYields, double Activity)
+        {
+            return Enumerable.Range(0, bremsstrahlungYields.Length).Select(i => bremsstrahlungYields[i] * Activity).ToArray();
+        }
+
+        /// <summary>
         /// Рассчитывает потоки тормозного излучения для указанных энергетических групп [фотон/с]
         /// </summary>
         /// <param name="averageEnergies">Средние энергии диапазонов </param>

@@ -118,6 +118,9 @@
                             <TextBox Text="{Binding Precision}" 
                                      Style="{StaticResource DefaultTextBox}"
                                      ToolTip=""/>
+                            <CheckBox Content="{StaticResource tab_Output_ShowInterpolatedInput}" IsChecked="{Binding IsShowInputData}"
+                                      ToolTip="{StaticResource tooltipShowInterpolatedInputInResults}"
+                                      Margin="0,10,0,0"/>
                         </StackPanel>
                     </GroupBox>
                 </Grid>

@@ -1,9 +1,11 @@
-﻿using BSP.BL.Calculation;
+﻿using BSP.BL;
+using BSP.BL.Calculation;
 using BSP.BL.DTO;
 using BSP.BL.Services;
 using BSP.Common;
 using BSP.Source.XAML_Forms;
 using BSP.ViewModels.Tabs;
+using Microsoft.Win32;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -45,6 +47,7 @@ namespace BSP.ViewModels
         private int precision = 3;
         private bool isShowPartialDoseRates = false;
         private bool isPointSource = false;
+        private bool isShowInterpolatedInputData = false;
         private string resultsText;
 
         private float _calculationDistance = 100;
@@ -60,6 +63,7 @@ namespace BSP.ViewModels
         public int Precision { get => precision; set { precision = value > 0 && value < 10 ? value : 3; OnChanged(); } }
         public bool IsShowPartialDoseRates { get => isShowPartialDoseRates; set { isShowPartialDoseRates = value; OnChanged(); } }
         public bool IsPointSource { get => isPointSource; set { isPointSource = value; OnChanged(); } }
+        public bool IsShowInputData { get => isShowInterpolatedInputData; set { isShowInterpolatedInputData = value; OnChanged(); } }
         public string ResultsText { get => resultsText; set { resultsText = value; OnChanged(); } }
 
         public float CalculationDistance { get => _calculationDistance; set { _calculationDistance = value; OnChanged(); } }
@@ -154,46 +158,70 @@ namespace BSP.ViewModels
             {
                 //Блокируем интерфейс
                 IsEvaluationInProgress = true;
+                ResetProgress();
 
                 var shieldLayersIds = ShieldingTab.ShieldLayers.Select(s => s.Id).ToArray();
                 tokenSource = new CancellationTokenSource();
 
                 //Bremsstrahlung
-                //Выбираем только пары значений энергии и интенсивности, в которых значения отличны от нуля и выше порога 0,015 МэВ. Затем сортируем по возрастанию энергии.
-                var energyIntensityData = SourceTab.EnergyYieldList
+                //Выбираем только пары значений энергии и выхода ТИ, в которых значения отличны от нуля и выше порога 0,015 МэВ. Затем сортируем по возрастанию энергии.
+                var energyYieldData = SourceTab.EnergyYieldList
                     .Where(ei => ei.Energy > 0 && ei.EnergyYield > 0 && ei.Energy > SourceTab.CutoffBremsstrahlungEnergy)
                     .OrderBy(ei => ei.Energy)
                     .ToList();
 
-                var energies = energyIntensityData.Select(e => e.Energy).ToArray();
-                var bremsstrahlungEnergyYields = energyIntensityData.Select(y => y.EnergyYield).ToArray();
+                var energies = energyYieldData.Select(e => e.Energy).ToArray();
+                var bremsstrahlungEnergyYields = energyYieldData.Select(y => y.EnergyYield).ToArray();
+                var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(bremsstrahlungEnergyYields, SourceTab.SourceTotalActivity);
+
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
                 Array.Sort(energies, bremsstrahlungEnergyYields);
 
-                InputData input = App.GetService<InputDataBuilder>()
+                var builder = App.GetService<InputDataBuilder>();
+                InputData input = builder
                     .WithShieldLayers(ShieldingTab.ShieldLayers.ToList())
                     .WithAttenuationFactors(SourceTab.SelectedSourceMaterial.Id, shieldLayersIds, energies)
                     .WithEnvironmentAbsorptionFactors(energies, SelectedEnvironmentMaterial?.Id ?? 1)
-                    .WithBremsstrahlungYields(bremsstrahlungEnergyYields)
+                    .WithBremsstrahlungEnergyFluxes(bremsstrahlungEnergyYields)
                     .WithBuildup(
                         BuildupTab.SelectedBuildup.BuildupType,
                         BuildupTab.IsIncludeBuildup ? BuildupTab.SelectedComplexBuildup.BuildupType : null,
                         SourceTab.SelectedSourceMaterial.Id,
                         shieldLayersIds, energies)
-                    .WithDoseConversionFactors(DoseFactorsTab.SelectedDoseFactorType.DoseFactorType, energies, DoseFactorsTab.SelectedExposureGeometry.Id, DoseFactorsTab.SelectedOrganTissue.Id)
-                    .WithSourceActivityAndDensity(SourceTab.SourceTotalActivity, SourceTab.SourceDensity)
+                    .WithSourceDensity(SourceTab.SourceDensity)
                     .WithCalculationPoint(CalculationDistance)
                     .WithCancellationToken(this.tokenSource.Token)
                     .WithProgress(progress)
                     .Build();
+
+                var doseFactors = App.GetService<DoseFactorsService>().GetDoseConversionFactors(
+                    DoseFactorsTab.SelectedDoseFactorType.DoseFactorType, 
+                    energies, 
+                    DoseFactorsTab.SelectedExposureGeometry.Id,
+                    DoseFactorsTab.SelectedOrganTissue.Id);
+
+                //Если отмечено поле вывода входных данных, то печатаем интерполированные значения входных данных расчета
+                ResultsText += builder.ExportToString(
+                    energies,
+                    SelectedEnvironmentMaterial.Id,
+                    SourceTab.SelectedSourceMaterial.Id,
+                    shieldLayersIds,
+                    BuildupTab.SelectedBuildup.BuildupType,
+                    DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
+                    DoseFactorsTab.SelectedExposureGeometry.Id,
+                    DoseFactorsTab.SelectedOrganTissue.Id,
+                    isShowInterpolatedInputData);
 
                 //Source form processor
                 var dimensions = SourceTab.SourceDimensions.Select(d => d.Value).ToArray();
                 var discreteness = SourceTab.SourceDimensions.Select(d => d.Discreteness).ToArray();
                 var formProcessor = GeometryService.GetGeometryInstance(SourceTab.SelectedSourceForm.FormType, dimensions, discreteness);
 
-                var results = await Calculation.StartAsync(input, formProcessor);
-                FillOutputTable(results);
+                var airKermaDoseRates = await Calculation.StartAsync(input, formProcessor);
+                airKermaDoseRates.PartialDoseRates = airKermaDoseRates.ConvertTo(doseFactors);
+                progress.Report(100);
+
+                FillOutputTable(airKermaDoseRates);
 
                 IsEvaluationInProgress = false;
             }
@@ -205,7 +233,6 @@ namespace BSP.ViewModels
                     ((Application.Current.Resources["msg_Error_CalculationCantBeStarted"] as string) ?? "Calculation can't be launched due to error(s):") +
                     "\n" + msgs);
             }
-            ResetProgress();
         }
         #endregion
 
@@ -279,7 +306,24 @@ namespace BSP.ViewModels
 
         private void ExportResults()
         {
-
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*";
+            dialog.FilterIndex = 0;
+            dialog.AddExtension = true;
+            dialog.DefaultExt = ".txt";
+            var results = dialog.ShowDialog();
+            if (results.HasValue && results.Value)
+            {
+                try
+                {
+                    File.WriteAllText(dialog.FileName, ResultsText);
+                    MessageBox.Show($"File was successfully saved at {dialog.FileName}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show($"File is not saved. {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
 
         private void ResetProgress()

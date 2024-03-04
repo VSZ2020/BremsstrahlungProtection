@@ -21,8 +21,6 @@ namespace BSP.BL.Geometries
 
         private CylinderForm form;
 
-        public static string Name => "Cylinder Axial"; //(string)Application.Current.Resources["SourceFormCylinder"];
-
         public override double GetFluence(SingleEnergyInputData input)
         {
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();

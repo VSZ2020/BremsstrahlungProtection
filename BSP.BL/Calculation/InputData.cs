@@ -2,6 +2,7 @@
 using BSP.BL.Materials;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 
 namespace BSP.BL.Calculation
@@ -14,12 +15,12 @@ namespace BSP.BL.Calculation
         public float[] massEnvironmentAbsorptionFactors;
         public float[][] massAttenuationFactors;
         public float[][][] BuildupFactors;
-        public float[] DoseConversionFactors;
 
         public List<ShieldLayer> Layers;
 
-        public double SourceActivity = 0;
-
+        /// <summary>
+        /// Плотность материала источника излучения (г/см^3)
+        /// </summary>
         public float SourceDensity = 0;
 
         /// <summary>
@@ -33,32 +34,32 @@ namespace BSP.BL.Calculation
         public double CalculationDistance = 1;
 
         /// <summary>
-        /// Рассчитанные выходы энергий тормозного излучения [МэВ/распад]
+        /// Рассчитанные потоки энергий тормозного излучения [МэВ/(с * распад)]
         /// </summary>
-        public double[] BremsstrahlungYields;
+        public double[] BremsstrahlungFlux;
 
         /// <summary>
         /// Класс, содержащий метод расчета фактора накопления для гетерогенной защиты. Внутри него хранится ссылка на метод расчета фактора накопления для гомогенной защиты
         /// </summary>
         public BaseHeterogeneousBuildup BuildupProcessor;
 
-        public IProgress<int> Progress;
-
         public CancellationToken CancellationToken;
+
+        public IProgress<int> Progress;
 
         public SingleEnergyInputData BuildSingleEnergyInputData(int EnergyIndex)
         {
             return new SingleEnergyInputData()
             {
-                massAttenuationFactors = massAttenuationFactors[EnergyIndex],
                 Layers = Layers,
+                massAttenuationFactors = massAttenuationFactors[EnergyIndex],
                 SourceDensity = SourceDensity,
                 IsSelfAbsorptionAllowed = IsSelfAbsorptionAllowed,
                 CalculationDistance = CalculationDistance,
                 BuildupProcessor = BuildupProcessor,
                 BuildupFactors = BuildupFactors != null ? BuildupFactors[EnergyIndex] : new float[0][],
+                CancellationToken = CancellationToken,
                 Progress = Progress,
-                CancellationToken = CancellationToken
             };
         }
     }

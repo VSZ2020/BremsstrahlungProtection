@@ -1,7 +1,4 @@
 ﻿using BSP.BL.Geometries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BSP.BL.Services
 {
@@ -9,9 +6,9 @@ namespace BSP.BL.Services
     {
         private static Dictionary<Type, string> availableGeometries = new Dictionary<Type, string>()
         {
-            {typeof(CylinderRadial), CylinderRadial.Name },
-            {typeof(CylinderAxial), CylinderAxial.Name },
-            {typeof(Parallelepiped), Parallelepiped.Name },
+            {typeof(CylinderRadial), "Cylinder Radial" },
+            {typeof(CylinderAxial), "Cylinder Axial" },
+            {typeof(Parallelepiped), "Parallelepiped" },
         };
 
         public static Dictionary<Type, string> Geometries => availableGeometries;

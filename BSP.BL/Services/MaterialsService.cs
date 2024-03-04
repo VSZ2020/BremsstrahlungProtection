@@ -39,6 +39,12 @@ namespace BSP.BL.Services
                 .ToList();
         }
 
+        public MaterialDto GetMaterialById(int id)
+        {
+            var e = context.Materials.AsNoTracking().Single(m => m.Id == id);
+            return new MaterialDto() { Id = e.Id, Name = e.Name, Density = e.Density, Z = e.Z, Weight = e.Weight };
+        }
+
         public float[][] GetMassAttenuationFactors(int[] materialsIds, float[] energies, InterpolationType interpolationType = InterpolationType.Linear)
         {
             //Массив для выходных значений

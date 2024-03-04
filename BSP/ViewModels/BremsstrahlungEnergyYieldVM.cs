@@ -1,7 +1,6 @@
 ﻿using BSP.Common;
 using System.ComponentModel;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace BSP.ViewModels
 {
@@ -9,6 +8,7 @@ namespace BSP.ViewModels
     {
         private float energy;
         private double energyYield;
+        private double energyFlux;
 
         /// <summary>
         /// Средняя энергия группы в [МэВ]
@@ -20,6 +20,7 @@ namespace BSP.ViewModels
         /// </summary>
         public double EnergyYield { get => energyYield; set { energyYield = value; OnChanged(); } }
 
+        public double EnergyFlux { get => energyFlux;  set{ energyFlux = value; OnChanged(); }  }
 
         public string this[string columnName]
         {
@@ -33,6 +34,10 @@ namespace BSP.ViewModels
                             error = (Application.Current.TryFindResource("msg_ValidationEnergy") as string) ?? "Incorrect value";
                         break;
                     case nameof(EnergyYield):
+                        if (EnergyYield < 0)
+                            error = (Application.Current.TryFindResource("msg_ValidationEnergyYield") as string) ?? "Incorrect value";
+                        break;
+                    case nameof(EnergyFlux):
                         if (EnergyYield < 0)
                             error = (Application.Current.TryFindResource("msg_ValidationEnergyYield") as string) ?? "Incorrect value";
                         break;
