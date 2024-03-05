@@ -1,10 +1,7 @@
 ﻿using BSP.BL.DTO;
 using BSP.Common;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace BSP.ViewModels
 {

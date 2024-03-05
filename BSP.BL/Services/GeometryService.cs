@@ -25,17 +25,17 @@ namespace BSP.BL.Services
             {
                 return new List<DimensionsInfo>()
                 {
-                    new DimensionsInfo(){ Name = "Radius", DefaultValue = 10},
-                    new DimensionsInfo(){ Name = "Height",DefaultValue = 30, Discreteness = 30},
+                    new DimensionsInfo(){ Name = "Radius", DefaultValue = 10, Discreteness = 100},
+                    new DimensionsInfo(){ Name = "Height",DefaultValue = 30, Discreteness = 300},
                 };
             }
             if (geometryType == typeof(Parallelepiped))
             {
                 return new List<DimensionsInfo>()
                 {
-                    new DimensionsInfo(){ Name = "Thickness", DefaultValue = 10},
-                    new DimensionsInfo(){ Name = "Width", DefaultValue = 10},
-                    new DimensionsInfo(){ Name = "Height", DefaultValue = 10},
+                    new DimensionsInfo(){ Name = "Thickness", DefaultValue = 10, Discreteness = 100},
+                    new DimensionsInfo(){ Name = "Width", DefaultValue = 10, Discreteness = 100},
+                    new DimensionsInfo(){ Name = "Height", DefaultValue = 10, Discreteness = 100},
                 };
             }
             return Enumerable.Empty<DimensionsInfo>();

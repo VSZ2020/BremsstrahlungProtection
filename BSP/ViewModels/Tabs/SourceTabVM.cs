@@ -145,6 +145,7 @@ namespace BSP.ViewModels.Tabs
                 {
                     Name = dimension.Name,
                     Value = dimension.DefaultValue,
+                    Discreteness = dimension.Discreteness
                 };
                 SourceDimensions.Add(dimensionVM);
             }

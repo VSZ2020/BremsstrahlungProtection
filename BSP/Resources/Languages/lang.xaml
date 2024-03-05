@@ -119,7 +119,7 @@
     <v:String x:Key="tab_Output_Evaluation_GroupName">Evaluation parameters</v:String>
     <v:String x:Key="tab_Output_Precision">Number of decimal places</v:String>
     <v:String x:Key="tab_Output_IsPointSource">Point source approximation</v:String>
-    <v:String x:Key="tab_Output_PartialDoseRates">ShowPartialDoseRates</v:String>
+    <v:String x:Key="tab_Output_PartialDoseRates">Show partial dose rates</v:String>
 
     <v:String x:Key="tab_Output_OutputValue_GroupName">Output value parameters</v:String>
     <v:String x:Key="tab_Output_CalculationDistance">Calculation distance, cm</v:String>

@@ -21,6 +21,11 @@
             <ToggleButton IsChecked="{Binding IsPointSource}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipIsPointSource}">
                 <Image Source="/Resources/Images/iconPointSource.png"></Image>
             </ToggleButton>
+
+            <!--Show interpolated input-->
+            <ToggleButton IsChecked="{Binding IsShowInputData}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipShowInterpolatedInputInResults}">
+                <TextBlock Text="SID" FontWeight="Black" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </ToggleButton>
         </ToolBar>
         <ToolBar Style="{StaticResource MainToolbar}">
             <!--Run calculation-->

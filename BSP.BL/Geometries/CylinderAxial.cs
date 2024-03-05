@@ -1,4 +1,5 @@
 ﻿using BSP.BL.Calculation;
+using MathNet.Numerics.Distributions;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -22,6 +23,11 @@ namespace BSP.BL.Geometries
         private CylinderForm form;
 
         public override double GetFluence(SingleEnergyInputData input)
+        {
+            return AlternativeIntegrator(input);
+        }
+
+        public double StandardIntegrator(SingleEnergyInputData input)
         {
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
 
@@ -61,6 +67,7 @@ namespace BSP.BL.Geometries
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume;
         }
 
+        #region ExternalIntegralByAngle
         private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, float[] um, float[] layersDm, CancellationToken token, float[][] buildupFactors, Func<double[], float[][], double>? BuildupProcessor = null)
         {
             //Шаг интегрирования по углам
@@ -77,7 +84,9 @@ namespace BSP.BL.Geometries
 
             return !token.IsCancellationRequested ? sum : 0;
         }
+        #endregion
 
+        #region InnerIntegralByRadius
         private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, float[] um, float[] layersDm, CancellationToken token, float[][] buildupFactors, Func<double[], float[][], double>? BuildupProcessor = null)
         {
             //Шаг интегрирования для интеграла по dr
@@ -96,15 +105,14 @@ namespace BSP.BL.Geometries
                     shieldsMassThicknesses: layersDm,
                     shieldEffecThicknessFactor: sec(theta));
 
-                //Полные интегралы
-
                 //Учет вклада поля рассеянного излучения                                                                       
                 var buildupFactor = BuildupProcessor?.Invoke(UD, buildupFactors) ?? 1.0;
 
                 sum += Math.Exp(-UD.Sum()) * buildupFactor;
             }
             return !token.IsCancellationRequested ? sum * dr : 0;
-        }
+        } 
+        #endregion
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -117,6 +125,46 @@ namespace BSP.BL.Geometries
         private static double cosec(double x)
         {
             return 1.0 / Math.Sin(x);
+        }
+
+        public double AlternativeIntegrator(SingleEnergyInputData input)
+        {
+            var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
+
+            //Радиус цилиндра
+            double R = form.Radius;
+            double H = form.Height;
+            //Координата точки регистрации флюенса
+            double b = input.CalculationDistance + input.Layers.Select(l => l.D).Sum();
+
+            double func(double theta, double r)
+            {
+                //Рассчитываем начальные произведения u*d для всех слоев защиты, включая материал источника
+                var UD = GetUDWithFactors(
+                            massAttenuationFactors: input.massAttenuationFactors,
+                            sourceDensity: input.SourceDensity,
+                            selfabsorptionLength: r - b * sec(theta),
+                            shieldsMassThicknesses: layersMassThickness,
+                            shieldEffecThicknessFactor: sec(theta));
+
+                //Учет вклада поля рассеянного излучения                                                                       
+                var buildupFactor = input.BuildupProcessor?.EvaluateComplexBuildup(UD, input.BuildupFactors) ?? 1.0;
+
+                return Math.Exp(-UD.Sum()) * buildupFactor;
+            }
+
+            var P1 = Integrate(
+                theta => Integrate(
+                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), (b + H) * sec(theta), form.NHeight, input.CancellationToken),
+                0, Math.Atan(R / (b + H)), form.NRadius, input.CancellationToken);
+
+            var P2 = Integrate(
+                theta => Integrate(
+                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), R * cosec(theta), form.NHeight, input.CancellationToken),
+                Math.Atan(R / (b + H)), Math.Atan(R / b), form.NRadius, input.CancellationToken);
+
+            var sourceVolume = form.GetNormalizationFactor();
+            return 2.0 * Math.PI * (P1 + P2) / sourceVolume;
         }
 
         //public override double GetFluence(SingleEnergyInputData input)

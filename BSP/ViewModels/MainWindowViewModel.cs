@@ -171,18 +171,17 @@ namespace BSP.ViewModels
                     .ToList();
 
                 var energies = energyYieldData.Select(e => e.Energy).ToArray();
-                var bremsstrahlungEnergyYields = energyYieldData.Select(y => y.EnergyYield).ToArray();
-                var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(bremsstrahlungEnergyYields, SourceTab.SourceTotalActivity);
+                var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(energyYieldData.Select(y => y.EnergyYield).ToArray(), SourceTab.SourceTotalActivity);
 
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
-                Array.Sort(energies, bremsstrahlungEnergyYields);
+                Array.Sort(energies, bremsstrahlungEnergyFluxes);
 
                 var builder = App.GetService<InputDataBuilder>();
                 InputData input = builder
                     .WithShieldLayers(ShieldingTab.ShieldLayers.ToList())
                     .WithAttenuationFactors(SourceTab.SelectedSourceMaterial.Id, shieldLayersIds, energies)
                     .WithEnvironmentAbsorptionFactors(energies, SelectedEnvironmentMaterial?.Id ?? 1)
-                    .WithBremsstrahlungEnergyFluxes(bremsstrahlungEnergyYields)
+                    .WithBremsstrahlungEnergyFluxes(bremsstrahlungEnergyFluxes)
                     .WithBuildup(
                         BuildupTab.SelectedBuildup.BuildupType,
                         BuildupTab.IsIncludeBuildup ? BuildupTab.SelectedComplexBuildup.BuildupType : null,

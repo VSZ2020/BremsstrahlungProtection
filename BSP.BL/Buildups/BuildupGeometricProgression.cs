@@ -13,7 +13,7 @@ namespace BSP.BL.Buildups
         public static double Calculate(double ud, float a, float b, float c, float d, float xi, float barrierFactor = 1.0F)
         {
             //TODO: Проверить правильность преобразования к типу int
-            int K = Convert.ToInt32(c * Math.Pow(ud, a) + d * (Math.Tanh(ud / xi - 2.0) - tanh2) / tanh2_1);
+            var K = (int)(c * Math.Pow(ud, a) + d * (Math.Tanh(ud / xi - 2.0) - tanh2) / tanh2_1);
 
             if (K == 1)
                 return (1.0 + (b - 1.0) * ud) * barrierFactor;

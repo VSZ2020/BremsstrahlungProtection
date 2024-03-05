@@ -34,7 +34,7 @@ namespace BSP.BL.Geometries
         }
 
         [Obsolete]
-        public double StandardRectangleIntegrator(SingleEnergyInputData input)
+        public double StandardIntegrator(SingleEnergyInputData input)
         {
             var layersThickness = input.Layers.Select(l => l.D).ToArray();
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
@@ -56,13 +56,13 @@ namespace BSP.BL.Geometries
 
             for (int i = 0; i < form.NThickness && !input.CancellationToken.IsCancellationRequested; i++)
             {
-                var x = dx / 2 + dx * i;
+                var x = 0.5 * dx / 2 + dx * i;
                 for (int j = 0; j < form.NWidth && !input.CancellationToken.IsCancellationRequested; j++)
                 {
-                    var y = dy / 2 + dy * j;
+                    var y = 0.5 * dy + dy * j;
                     for (int k = 0; k < form.NHeight && !input.CancellationToken.IsCancellationRequested; k++)
                     {
-                        var z = dz / 2 + dz * k;
+                        var z = 0.5 * dz + dz * k;
                         var c = form.Thickness - x;
 
                         //Квадрат расстояния от дискретного объема до точки регистрации R
@@ -85,12 +85,9 @@ namespace BSP.BL.Geometries
                     }
                 }
             }
-            if (input.CancellationToken.IsCancellationRequested)
-            {
-                return -1.0;
-            }
+
             var sourceVolume = form.GetNormalizationFactor();
-            return sumIntegral / sourceVolume / (4.0 * Math.PI);
+            return !input.CancellationToken.IsCancellationRequested ? sumIntegral / sourceVolume / (4.0 * Math.PI) : 0;
         }
 
 
@@ -107,40 +104,33 @@ namespace BSP.BL.Geometries
             var y0 = form.Width / 2.0;
             var z0 = form.Height / 2.0;
 
-            double ByZ(double z)
+            var integral = Integrate((x, y, z) => 
             {
-                double ByY(double y)
-                {
-                    double ByX(double x)
-                    {
-                        var c = form.Thickness - x;
+                var c = form.Thickness - x;
 
-                        //Квадрат расстояния от дискретного объема до точки регистрации R
-                        var R2 = (x - x0) * (x - x0) + (y - y0) * (y - y0) + (z - z0) * (z - z0);
-                        var R = Math.Sqrt(R2);
+                //Квадрат расстояния от дискретного объема до точки регистрации R
+                var R2 = (x - x0) * (x - x0) + (y - y0) * (y - y0) + (z - z0) * (z - z0);
+                var R = Math.Sqrt(R2);
 
-                        //Длина самопоглощения в источнике
-                        var xe = R * c / (c + b);
+                //Длина самопоглощения в источнике
+                var xe = R * c / (c + b);
 
-                        //Коэффициент перехода от толщины защиты d к эффективной толщине ослабления в защите y
-                        var m = R / (c + b);
-                        var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
+                //Коэффициент перехода от толщины защиты d к эффективной толщине ослабления в защите y
+                var m = R / (c + b);
+                var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
 
-                        double totalLooseExp = Math.Exp(-ud.Sum());
+                double totalLooseExp = Math.Exp(-ud.Sum());
 
-                        //Расчет вклада поля рассеянного излучения
-                        double buildupFactor = input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
+                //Расчет вклада поля рассеянного излучения
+                double buildupFactor = input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
-                        return totalLooseExp / R2 * buildupFactor;
-                    }
-
-                    return SimpsonMethod(ByX, 0, form.Thickness, form.NThickness, input.CancellationToken);
-                }
-
-                return SimpsonMethod(ByY, 0, form.Width, form.NWidth, input.CancellationToken);
-            }
-
-            return SimpsonMethod(ByZ, 0, form.Height, form.NHeight, input.CancellationToken) / form.GetNormalizationFactor() / (4.0 * Math.PI);
+                return totalLooseExp / R2 * buildupFactor;
+            },
+            0, form.Thickness, form.NThickness,
+            0, form.Width, form.NWidth,
+            0, form.Height, form.NHeight,
+            input.CancellationToken);
+            return integral / form.GetNormalizationFactor() / (4.0 * Math.PI);
         }
     }
 }
