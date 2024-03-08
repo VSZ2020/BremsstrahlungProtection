@@ -1,9 +1,5 @@
 ﻿using BSP.BL.Calculation;
-using MathNet.Numerics.Distributions;
-using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
 
 namespace BSP.BL.Geometries
 {
@@ -68,7 +64,7 @@ namespace BSP.BL.Geometries
         }
 
         #region ExternalIntegralByAngle
-        private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, float[] um, float[] layersDm, CancellationToken token, float[][] buildupFactors, Func<double[], float[][], double>? BuildupProcessor = null)
+        private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null)
         {
             //Шаг интегрирования по углам
             double dtheta = (to - from) / N;
@@ -87,7 +83,7 @@ namespace BSP.BL.Geometries
         #endregion
 
         #region InnerIntegralByRadius
-        private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, float[] um, float[] layersDm, CancellationToken token, float[][] buildupFactors, Func<double[], float[][], double>? BuildupProcessor = null)
+        private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null)
         {
             //Шаг интегрирования для интеграла по dr
             double dr = (to - from) / N;
@@ -155,13 +151,13 @@ namespace BSP.BL.Geometries
 
             var P1 = Integrate(
                 theta => Integrate(
-                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), (b + H) * sec(theta), form.NHeight, input.CancellationToken),
-                0, Math.Atan(R / (b + H)), form.NRadius, input.CancellationToken);
+                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), (b + H) * sec(theta), form.NRadius, input.CancellationToken),
+                0, Math.Atan(R / (b + H)), form.NHeight, input.CancellationToken);
 
             var P2 = Integrate(
                 theta => Integrate(
-                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), R * cosec(theta), form.NHeight, input.CancellationToken),
-                Math.Atan(R / (b + H)), Math.Atan(R / b), form.NRadius, input.CancellationToken);
+                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), R * cosec(theta), form.NRadius, input.CancellationToken),
+                Math.Atan(R / (b + H)), Math.Atan(R / b), form.NHeight, input.CancellationToken);
 
             var sourceVolume = form.GetNormalizationFactor();
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume;

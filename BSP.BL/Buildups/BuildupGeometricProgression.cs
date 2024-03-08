@@ -10,7 +10,7 @@ namespace BSP.BL.Buildups
         public const double tanh2 = -0.96402758007581688395;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Calculate(double ud, float a, float b, float c, float d, float xi, float barrierFactor = 1.0F)
+        public static double Calculate(double ud, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
         {
             //TODO: Проверить правильность преобразования к типу int
             var K = (int)(c * Math.Pow(ud, a) + d * (Math.Tanh(ud / xi - 2.0) - tanh2) / tanh2_1);
@@ -21,7 +21,7 @@ namespace BSP.BL.Buildups
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override double EvaluateBuildup(double mfp, float[] coefficients)
+        public override double EvaluateBuildup(double mfp, double[] coefficients)
         {
             return Calculate(mfp, coefficients[0], coefficients[1], coefficients[2], coefficients[3], coefficients[4], coefficients.Length > 5 ? coefficients[5] : 1.0F);
         }

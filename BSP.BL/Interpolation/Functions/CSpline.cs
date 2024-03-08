@@ -17,14 +17,14 @@ namespace BSP.BL.Interpolation.Functions
     {
         struct CubicSpline
         {
-            public float A;
-            public float B;
-            public float C;
-            public float D;
-            public float X;
+            public double A;
+            public double B;
+            public double C;
+            public double D;
+            public double X;
         }
 
-        public float[] Interpolate(float[] x, float[] y, float[] new_x)
+        public double[] Interpolate(double[] x, double[] y, double[] new_x)
         {
             if (x.Length < 2)
                 throw new ArgumentException("No sufficient points count for spline construction");
@@ -39,8 +39,8 @@ namespace BSP.BL.Interpolation.Functions
                 splines[i].X = x[i];
             }
 
-            float[] h = new float[n - 1];
-            float[] alpha = new float[n - 1];
+            var h = new double[n - 1];
+            var alpha = new double[n - 1];
 
             for (int i = 0; i < n - 1; i++)             //i = [0,n-2]. Прим. от 0 до 8, при n = 10			
             {
@@ -50,9 +50,9 @@ namespace BSP.BL.Interpolation.Functions
             {
                 alpha[i] = 3.0f / h[i] * (splines[i + 1].A - splines[i].A) - 3.0f / h[i - 1] * (splines[i].A - splines[i - 1].A);
             }
-            float[] l = new float[n];
-            float[] u = new float[n];
-            float[] z = new float[n];
+            var l = new double[n];
+            var u = new double[n];
+            var z = new double[n];
 
             l[0] = 1.0f; u[0] = z[0] = 0;
             l[n - 1] = 1; z[n - 1] = 0; splines[n - 1].C = 0;
@@ -70,7 +70,7 @@ namespace BSP.BL.Interpolation.Functions
                 splines[j].D = (splines[j + 1].C - splines[j].C) / (3.0f * h[j]);
             }
 
-            float[] interpolatedValues = new float[new_x.Length];
+            double[] interpolatedValues = new double[new_x.Length];
             for (int i = 0; i < new_x.Length; i++)
             {
                 CubicSpline sp = new CubicSpline();
@@ -89,7 +89,7 @@ namespace BSP.BL.Interpolation.Functions
                         }
                     }
                 }
-                interpolatedValues[i] = sp.A + sp.B * (new_x[i] - sp.X) + sp.C * (float)Math.Pow(new_x[i] - sp.X, 2) + sp.D * (float)Math.Pow(new_x[i] - sp.X, 3);
+                interpolatedValues[i] = sp.A + sp.B * (new_x[i] - sp.X) + sp.C * Math.Pow(new_x[i] - sp.X, 2) + sp.D * Math.Pow(new_x[i] - sp.X, 3);
             }
             return interpolatedValues;
         }

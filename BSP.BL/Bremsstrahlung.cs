@@ -92,19 +92,19 @@ namespace BSP.BL
         }
 
 
-        public static (float[] energies, double[] yields) GetEnergyYieldData(float[] nuclideEnergies, float[] nuclideYields, float Zeff, bool isMonoenergeticElectrons = false, float cutoffEnergy = 0.015f)
+        public static (float[] energies, double[] yields) GetEnergyYieldData(float[] nuclideEnergies, float[] nuclideYields, float Zeff, bool useAverageBinEnergy = true, bool isMonoenergeticElectrons = false, float cutoffEnergy = 0.015f)
         {
-            var energies = GetEnergyBinsAverageEnergies(nuclideEnergies.Max());
+            var energies = useAverageBinEnergy ? GetEnergyBinsAverageEnergies(nuclideEnergies.Max()) : GetEnergyBinsRightEdges(nuclideEnergies.Max());
             var yields = GetBremsstrahlungEnergyYields(nuclideEnergies, nuclideYields, Zeff, isMonoenergeticElectrons);
             return (energies, yields);
         }
 
 
         [Obsolete]
-        public static (float[] energies, double[] yields) GetEnergyYieldData(List<Radionuclide> selectedNuclides, float Zeff, bool isMonoenergeticElectrons = false, float cutoffEnergy = 0.015f)
+        public static (float[] energies, double[] yields) GetEnergyYieldData(List<Radionuclide> selectedNuclides, float Zeff, bool isAverageBinEnergy = true, bool isMonoenergeticElectrons = false, float cutoffEnergy = 0.015f)
         {
             var primaryNuclide = SearchPrimaryNuclide(selectedNuclides);
-            var energies = GetEnergyBinsAverageEnergies(primaryNuclide.GetEnergyWithMaxIntensity());
+            var energies = isAverageBinEnergy ? GetEnergyBinsAverageEnergies(primaryNuclide.GetEnergyWithMaxIntensity()) : GetEnergyBinsRightEdges(primaryNuclide.GetEnergyWithMaxIntensity());
             var yields = GetBremsstrahlungEnergyYields(selectedNuclides, Zeff, isMonoenergeticElectrons);
             return (energies, yields);
         }
@@ -169,7 +169,7 @@ namespace BSP.BL
             var primeNuclide = SearchPrimaryNuclide(SelectedNuclides);
 
             //Вычисление энергетических выходов тормозного излучения для базового нуклида [МэВ/распад]
-            return GetBremsstrahlungEnergyYields(primeNuclide.MeanEnergies, primeNuclide.EnergyYields, Zeff, isMonoenergeticElectrons);
+            return GetBremsstrahlungEnergyYields(primeNuclide.MaxEnergies, primeNuclide.EnergyYields, Zeff, isMonoenergeticElectrons);
         }
 
 

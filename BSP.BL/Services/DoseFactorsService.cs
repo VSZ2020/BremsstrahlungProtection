@@ -80,13 +80,13 @@ namespace BSP.BL.Services
             };
         }
 
-        public float[] GetDoseConversionFactors(Type doseConversionFactorType, float[] energies, int exposureGeometryId, int organTissueId, InterpolationType interpolatorType = InterpolationType.Linear)
+        public double[] GetDoseConversionFactors(Type doseConversionFactorType, double[] energies, int exposureGeometryId, int organTissueId, InterpolationType interpolatorType = InterpolationType.Linear)
         {
             List<BaseDoseFactorEntity> table_entities = new List<BaseDoseFactorEntity>();
 
             if (doseConversionFactorType == typeof(AirKermaEntity))
                 //Возвращаем единицы, т.к. в функции расчета уже вычисляется коэффициент перехода к воздушной керме как (Energy * um)
-                return Enumerable.Range(0, energies.Length).Select(i => 1.0F).ToArray();
+                return Enumerable.Range(0, energies.Length).Select(i => 1.0).ToArray();
             //table_entities.AddRange(context.AirKermaDoseFactors.AsNoTracking().Cast<BaseDoseFactorEntity>().ToList());
 
             if (doseConversionFactorType == typeof(ExposureDoseEntity))
@@ -108,7 +108,8 @@ namespace BSP.BL.Services
                 table_entities.AddRange(context.EquivalentDoseFactors.AsNoTracking().Where(e => e.ExposureGeometryId == exposureGeometryId && e.OrganTissueId == organTissueId).Cast<BaseDoseFactorEntity>().ToList());
 
             //Интерполируем табличные данные в промежуточных значениях энергий
-            var doseFactors = Interpolator.Interpolate(table_entities.Select(e => e.Energy).ToArray(), table_entities.Select(e => e.Value).ToArray(), energies, interpolatorType);
+            var doseFactors = Interpolator.Interpolate(table_entities.Select(e => (double)e.Energy).ToArray(), table_entities.Select(e => (double)e.Value).ToArray(), energies, interpolatorType);
+
 
             return doseFactors;
         }

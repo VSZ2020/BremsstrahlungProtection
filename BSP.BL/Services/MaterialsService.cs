@@ -1,4 +1,5 @@
 ﻿using BSP.BL.DTO;
+using BSP.BL.Extensions;
 using BSP.BL.Interpolation;
 using BSP.BL.Interpolation.Functions;
 using BSP.Data;
@@ -45,19 +46,20 @@ namespace BSP.BL.Services
             return new MaterialDto() { Id = e.Id, Name = e.Name, Density = e.Density, Z = e.Z, Weight = e.Weight };
         }
 
-        public float[][] GetMassAttenuationFactors(int[] materialsIds, float[] energies, InterpolationType interpolationType = InterpolationType.Linear)
+        public double[][] GetMassAttenuationFactors(int[] materialsIds, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
         {
             //Массив для выходных значений
-            var interpolatedData = Enumerable.Range(0, energies.Length).Select(i => new float[materialsIds.Length]).ToArray();
+            var interpolatedData = Enumerable.Range(0, energies.Length).Select(i => new double[materialsIds.Length]).ToArray();
 
             for (var i = 0; i < materialsIds.Length; i++)
             {
-                var interpolated_values = new float[energies.Length];
+                var interpolated_values = new double[energies.Length];
                 var entities = context.MassAttenuationFactors.AsNoTracking().Where(e => e.MaterialId == materialsIds[i]).ToList();
                 if (entities.Count > 3)
                 {
-                    var table_energies = entities.Select(e => e.Energy).ToArray();
-                    var table_values = entities.Select(e => e.Value).ToArray();
+                    var table_energies = entities.Select(e => (double)e.Energy).ToArray();
+                    var table_values = entities.Select(e => (double)e.Value).ToArray();
+                    
                     interpolated_values = Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
                 }
                 else
@@ -71,17 +73,18 @@ namespace BSP.BL.Services
             return interpolatedData;
         }
 
-        public float[] GetAbsorptionFactors(int materialId, float[] energies, InterpolationType interpolationType = InterpolationType.Linear)
+        public double[] GetAbsorptionFactors(int materialId, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
         {
             var entities = context.MassAbsorptionFactors.AsNoTracking().Where(e => e.MaterialId == materialId).ToList();
+
             if (entities.Count < 3)
             {
                 //TODO: Log absent data
-                return new float[energies.Length];
+                return new double[energies.Length];
             }
 
-            var table_energies = entities.Select(e => e.Energy).ToArray();
-            var table_values = entities.Select(e => e.Value).ToArray();
+            var table_energies = entities.Select(e => (double)e.Energy).ToArray();
+            var table_values = entities.Select(e => (double)e.Value).ToArray();
 
             var interpolated_values = Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
             return interpolated_values;

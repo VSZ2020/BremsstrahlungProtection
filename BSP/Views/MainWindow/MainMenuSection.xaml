@@ -12,9 +12,9 @@
                       ItemsSource="{Binding LanguagesVM.AvailableLanguages}" 
                       DisplayMemberPath="Header">
             </MenuItem>
-            <MenuItem Header="{StaticResource menu_Program_Open}" IsEnabled="False"/>
+            <!--<MenuItem Header="{StaticResource menu_Program_Open}" IsEnabled="False"/>
             <MenuItem Header="{StaticResource menu_Program_Save}" IsEnabled="False"/>
-            <MenuItem Header="{StaticResource menu_Program_SaveAs}" IsEnabled="False"/>
+            <MenuItem Header="{StaticResource menu_Program_SaveAs}" IsEnabled="False"/>-->
             <Separator/>
             <MenuItem Header="{StaticResource menu_Program_Exit}"/>
         </MenuItem>
@@ -38,8 +38,8 @@
         </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Help}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>
-            <MenuItem Header="{StaticResource menu_Help_Changelog}"/>
+            <!--<MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>-->
+            <!--<MenuItem Header="{StaticResource menu_Help_Changelog}"/>-->
             <Separator/>
             <MenuItem Header="{StaticResource menu_Help_About}" Command="{Binding AboutCommand}"/>
         </MenuItem>

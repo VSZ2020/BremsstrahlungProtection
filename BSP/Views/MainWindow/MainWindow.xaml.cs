@@ -19,7 +19,9 @@ namespace BSP
             InitializeComponent();
 
 #if DEBUG
-            this.Title += $" v{Assembly.GetExecutingAssembly().GetName().Version} [DEBUG MODE]";
+            this.Title += $"BSP v.{Assembly.GetExecutingAssembly().GetName().Version} [DEBUG]";
+#else
+            this.Title += $"BSP v.{Assembly.GetExecutingAssembly().GetName().Version}";
 #endif
         }
     }

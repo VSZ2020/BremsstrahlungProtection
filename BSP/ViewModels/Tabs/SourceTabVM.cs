@@ -105,10 +105,14 @@ namespace BSP.ViewModels.Tabs
             if (SelectedRadionuclides.Count == 0)
                 return;
 
-            var majorRadionuclide = radionuclidesService.GetRadionuclideWithMaxEnergyIntensity(SelectedRadionuclides.Select(r => r.Id).ToArray());
-            (_, var averageEnergies, var yields) = radionuclidesService.GetEnergyIntensityDataArrays(majorRadionuclide.Id);
+            var majorBetaRadionuclide = radionuclidesService.GetRadionuclideWithMaxEnergyIntensity(SelectedRadionuclides.Select(r => r.Id).ToArray());
+            (var endpointBetaEnergies, _, var betaYields) = radionuclidesService.GetEnergyIntensityDataArrays(majorBetaRadionuclide.Id);
 
-            (var bremsstrahlungEnergies, var bremsstrahlungEnergyYields) = Bremsstrahlung.GetEnergyYieldData(averageEnergies, yields, SourceZ);
+            (var bremsstrahlungEnergies, var bremsstrahlungEnergyYields) = Bremsstrahlung.GetEnergyYieldData(
+                nuclideEnergies: endpointBetaEnergies, 
+                nuclideYields: betaYields, 
+                Zeff: SourceZ, 
+                useAverageBinEnergy: true);
             var fluxOfEnergy = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(bremsstrahlungEnergyYields, SourceTotalActivity);
 
             var energyYieldsData = Enumerable

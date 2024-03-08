@@ -6,16 +6,17 @@ namespace BSP.DatabaseFiller
 {
     public class DatabaseFiller
     {
-        public DatabaseFiller()
+        public DatabaseFiller(string databaseDirectory)
         {
-            context = new DataContext(new DbContextOptionsBuilder().UseSqlite(CONNECTION_STRING).Options);
+            var databasePath = Path.Combine(databaseDirectory, DatabaseName);
+            context = new DataContext(new DbContextOptionsBuilder().UseSqlite(string.Format("Data Source={0}", databasePath)).Options);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
         }
 
         private readonly DataContext context;
 
-        public const string CONNECTION_STRING = "Data Source=Database.mdb";
+        public const string DatabaseName = "Database.mdb";
 
         public void FillDatabaseWithDoseFactors(string doseFactorsFolder)
         {

@@ -1,17 +1,17 @@
 ﻿using BSP.BL.Buildups.Common;
-using System;
-using System.Linq;
 
 namespace BSP.BL.Buildups
 {
     public class BuildupBroder : BaseHeterogeneousBuildup
     {
-        public BuildupBroder(Func<double, float[], double> buildup) : base(buildup)
+        public BuildupBroder(Func<double, double[], double> buildup) : base(buildup)
         {
 
         }
 
-        public override double EvaluateComplexBuildup(double[] mfp, float[][] coefficients)
+        public override string Description => "Evaluates buildup for heterogeneous medium using Broder experssion";
+
+        public override double EvaluateComplexBuildup(double[] mfp, double[][] coefficients)
         {
             int layersCount = mfp.Length;
 

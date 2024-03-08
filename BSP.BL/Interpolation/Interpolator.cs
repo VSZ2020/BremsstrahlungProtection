@@ -12,7 +12,7 @@ namespace BSP.BL.Interpolation
         /// <param name="InterpolationType">Тип интерполяционного полинома</param>
         /// <param name="NewX">Значения энергий, для которых получают новые значения</param>
         /// <returns></returns>
-        public static float[] Interpolate(float[] X, float[] Y, float[] NewX, InterpolationType InterpolationType = InterpolationType.Linear)
+        public static double[] Interpolate(double[] X, double[] Y, double[] NewX, InterpolationType InterpolationType = InterpolationType.Linear)
         {
             return InterpolationType == InterpolationType.Cubic ? new CSpline().Interpolate(X, Y, NewX) : new LSpline().Interpolate(X, Y, NewX);
         }

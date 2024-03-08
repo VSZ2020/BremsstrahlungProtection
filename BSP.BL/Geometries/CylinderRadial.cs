@@ -1,5 +1,4 @@
 ﻿using BSP.BL.Calculation;
-using MathNet.Numerics.Integration;
 
 namespace BSP.BL.Geometries
 {

@@ -13,12 +13,11 @@ namespace BSP.ViewModels.Tabs
         public ShieldingTabVM(MaterialsService materialsService)
         {
             AvailableMaterials = new List<MaterialDto>(materialsService.GetAllMaterials());
-            ShieldLayers = new ObservableCollection<ShieldLayer>(_shieldLayers);
+            ShieldLayers = new ObservableCollection<ShieldLayer>();
         }
 
         private bool hasMaterials => AvailableMaterials.Count > 0;
         private ShieldLayer _selectedShieldLayer;
-        private List<ShieldLayer> _shieldLayers = new();
 
         public static List<MaterialDto> AvailableMaterials { get; private set; }
         public ObservableCollection<ShieldLayer> ShieldLayers { get; }

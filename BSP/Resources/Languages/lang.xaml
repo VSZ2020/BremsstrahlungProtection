@@ -67,7 +67,7 @@
     <v:String x:Key="tab_Source_SelectedRadionuclides_ActivityHeader">Activity, Bq</v:String>
 
     <v:String x:Key="tab_Source_Bremsstrahlung_GroupHeader">Bremsstrahlung</v:String>
-    <v:String x:Key="tab_Source_Bremsstrahlung_Hint">Yields per average energy group</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_Hint">Yields per average energy of group</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Energy">Energy, MeV</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Yield">Yield, MeV/decay</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Btn_UpdateYields">Update</v:String>
@@ -91,6 +91,7 @@
     <v:String x:Key="tab_Source_SourceMaterial_Density">Density, g/cm³</v:String>
 
     <v:String x:Key="tab_Source_CutoffEnergy_GroupName">Bremsstrahlung cutoff energy (MeV)</v:String>
+    <v:String x:Key="tab_Source_CutoffEnergy_UseCutoff">Use cutoff</v:String>
     <v:String x:Key="tab_Source_CutoffEnergy_Hint">Bremsstrahlung with photon energies less than 'Cutoff value' are not included in dose rate calculation</v:String>
     <!--#endregion-->
 

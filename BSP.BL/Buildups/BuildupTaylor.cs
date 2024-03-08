@@ -5,7 +5,7 @@ namespace BSP.BL.Buildups
 {
     public class BuildupTaylor : BaseBuildup
     {
-        public override double EvaluateBuildup(double mfp, float[] coefficients)
+        public override double EvaluateBuildup(double mfp, double[] coefficients)
         {
             var A = coefficients[0];
             var alpha1 = coefficients[1];

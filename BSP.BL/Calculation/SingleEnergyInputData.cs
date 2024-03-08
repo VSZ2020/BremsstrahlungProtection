@@ -1,8 +1,5 @@
 ﻿using BSP.BL.Buildups.Common;
 using BSP.BL.Materials;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace BSP.BL.Calculation
 {
@@ -11,8 +8,8 @@ namespace BSP.BL.Calculation
     /// </summary>
     public class SingleEnergyInputData
     {
-        public float[] massAttenuationFactors;
-        public float[][] BuildupFactors;
+        public double[] massAttenuationFactors;
+        public double[][] BuildupFactors;
 
         public List<ShieldLayer> Layers;
 

@@ -4,7 +4,7 @@ namespace BSP.BL.Interpolation.Functions
 {
     public class LSpline : IInterpolator
     {
-        public float[] Interpolate(float[] x, float[] y, float[] newX)
+        public double[] Interpolate(double[] x, double[] y, double[] newX)
         {
             if (x == null || y == null)
                 throw new ArgumentNullException("Input arrays are NULL");
@@ -19,11 +19,11 @@ namespace BSP.BL.Interpolation.Functions
             int new_data_length = newX.Length;
 
             //Новые значения Y
-            float[] newY = new float[new_data_length];
+            double[] newY = new double[new_data_length];
             //Массив коэффициентов наклона промежуточных участков (интервалов) массива исходных точек
-            float[] slopes = new float[source_length - 1];
+            double[] slopes = new double[source_length - 1];
             //Массив коэффициентов смещения для промежуточных участков (интервалов) массива исходных точек
-            float[] intercepts = new float[source_length - 1];
+            double[] intercepts = new double[source_length - 1];
 
             for (int i = 0; i < source_length - 1; i++)
             {

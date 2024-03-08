@@ -15,7 +15,7 @@ namespace BSP.BL.Calculation
         /// </summary>
         public double[] PartialDoseRates;
 
-        public double[] ConvertTo(float[] doseFactors)
+        public double[] ConvertTo(double[] doseFactors)
         {
             return Enumerable.Range(0, PartialDoseRates.Length).Select(i => PartialDoseRates[i] * doseFactors[i]).ToArray();
         }

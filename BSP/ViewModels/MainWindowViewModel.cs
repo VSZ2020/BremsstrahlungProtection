@@ -48,6 +48,7 @@ namespace BSP.ViewModels
         private bool isShowPartialDoseRates = false;
         private bool isPointSource = false;
         private bool isShowInterpolatedInputData = false;
+        private bool isUseCutoff = true;
         private string resultsText;
 
         private float _calculationDistance = 100;
@@ -64,6 +65,7 @@ namespace BSP.ViewModels
         public bool IsShowPartialDoseRates { get => isShowPartialDoseRates; set { isShowPartialDoseRates = value; OnChanged(); } }
         public bool IsPointSource { get => isPointSource; set { isPointSource = value; OnChanged(); } }
         public bool IsShowInputData { get => isShowInterpolatedInputData; set { isShowInterpolatedInputData = value; OnChanged(); } }
+        public bool IsUseCutoffEnergy { get => isUseCutoff; set { isUseCutoff = value; OnChanged(); } }
         public string ResultsText { get => resultsText; set { resultsText = value; OnChanged(); } }
 
         public float CalculationDistance { get => _calculationDistance; set { _calculationDistance = value; OnChanged(); } }
@@ -164,17 +166,23 @@ namespace BSP.ViewModels
                 tokenSource = new CancellationTokenSource();
 
                 //Bremsstrahlung
-                //Выбираем только пары значений энергии и выхода ТИ, в которых значения отличны от нуля и выше порога 0,015 МэВ. Затем сортируем по возрастанию энергии.
+                //Выбираем только пары значений энергии и выхода ТИ, в которых значения отличны от нуля. Сортируем по возрастанию энергии.
                 var energyYieldData = SourceTab.EnergyYieldList
-                    .Where(ei => ei.Energy > 0 && ei.EnergyYield > 0 && ei.Energy > SourceTab.CutoffBremsstrahlungEnergy)
                     .OrderBy(ei => ei.Energy)
+                    .Where(ei => ei.Energy > 0 && ei.EnergyYield > 0)
                     .ToList();
 
-                var energies = energyYieldData.Select(e => e.Energy).ToArray();
+                //Если задан учет энергии отсечки, то фильтруем данные
+                if (this.isUseCutoff)
+                {
+                    energyYieldData = energyYieldData.Where(ei => ei.Energy >= SourceTab.CutoffBremsstrahlungEnergy).ToList();
+                }
+
+                var energies = energyYieldData.Select(e => (double)e.Energy).ToArray();
                 var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(energyYieldData.Select(y => y.EnergyYield).ToArray(), SourceTab.SourceTotalActivity);
 
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
-                Array.Sort(energies, bremsstrahlungEnergyFluxes);
+                //Array.Sort(energies, bremsstrahlungEnergyFluxes);
 
                 var builder = App.GetService<InputDataBuilder>();
                 InputData input = builder
@@ -220,7 +228,7 @@ namespace BSP.ViewModels
                 airKermaDoseRates.PartialDoseRates = airKermaDoseRates.ConvertTo(doseFactors);
                 progress.Report(100);
 
-                FillOutputTable(airKermaDoseRates);
+                FillOutputTable(airKermaDoseRates, energies);
 
                 IsEvaluationInProgress = false;
             }
@@ -245,7 +253,7 @@ namespace BSP.ViewModels
 
 
         #region FillOutputTable
-        private void FillOutputTable(OutputValue results)
+        private void FillOutputTable(OutputValue results, double[] energies)
         {
             if (tokenSource.IsCancellationRequested)
             {
@@ -290,7 +298,7 @@ namespace BSP.ViewModels
                 for (var i = 0; i < results.PartialDoseRates.Length; i++)
                 {
                     ResultsText += string.Format(partialDataFormat,
-                    SourceTab.EnergyYieldList[i].Energy,
+                    energies[i],
                     results.PartialDoseRates[i],
                     units);
                 }
@@ -298,11 +306,14 @@ namespace BSP.ViewModels
         }
         #endregion
 
+        #region ClearResultsView
         private void ClearResultsView()
         {
             ResultsText = "";
-        }
+        } 
+        #endregion
 
+        #region ExportResults
         private void ExportResults()
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -324,11 +335,14 @@ namespace BSP.ViewModels
                 }
             }
         }
+        #endregion
 
+        #region ResetProgress
         private void ResetProgress()
         {
             progress.Report(0);
-        }
+        } 
+        #endregion
 
         #region IDataErrorInfo
         public string this[string columnName]

@@ -21,7 +21,10 @@
                 <ComboBox ItemsSource="{Binding BuildupTab.AvailableHeterogeneousBuildups}" 
                           SelectedItem="{Binding BuildupTab.SelectedComplexBuildup}"
                           DisplayMemberPath="Name" 
+                          Name="HeterogeneousBuildupBox"
                           Style="{StaticResource DefaultCombobox}"/>
+
+                <TextBlock Text="{Binding Path=SelectedValue.Description, ElementName=HeterogeneousBuildupBox}" Margin="0,5,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </GroupBox>
     </StackPanel>

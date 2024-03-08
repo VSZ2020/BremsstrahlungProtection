@@ -2,6 +2,6 @@
 {
     public abstract class BaseBuildup
     {
-        public abstract double EvaluateBuildup(double mfp, float[] coefficients);
+        public abstract double EvaluateBuildup(double mfp, double[] coefficients);
     }
 }

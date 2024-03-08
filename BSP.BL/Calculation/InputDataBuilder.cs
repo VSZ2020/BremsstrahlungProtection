@@ -23,9 +23,9 @@ namespace BSP.BL.Calculation
         private readonly BuildupService buildupService;
         private readonly DoseFactorsService doseFactorsService;
 
-        public float[] massEnvironmentAbsorptionFactors;
-        public float[][] massAttenuationFactors;
-        public float[][][] BuildupFactors;
+        public double[] massEnvironmentAbsorptionFactors;
+        public double[][] massAttenuationFactors;
+        public double[][][] BuildupFactors;
 
         public List<ShieldLayer> Layers = new List<ShieldLayer>();
 
@@ -71,20 +71,20 @@ namespace BSP.BL.Calculation
             return this;
         }
 
-        public InputDataBuilder WithEnvironmentAbsorptionFactors(float[] energies, int environmentMaterialId)
+        public InputDataBuilder WithEnvironmentAbsorptionFactors(double[] energies, int environmentMaterialId)
         {
             this.massEnvironmentAbsorptionFactors = materialsService.GetAbsorptionFactors(environmentMaterialId, energies);
             return this;
         }
 
-        public InputDataBuilder WithAttenuationFactors(int sourceMaterialId, int[] shieldMaterialsIds, float[] energies)
+        public InputDataBuilder WithAttenuationFactors(int sourceMaterialId, int[] shieldMaterialsIds, double[] energies)
         {
 
             this.massAttenuationFactors = materialsService.GetMassAttenuationFactors(CombineIds(sourceMaterialId, shieldMaterialsIds), energies);
             return this;
         }
 
-        public InputDataBuilder WithBuildup(Type homogeneousBuildup, Type? heterogeneousBuildup, int sourceMaterialId, int[] shieldMaterialsIds, float[] energies)
+        public InputDataBuilder WithBuildup(Type homogeneousBuildup, Type? heterogeneousBuildup, int sourceMaterialId, int[] shieldMaterialsIds, double[] energies)
         {
             if (homogeneousBuildup != null && heterogeneousBuildup != null)
             {
@@ -146,12 +146,12 @@ namespace BSP.BL.Calculation
         {
             var ids = new int[layersIds.Length + 1];
             ids[0] = sourceId;
-            for (var i = 1; i < layersIds.Length + 1; i++)
-                ids[i] = layersIds[i];
+            for (var i = 0; i < layersIds.Length; i++)
+                ids[i + 1] = layersIds[i];
             return ids;
         }
 
-        public string ExportToString(float[] energies, int environmentMaterialId, int sourceMaterialId, int[] selectedMaterialsIds, Type? homogeneousBuildupType = null, Type? doseFactorType = null, int exposureGeometryId = 1, int organId = 1,  bool exportAllowed = false)
+        public string ExportToString(double[] energies, int environmentMaterialId, int sourceMaterialId, int[] selectedMaterialsIds, Type? homogeneousBuildupType = null, Type? doseFactorType = null, int exposureGeometryId = 1, int organId = 1,  bool exportAllowed = false)
         {
             if (exportAllowed)
             {

@@ -22,7 +22,7 @@ namespace BSP.BL.Geometries
         /// <param name="selfabsorptionLength"></param>
         /// <param name="shieldEffecThicknessFactor"></param>
         /// <returns></returns>
-        protected double[] GetUDWithFactors(float[] massAttenuationFactors, double sourceDensity, double selfabsorptionLength, float[] shieldsMassThicknesses, double shieldEffecThicknessFactor)
+        protected double[] GetUDWithFactors(double[] massAttenuationFactors, double sourceDensity, double selfabsorptionLength, float[] shieldsMassThicknesses, double shieldEffecThicknessFactor)
         {
             var ud = new double[massAttenuationFactors.Length];
             ud[0] = massAttenuationFactors[0] * sourceDensity * selfabsorptionLength;

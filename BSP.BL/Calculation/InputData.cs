@@ -12,9 +12,9 @@ namespace BSP.BL.Calculation
     /// </summary>
     public class InputData
     {
-        public float[] massEnvironmentAbsorptionFactors;
-        public float[][] massAttenuationFactors;
-        public float[][][] BuildupFactors;
+        public double[] massEnvironmentAbsorptionFactors;
+        public double[][] massAttenuationFactors;
+        public double[][][] BuildupFactors;
 
         public List<ShieldLayer> Layers;
 
@@ -57,7 +57,7 @@ namespace BSP.BL.Calculation
                 IsSelfAbsorptionAllowed = IsSelfAbsorptionAllowed,
                 CalculationDistance = CalculationDistance,
                 BuildupProcessor = BuildupProcessor,
-                BuildupFactors = BuildupFactors != null ? BuildupFactors[EnergyIndex] : new float[0][],
+                BuildupFactors = BuildupFactors != null ? BuildupFactors[EnergyIndex] : new double[0][],
                 CancellationToken = CancellationToken,
                 Progress = Progress,
             };
