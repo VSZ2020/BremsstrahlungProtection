@@ -9,6 +9,7 @@ namespace BSP.BL.Services
             {typeof(CylinderRadial), "Cylinder Radial" },
             {typeof(CylinderAxial), "Cylinder Axial" },
             {typeof(Parallelepiped), "Parallelepiped" },
+            {typeof(PointGeometry), "Point" },
         };
 
         public static Dictionary<Type, string> Geometries => availableGeometries;
@@ -53,6 +54,7 @@ namespace BSP.BL.Services
                 Type e when e == typeof(CylinderRadial) => "SourceFormCylinderRadial",
                 Type e when e == typeof(CylinderAxial) => "SourceFormCylinderAxial",
                 Type e when e == typeof(Parallelepiped) => "SourceFormParallelepiped",
+                Type e when e == typeof(PointGeometry) => "SourceFormPoint",
                 _ => null
             };
         }

@@ -159,6 +159,7 @@
     <v:String x:Key="SourceFormCylinderRadial">Cylinder Radial</v:String>
     <v:String x:Key="SourceFormCylinderAxial">Cylinder Axial</v:String>
     <v:String x:Key="SourceFormParallelepiped">Parallelepiped</v:String>
+    <v:String x:Key="SourceFormPoint">Point</v:String>
     <!--#endregion-->
 
     <!--#region Buildup names -->

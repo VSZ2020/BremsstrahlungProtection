@@ -11,6 +11,16 @@ namespace BSP.BL.Geometries
         public abstract double GetNormalizationFactor();
     }
 
+
+    public class EmptyForm : BaseSourceForm
+    {
+        public override double GetNormalizationFactor()
+        {
+            return 1;
+        }
+    }
+
+
     public class CylinderForm : BaseSourceForm
     {
         public float Radius;
