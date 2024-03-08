@@ -65,12 +65,15 @@ namespace BSP.BL.Geometries
                             shieldsMassThicknesses: layersMassThickness,
                             shieldEffecThicknessFactor: effShieldThicknessFactor);
 
+                        if (!input.IsSelfAbsorptionAllowed)
+                            ud = ud.Skip(1).ToArray();
+
                         //Полная экспонента ослабления
                         double totalLooseExp = Math.Exp(-ud.Sum());
                         
 
                         //Расчет вклада поля рассеянного излучения
-                        double buildupFactor = input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
+                        double buildupFactor = input.BuildupProcessor != null && ud.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
                         //Текущее значение интеграла
                         currIntegral += rho * totalLooseExp / (z * z + rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi)) * buildupFactor;
@@ -113,11 +116,14 @@ namespace BSP.BL.Geometries
                     shieldsMassThicknesses: layersMassThickness,
                     shieldEffecThicknessFactor: effShieldThicknessFactor);
 
+                if (!input.IsSelfAbsorptionAllowed)
+                    ud = ud.Skip(1).ToArray();
+
                 //Полная экспонента ослабления
                 double totalLooseExp = Math.Exp(-ud.Sum());
 
                 //Расчет вклада поля рассеянного излучения
-                double buildupFactor = input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
+                double buildupFactor = input.BuildupProcessor != null && ud.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
                 //Текущее значение интеграла
                 return rho * totalLooseExp / cFull * buildupFactor;

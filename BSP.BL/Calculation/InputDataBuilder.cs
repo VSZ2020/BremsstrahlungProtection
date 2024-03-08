@@ -34,7 +34,7 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Флаг учета самопоглощения в материале источника
         /// </summary>
-        public bool IsSelfAbsorptionAllowed = false;
+        public bool IsSelfAbsorptionAllowed = true;
 
         /// <summary>
         /// Расстояние от точечного источника до точки регистрации излучения
@@ -125,6 +125,12 @@ namespace BSP.BL.Calculation
             return this;
         }
 
+        public InputDataBuilder WithSelfabsorption(bool isSelfAbsorptionAllowed)
+        {
+            this.IsSelfAbsorptionAllowed = isSelfAbsorptionAllowed;
+            return this;
+        }
+
         public InputData Build()
         {
             return new InputData()
@@ -139,6 +145,7 @@ namespace BSP.BL.Calculation
                 SourceDensity = this.SourceDensity,
                 Layers = this.Layers ?? new List<ShieldLayer>(),
                 Progress = this.Progress,
+                IsSelfAbsorptionAllowed = this.IsSelfAbsorptionAllowed
             };
         }
 

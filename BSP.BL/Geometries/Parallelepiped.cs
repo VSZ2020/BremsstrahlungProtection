@@ -76,10 +76,13 @@ namespace BSP.BL.Geometries
                         var m = R / (c + b);
                         var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
 
+                        if (!input.IsSelfAbsorptionAllowed)
+                            ud = ud.Skip(1).ToArray();
+
                         double totalLooseExp = Math.Exp(-ud.Sum());
 
                         //Расчет вклада поля рассеянного излучения
-                        double buildupFactor = input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
+                        double buildupFactor = input.BuildupProcessor != null && ud.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
                         sumIntegral += totalLooseExp / R2 * dx * dy * dz * buildupFactor;
                     }
@@ -119,10 +122,13 @@ namespace BSP.BL.Geometries
                 var m = R / (c + b);
                 var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
 
+                if (!input.IsSelfAbsorptionAllowed)
+                    ud = ud.Skip(1).ToArray();
+
                 double totalLooseExp = Math.Exp(-ud.Sum());
 
                 //Расчет вклада поля рассеянного излучения
-                double buildupFactor = input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
+                double buildupFactor = input.BuildupProcessor != null && ud.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
                 return totalLooseExp / R2 * buildupFactor;
             },

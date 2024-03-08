@@ -18,7 +18,7 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Флаг учета самопоглощения в материале источника
         /// </summary>
-        public bool IsSelfAbsorptionAllowed = false;
+        public bool IsSelfAbsorptionAllowed = true;
 
         /// <summary>
         /// Расстояние от точечного источника до точки регистрации излучения

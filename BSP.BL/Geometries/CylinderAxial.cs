@@ -44,7 +44,8 @@ namespace BSP.BL.Geometries
                 layersMassThickness,
                 input.CancellationToken,
                 input.BuildupFactors,
-                input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup : null);
+                input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup : null,
+                input.IsSelfAbsorptionAllowed);
 
             //Второй интеграл по телу вращения
             var P2 = ExternalIntegralByAngle(
@@ -57,14 +58,15 @@ namespace BSP.BL.Geometries
                 layersMassThickness,
                 input.CancellationToken,
                 input.BuildupFactors,
-                input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup : null);
+                input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup : null,
+                input.IsSelfAbsorptionAllowed);
 
             var sourceVolume = form.GetNormalizationFactor();
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume;
         }
 
         #region ExternalIntegralByAngle
-        private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null)
+        private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
         {
             //Шаг интегрирования по углам
             double dtheta = (to - from) / N;
@@ -75,7 +77,7 @@ namespace BSP.BL.Geometries
                 //Итерируемая тета
                 double theta = from + dtheta / 2.0 + dtheta * i;
 
-                sum += Math.Sin(theta) * InnerIntegralByRadius(innerFrom(theta), innerTo(theta), N, theta, sourceDensity, um, layersDm, token, buildupFactors, BuildupProcessor) * dtheta;
+                sum += Math.Sin(theta) * InnerIntegralByRadius(innerFrom(theta), innerTo(theta), N, theta, sourceDensity, um, layersDm, token, buildupFactors, BuildupProcessor, isSelfabsorptionAllowed) * dtheta;
             }
 
             return !token.IsCancellationRequested ? sum : 0;
@@ -83,7 +85,7 @@ namespace BSP.BL.Geometries
         #endregion
 
         #region InnerIntegralByRadius
-        private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null)
+        private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
         {
             //Шаг интегрирования для интеграла по dr
             double dr = (to - from) / N;
@@ -101,8 +103,11 @@ namespace BSP.BL.Geometries
                     shieldsMassThicknesses: layersDm,
                     shieldEffecThicknessFactor: sec(theta));
 
+                if (!isSelfabsorptionAllowed)
+                    UD = UD.Skip(1).ToArray();
+
                 //Учет вклада поля рассеянного излучения                                                                       
-                var buildupFactor = BuildupProcessor?.Invoke(UD, buildupFactors) ?? 1.0;
+                var buildupFactor = BuildupProcessor != null && UD.Length > 0 ? BuildupProcessor.Invoke(UD, buildupFactors) : 1.0;
 
                 sum += Math.Exp(-UD.Sum()) * buildupFactor;
             }
@@ -143,8 +148,14 @@ namespace BSP.BL.Geometries
                             shieldsMassThicknesses: layersMassThickness,
                             shieldEffecThicknessFactor: sec(theta));
 
+                if (!input.IsSelfAbsorptionAllowed)
+                    UD = UD.Skip(1).ToArray();
+
                 //Учет вклада поля рассеянного излучения                                                                       
-                var buildupFactor = input.BuildupProcessor?.EvaluateComplexBuildup(UD, input.BuildupFactors) ?? 1.0;
+                var buildupFactor = UD.Length > 0 && input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(UD, input.BuildupFactors) : 1.0;
+                
+                if (double.IsNaN(buildupFactor) || double.IsInfinity(buildupFactor))
+                    buildupFactor = 0.0;
 
                 return Math.Exp(-UD.Sum()) * buildupFactor;
             }

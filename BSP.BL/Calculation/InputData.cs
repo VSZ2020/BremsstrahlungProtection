@@ -26,7 +26,7 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Флаг учета самопоглощения в материале источника
         /// </summary>
-        public bool IsSelfAbsorptionAllowed = false;
+        public bool IsSelfAbsorptionAllowed = true;
 
         /// <summary>
         /// Расстояние от точечного источника до точки регистрации излучения
@@ -54,12 +54,12 @@ namespace BSP.BL.Calculation
                 Layers = Layers,
                 massAttenuationFactors = massAttenuationFactors[EnergyIndex],
                 SourceDensity = SourceDensity,
-                IsSelfAbsorptionAllowed = IsSelfAbsorptionAllowed,
                 CalculationDistance = CalculationDistance,
                 BuildupProcessor = BuildupProcessor,
                 BuildupFactors = BuildupFactors != null ? BuildupFactors[EnergyIndex] : new double[0][],
                 CancellationToken = CancellationToken,
                 Progress = Progress,
+                IsSelfAbsorptionAllowed = IsSelfAbsorptionAllowed,
             };
         }
     }

@@ -198,7 +198,7 @@ namespace BSP.ViewModels
                     .WithSourceDensity(SourceTab.SourceDensity)
                     .WithCalculationPoint(CalculationDistance)
                     .WithCancellationToken(this.tokenSource.Token)
-                    .WithProgress(progress)
+                    .WithProgress(progress).WithSelfabsorption(!IsPointSource)
                     .Build();
 
                 var doseFactors = App.GetService<DoseFactorsService>().GetDoseConversionFactors(
