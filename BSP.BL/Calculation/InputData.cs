@@ -23,6 +23,8 @@ namespace BSP.BL.Calculation
         /// </summary>
         public float SourceDensity = 0;
 
+        public double SourceActivity = 0;
+            
         /// <summary>
         /// Флаг учета самопоглощения в материале источника
         /// </summary>
@@ -36,7 +38,7 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Рассчитанные потоки энергий тормозного излучения [МэВ/(с * распад)]
         /// </summary>
-        public double[] BremsstrahlungFlux;
+        public double[] BremsstrahlungEnergyFluxes;
 
         /// <summary>
         /// Класс, содержащий метод расчета фактора накопления для гетерогенной защиты. Внутри него хранится ссылка на метод расчета фактора накопления для гомогенной защиты

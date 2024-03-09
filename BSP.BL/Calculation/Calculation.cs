@@ -9,8 +9,9 @@ namespace BSP.BL.Calculation
         public static async Task<OutputValue> StartAsync(InputData input, BaseGeometry form)
         {
             //Создаем выходной массив
-            int energiesCount = input.BremsstrahlungFlux.Length;
+            int energiesCount = input.BremsstrahlungEnergyFluxes.Length;
             OutputValue output = new OutputValue();
+            output.PartialFluxDensity = new double[energiesCount];
             output.PartialEnergyFluxDensity = new double[energiesCount];
             output.PartialAirKerma = new double[energiesCount];
             
@@ -22,9 +23,11 @@ namespace BSP.BL.Calculation
                 {
                     //Вычисляем интеграл
                     double fluence = form.GetFluence(input.BuildSingleEnergyInputData(energyIndex));
-
-                    //Вычисляем парциальную плотность потока энергии [МэВ/(с * см2)]
-                    output.PartialEnergyFluxDensity[energyIndex] = input.BremsstrahlungFlux[energyIndex] * fluence;
+                    
+                    //Вычисляем парциальную плотность потока квантов тормозного излучения [1/см2/с]
+                    output.PartialFluxDensity[energyIndex] = fluence * input.SourceActivity;
+                    //Вычисляем парциальную плотность потока энергии [МэВ/см2/с]
+                    output.PartialEnergyFluxDensity[energyIndex] = input.BremsstrahlungEnergyFluxes[energyIndex] * fluence;
                     //Вычисляем парциальную мощность воздушной кермы [Гр/ч]
                     output.PartialAirKerma[energyIndex] =
                         CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[energyIndex] * output.PartialEnergyFluxDensity[energyIndex];

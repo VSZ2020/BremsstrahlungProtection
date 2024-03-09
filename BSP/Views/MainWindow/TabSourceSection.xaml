@@ -21,11 +21,11 @@
             <uc:SourceMaterialSection/>
             <GroupBox Style="{StaticResource DefaultGroupBox}" Header="{StaticResource tab_Source_CutoffEnergy_GroupName}">
                 <StackPanel>
-                    <CheckBox Content="{StaticResource tab_Source_CutoffEnergy_UseCutoff}" Margin="0,0,0,5" IsChecked="{Binding IsUseCutoffEnergy}"/>
+                    <CheckBox Content="{StaticResource tab_Source_CutoffEnergy_UseCutoff}" Margin="0,0,0,5" IsChecked="{Binding SourceTab.IsUseCutoffEnergy}"/>
                     <TextBox Text="{Binding SourceTab.CutoffBremsstrahlungEnergy}" 
                              Style="{StaticResource DefaultTextBox}"
                              ToolTip="{StaticResource tab_Source_CutoffEnergy_Hint}"
-                             IsEnabled="{Binding IsUseCutoffEnergy}"/>
+                             IsEnabled="{Binding SourceTab.IsUseCutoffEnergy}"/>
                     <TextBlock Text="{StaticResource tab_Source_CutoffEnergy_Hint}" 
                                TextWrapping="Wrap" Margin="0,5,0,0" 
                                FontStyle="Normal" Foreground="DarkSlateGray"/>

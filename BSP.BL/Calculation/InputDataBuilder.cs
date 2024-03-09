@@ -10,15 +10,13 @@ namespace BSP.BL.Calculation
 {
     public class InputDataBuilder
     {
-        public InputDataBuilder(RadionuclidesService radionuclidesService, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService)
+        public InputDataBuilder(MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService)
         {
             this.materialsService = materialsService;
-            this.radionuclidesService = radionuclidesService;
             this.buildupService = buildupService;
             this.doseFactorsService = doseFactorsService;
         }
-
-        private readonly RadionuclidesService radionuclidesService;
+        
         private readonly MaterialsService materialsService;
         private readonly BuildupService buildupService;
         private readonly DoseFactorsService doseFactorsService;
@@ -31,6 +29,8 @@ namespace BSP.BL.Calculation
 
         public float SourceDensity = 0;
 
+        public double SourceActivity = 0;
+        
         /// <summary>
         /// Флаг учета самопоглощения в материале источника
         /// </summary>
@@ -42,9 +42,9 @@ namespace BSP.BL.Calculation
         public double CalculationDistance = 1;
 
         /// <summary>
-        /// Рассчитанные выходы энергий тормозного излучения [МэВ/распад]
+        /// Рассчитанные потоки энергий тормозного излучения [МэВ/с]
         /// </summary>
-        public double[] BremsstrahlungFluxes;
+        public double[] BremsstrahlungEnergyFluxes;
 
         /// <summary>
         /// Класс, содержащий метод расчета фактора накопления для гетерогенной защиты. Внутри него хранится ссылка на метод расчета фактора накопления для гомогенной защиты
@@ -54,20 +54,11 @@ namespace BSP.BL.Calculation
         public CancellationToken CancellationToken;
 
         public IProgress<int> Progress;
-
-
-        public InputDataBuilder WithBremsstrahlungEnergyFluxes(int[] selectedRadionuclidesIds, float sourceZeff, double activity)
-        {
-            (_, var energies, var yields) = radionuclidesService.GetEnergyIntensityDataArrays(selectedRadionuclidesIds);
-            var bremsstrahlungEnergyYields = Bremsstrahlung.GetBremsstrahlungEnergyYields(energies, yields, sourceZeff);
-            
-            this.BremsstrahlungFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(bremsstrahlungEnergyYields, activity);
-            return this;
-        }
+        
 
         public InputDataBuilder WithBremsstrahlungEnergyFluxes(double[] fluxes)
         {
-            this.BremsstrahlungFluxes = fluxes;
+            this.BremsstrahlungEnergyFluxes = fluxes;
             return this;
         }
 
@@ -84,7 +75,7 @@ namespace BSP.BL.Calculation
             return this;
         }
 
-        public InputDataBuilder WithBuildup(Type homogeneousBuildup, Type? heterogeneousBuildup, int sourceMaterialId, int[] shieldMaterialsIds, double[] energies)
+        public InputDataBuilder WithBuildup(Type? homogeneousBuildup, Type? heterogeneousBuildup, int sourceMaterialId, int[] shieldMaterialsIds, double[] energies)
         {
             if (homogeneousBuildup != null && heterogeneousBuildup != null)
             {
@@ -118,6 +109,12 @@ namespace BSP.BL.Calculation
             this.SourceDensity = density;
             return this;
         }
+        
+        public InputDataBuilder WithSourceActivity(double activity)
+        {
+            this.SourceActivity = activity;
+            return this;
+        }
 
         public InputDataBuilder WithProgress(IProgress<int> prg)
         {
@@ -137,12 +134,13 @@ namespace BSP.BL.Calculation
             {
                 massEnvironmentAbsorptionFactors = this.massEnvironmentAbsorptionFactors,
                 massAttenuationFactors = this.massAttenuationFactors,
-                BremsstrahlungFlux = this.BremsstrahlungFluxes,
+                BremsstrahlungEnergyFluxes = this.BremsstrahlungEnergyFluxes,
                 BuildupFactors = this.BuildupFactors,
                 BuildupProcessor = this.BuildupProcessor,
                 CalculationDistance = this.CalculationDistance,
                 CancellationToken = this.CancellationToken,
                 SourceDensity = this.SourceDensity,
+                SourceActivity =  this.SourceActivity,
                 Layers = this.Layers ?? new List<ShieldLayer>(),
                 Progress = this.Progress,
                 IsSelfAbsorptionAllowed = this.IsSelfAbsorptionAllowed
@@ -178,7 +176,7 @@ namespace BSP.BL.Calculation
                 //Записываем данные по тормозному излучению
                 for (var i = 0; i < energies.Length; i++)
                 {
-                    builder.AppendLine(string.Format("{0:e" + precision + "}{1}{2:e" + precision + "}", energies[i], colDelimeter, this.BremsstrahlungFluxes[i]));
+                    builder.AppendLine(string.Format("{0:e" + precision + "}{1}{2:e" + precision + "}", energies[i], colDelimeter, this.BremsstrahlungEnergyFluxes[i]));
                 }
 
 

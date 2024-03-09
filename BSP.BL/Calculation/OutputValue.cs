@@ -15,9 +15,17 @@ namespace BSP.BL.Calculation
         /// </summary>
         public double[] PartialAirKerma;
 
+        /// <summary>
+        /// Массив с парциальными значениями плотности потока энергии
+        /// </summary>
         public double[] PartialEnergyFluxDensity;
+
+        /// <summary>
+        /// Массив с парциальными значениями плотности потока кнватов тормозного излучения
+        /// </summary>
+        public double[] PartialFluxDensity;
         
-        public double[] ConvertTo(double[] doseFactors)
+        public double[] ConvertToAnotherDose(double[] doseFactors)
         {
             return Enumerable.Range(0, PartialAirKerma.Length).Select(i => PartialAirKerma[i] * doseFactors[i]).ToArray();
         }

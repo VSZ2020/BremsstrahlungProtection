@@ -49,7 +49,7 @@ namespace BSP.ViewModels
         private bool isShowPartialDoseRates = false;
         private bool isPointSource = false;
         private bool isShowInterpolatedInputData = false;
-        private bool isUseCutoff = true;
+        
         private string resultsText;
 
         private float _calculationDistance = 100;
@@ -66,7 +66,7 @@ namespace BSP.ViewModels
         public bool IsShowPartialDoseRates { get => isShowPartialDoseRates; set { isShowPartialDoseRates = value; OnChanged(); } }
         public bool IsPointSource { get => isPointSource; set { isPointSource = value; OnChanged(); } }
         public bool IsShowInputData { get => isShowInterpolatedInputData; set { isShowInterpolatedInputData = value; OnChanged(); } }
-        public bool IsUseCutoffEnergy { get => isUseCutoff; set { isUseCutoff = value; OnChanged(); } }
+        
         public string ResultsText { get => resultsText; set { resultsText = value; OnChanged(); } }
 
         public float CalculationDistance { get => _calculationDistance; set { _calculationDistance = value; OnChanged(); } }
@@ -163,24 +163,12 @@ namespace BSP.ViewModels
                 IsEvaluationInProgress = true;
                 ResetProgress();
                 
+                //Обновляем экземпляр токена отмены операции
                 tokenSource = new CancellationTokenSource();
-
-                //Bremsstrahlung
-                //Выбираем только пары значений энергии и выхода ТИ, в которых значения отличны от нуля. Сортируем по возрастанию энергии.
-                var energyYieldData = SourceTab.EnergyYieldList
-                    .OrderBy(ei => ei.Energy)
-                    .Where(ei => ei.Energy > 0 && ei.EnergyYield > 0)
-                    .ToList();
-
-                //Если задан учет энергии отсечки, то фильтруем данные
-                if (this.isUseCutoff)
-                {
-                    energyYieldData = energyYieldData.Where(ei => ei.Energy >= SourceTab.CutoffBremsstrahlungEnergy).ToList();
-                }
-
-                var energies = energyYieldData.Select(e => (double)e.Energy).ToArray();
-                var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(energyYieldData.Select(y => y.EnergyYield).ToArray(), SourceTab.SourceTotalActivity);
-
+                
+                //Данные по спектру тормозного излучения
+                (double[] energies, double[] bremsstrahlungEnergyFluxes) = SourceTab.GetBremsstrahlungSpectrum();
+                
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
                 //Array.Sort(energies, bremsstrahlungEnergyFluxes);
                 var shields = ShieldingTab.ShieldLayers.ToList();
@@ -206,9 +194,10 @@ namespace BSP.ViewModels
                         SourceTab.SelectedSourceMaterial.Id,
                         shieldLayersIds, energies)
                     .WithSourceDensity(SourceTab.SourceDensity)
+                    .WithSourceActivity(SourceTab.SourceTotalActivity)
                     //Устанавливаем 0, т.к. расстояние уже учитывается последним слоем среды
                     .WithCalculationPoint(0)
-                    .WithCancellationToken(this.tokenSource.Token)
+                    .WithCancellationToken(tokenSource.Token)
                     .WithProgress(progress)
                     .WithSelfabsorption(!IsPointSource)
                     .Build();
@@ -222,7 +211,7 @@ namespace BSP.ViewModels
                 //Если отмечено поле вывода входных данных, то печатаем интерполированные значения входных данных расчета
                 ResultsText += builder.ExportToString(
                     energies,
-                    SelectedEnvironmentMaterial.Id,
+                    SelectedEnvironmentMaterial!.Id,
                     SourceTab.SelectedSourceMaterial.Id,
                     shieldLayersIds,
                     BuildupTab.SelectedBuildup.BuildupType,
@@ -237,13 +226,11 @@ namespace BSP.ViewModels
                 var discreteness = SourceTab.SourceDimensions.Select(d => d.Discreteness).ToArray();
                 var formProcessor = GeometryService.GetGeometryInstance(SourceTab.SelectedSourceForm.FormType, dimensions, discreteness);
 
-                var airKermaDoseRates = await Calculation.StartAsync(input, formProcessor);
-                airKermaDoseRates.PartialAirKerma = airKermaDoseRates.ConvertTo(doseFactors);
-                progress.Report(100);
+                var results = await Calculation.StartAsync(input, formProcessor);
+                results.PartialAirKerma = results.ConvertToAnotherDose(doseFactors);
+                progress?.Report(100);
 
-                FillOutputTable(airKermaDoseRates, energies, this.precision);
-
-                IsEvaluationInProgress = false;
+                FillOutputTable(results, energies, this.precision);
             }
             else
             {
@@ -253,6 +240,7 @@ namespace BSP.ViewModels
                     ((Application.Current.Resources["msg_Error_CalculationCantBeStarted"] as string) ?? "Calculation can't be launched due to error(s):") +
                     "\n" + msgs);
             }
+            IsEvaluationInProgress = false;
         }
         #endregion
 
@@ -276,8 +264,8 @@ namespace BSP.ViewModels
             //CalculationDate   Form    Material    Distance    DoseRate    Units
             string generalFormat = "{0,-20:dd.MM.yyyy HH:mm}{1,-30}{2,30}{3,10} cm{4,15:e" + precise + "} {5}\n";
 
-            //Energy    DoseRate    Units
-            string partialDataFormat = "\t{0,10:e" + precise +"}\t{1,10:e"+ precise +"}\t{2,10:e"+ precise + "}\t{3}\n";
+            //Energy    FluxDensity     EnergyFluxDensity   DoseRate    Units
+            string partialDataFormat = "\t{0:e" + precise +"}\t{1:e"+ precise +"}\t{2:e"+ precise + "}\t{3:e" + precise + "}\t{4}\n";
 
 
             //Запрашиваем единицы измерения дозы
@@ -288,7 +276,7 @@ namespace BSP.ViewModels
             ResultsText += string.Format(generalFormat,
                 Application.Current.Resources["ResultsView_LaunchTim"] ?? "Launch time",
                 Application.Current.Resources["ResultsView_SourceForm"] ?? "Form",
-                Application.Current.Resources["ResultsView_SourceMaterial"] ?? "Material",
+                Application.Current.Resources["ResultsView_SourceMaterial"] ?? "Source Material",
                 Application.Current.Resources["ResultsView_CalculationPoint"] ?? "Distance from source",
                 Application.Current.Resources["ResultsView_DoseRate"] ?? "Dose rate",
                 "");
@@ -305,7 +293,8 @@ namespace BSP.ViewModels
             {
                 ResultsText += string.Format(partialDataFormat,
                     Application.Current.Resources["ResultsView_Energy"] ?? "Energy, MeV",
-                    Application.Current.Resources["ResultsView_EnergyFluxDensity"] ?? "Energy Flux Density",
+                    Application.Current.Resources["ResultsView_PhotonsFluxDensity"] ?? "Flux Density, 1/cm2/s",
+                    Application.Current.Resources["ResultsView_EnergyFluxDensity"] ?? "Energy Flux Density, MeV/cm2/s",
                     Application.Current.Resources["ResultsView_DoseRate"] ?? "Dose rate",
                     "");
 
@@ -313,6 +302,7 @@ namespace BSP.ViewModels
                 {
                     ResultsText += string.Format(partialDataFormat,
                     energies[i],
+                    results.PartialFluxDensity[i],
                     results.PartialEnergyFluxDensity[i],
                     results.PartialAirKerma[i],
                     units);

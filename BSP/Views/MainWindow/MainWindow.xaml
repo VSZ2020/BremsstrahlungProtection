@@ -7,14 +7,14 @@
         xmlns:vm="clr-namespace:BSP.ViewModels"
         xmlns:local="clr-namespace:BSP"
         mc:Ignorable="d"
-        Title="" Width="830" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Height="712" MinHeight="450">
+        Title="" Width="830" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Height="760" MinHeight="450">
     <Grid Background="#FFF0F0F0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
