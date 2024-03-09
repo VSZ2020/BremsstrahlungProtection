@@ -70,6 +70,7 @@
     <v:String x:Key="tab_Source_Bremsstrahlung_Hint">Yields per average energy of group</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Energy">Energy, MeV</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Yield">Yield, MeV/decay</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_EnergyFlux">Energy Flux, MeV/s</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Btn_UpdateYields">Update</v:String>
 
     <v:String x:Key="tab_Source_SourceGeometry_GroupHeader">Source Geometry</v:String>

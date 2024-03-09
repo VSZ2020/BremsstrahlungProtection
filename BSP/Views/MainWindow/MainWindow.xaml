@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:BSP.ViewModels"
         xmlns:local="clr-namespace:BSP"
         mc:Ignorable="d"
-        Title="" Width="830" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Height="760" MinHeight="450">
+        Title="" Width="830" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Height="760" MinHeight="450" MinWidth="700">
     <Grid Background="#FFF0F0F0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

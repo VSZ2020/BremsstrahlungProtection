@@ -23,7 +23,6 @@ namespace BSP.BL.Services
         {
             { typeof(BuildupBroder), "Broder" },
             { typeof(BuildupLastLayer), "Last layer" },
-            { typeof(BuildupComposition), "Product" },
             { typeof(BuildupAverage), "Weighted average" }
         };
 
@@ -45,9 +44,6 @@ namespace BSP.BL.Services
 
             if (heteroBuildupType == typeof(BuildupLastLayer))
                 return new BuildupLastLayer(homogeneousBuildup.EvaluateBuildup);
-
-            if (heteroBuildupType == typeof(BuildupComposition))
-                return new BuildupComposition(homogeneousBuildup.EvaluateBuildup);
 
             if (heteroBuildupType == typeof(BuildupAverage))
                 return new BuildupAverage(homogeneousBuildup.EvaluateBuildup);

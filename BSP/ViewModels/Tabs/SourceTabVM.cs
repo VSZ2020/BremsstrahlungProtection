@@ -186,10 +186,11 @@ namespace BSP.ViewModels.Tabs
                     });
                 }
             }
-        } 
+        }
         #endregion
 
 
+        #region GetBremsstrahlungSpectrum
         /// <summary>
         /// Возвращает сведения о потоках энергии тормозного излучения 
         /// </summary>
@@ -200,7 +201,7 @@ namespace BSP.ViewModels.Tabs
             //Выбираем только пары значений энергии и выхода ТИ, в которых значения отличны от нуля. Сортируем по возрастанию энергии.
             var energyYieldData = EnergyYieldList
                 .OrderBy(ei => ei.Energy)
-                .Where(ei => ei.Energy > 0 && ei.EnergyYield > 0)
+                .Where(ei => ei.Energy > 0)
                 .ToList();
 
             //Если задан учет энергии отсечки, то фильтруем данные
@@ -214,20 +215,23 @@ namespace BSP.ViewModels.Tabs
             var energies = energyYieldData
                 .Select(e => (double)e.Energy)
                 .ToArray();
-            var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(
-                energyYieldData
-                    .Select(y => y.EnergyYield)
-                    .ToArray(), 
-                this.SourceTotalActivity);
-            
+
+            //var bremsstrahlungEnergyFluxes = Bremsstrahlung.GetBremsstrahlungFluxOfEnergy(
+            //    energyYieldData
+            //        .Select(y => y.EnergyYield)
+            //        .ToArray(), 
+            //    this.SourceTotalActivity);
+            var bremsstrahlungEnergyFluxes = energyYieldData.Select(e => e.EnergyFlux).ToArray();
+
             return (energies, bremsstrahlungEnergyFluxes);
-        }
-        
+        } 
+        #endregion
+
         public void OnRadionuclidesListUpdated()
         {
             ClearYieldsData();
-            FillBremsstrahlungEnergyYieldData();
             SourceTotalActivity = SelectedRadionuclides.Sum(r => r.Activity);
+            FillBremsstrahlungEnergyYieldData();
         }
 
         public void AddRadionuclide()

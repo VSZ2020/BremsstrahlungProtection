@@ -87,7 +87,7 @@
             <Setter.Value>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
