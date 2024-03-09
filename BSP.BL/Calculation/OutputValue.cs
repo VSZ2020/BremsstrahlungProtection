@@ -8,16 +8,18 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Возвращает суммарную мощность дозы
         /// </summary>
-        public double TotalDoseRate => PartialDoseRates != null ? PartialDoseRates.Sum() : 0;
+        public double TotalDoseRate => PartialAirKerma != null ? PartialAirKerma.Sum() : 0;
 
         /// <summary>
         /// Массив с парциальными мощностями доз (по каждой энергетической группе тормозного излучения)
         /// </summary>
-        public double[] PartialDoseRates;
+        public double[] PartialAirKerma;
 
+        public double[] PartialEnergyFluxDensity;
+        
         public double[] ConvertTo(double[] doseFactors)
         {
-            return Enumerable.Range(0, PartialDoseRates.Length).Select(i => PartialDoseRates[i] * doseFactors[i]).ToArray();
+            return Enumerable.Range(0, PartialAirKerma.Length).Select(i => PartialAirKerma[i] * doseFactors[i]).ToArray();
         }
     }
 }

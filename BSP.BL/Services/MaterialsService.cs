@@ -1,11 +1,8 @@
 ﻿using BSP.BL.DTO;
-using BSP.BL.Extensions;
 using BSP.BL.Interpolation;
 using BSP.BL.Interpolation.Functions;
 using BSP.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BSP.BL.Services
 {
@@ -34,9 +31,8 @@ namespace BSP.BL.Services
 
         public List<MaterialDto> GetMaterialsById(int[] ids)
         {
-            var entities = context.Materials.AsNoTracking().Where(m => ids.Contains(m.Id)).ToList();
-            return entities
-                .Select(e => new MaterialDto() { Id = e.Id, Name = e.Name, Density = e.Density, Z = e.Z, Weight = e.Weight })
+            return ids
+                .Select(id => GetMaterialById(id))
                 .ToList();
         }
 

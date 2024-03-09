@@ -158,7 +158,7 @@ namespace BSP.BL.Calculation
             return ids;
         }
 
-        public string ExportToString(double[] energies, int environmentMaterialId, int sourceMaterialId, int[] selectedMaterialsIds, Type? homogeneousBuildupType = null, Type? doseFactorType = null, int exposureGeometryId = 1, int organId = 1,  bool exportAllowed = false)
+        public string ExportToString(double[] energies, int environmentMaterialId, int sourceMaterialId, int[] selectedMaterialsIds, Type? homogeneousBuildupType = null, Type? doseFactorType = null, int exposureGeometryId = 1, int organId = 1,  bool exportAllowed = false, int precision = 3)
         {
             if (exportAllowed)
             {
@@ -178,7 +178,7 @@ namespace BSP.BL.Calculation
                 //Записываем данные по тормозному излучению
                 for (var i = 0; i < energies.Length; i++)
                 {
-                    builder.AppendLine(string.Format("{0:e3}{1}{2:e3}", energies[i], colDelimeter, this.BremsstrahlungFluxes[i]));
+                    builder.AppendLine(string.Format("{0:e" + precision + "}{1}{2:e" + precision + "}", energies[i], colDelimeter, this.BremsstrahlungFluxes[i]));
                 }
 
 
@@ -197,11 +197,11 @@ namespace BSP.BL.Calculation
                 for (var i = 0; i < energies.Length; i++)
                 {
                     //Записываем значение для коэффициента поглощения в среде
-                    builder.Append(string.Format("{0:e3}{1}{2:e3}{3}", energies[i], colDelimeter, this.massEnvironmentAbsorptionFactors[i], colDelimeter));
+                    builder.Append(string.Format("{0:e" + precision + "}{1}{2:e" + precision + "}{3}", energies[i], colDelimeter, this.massEnvironmentAbsorptionFactors[i], colDelimeter));
 
                     //Записываем значения коэффициентов ослабления для каждого материала
                     for (var j = 0; j < materialsNames.Length; j++)
-                        builder.Append(string.Format("{0:e3}{1}", this.massAttenuationFactors[i][j], colDelimeter));
+                        builder.Append(string.Format("{0:e" + precision + "}{1}", this.massAttenuationFactors[i][j], colDelimeter));
 
                     builder.Append("\n");
                 }
@@ -221,12 +221,12 @@ namespace BSP.BL.Calculation
                     //Записываем значения коэффициентов формулы расчета фактора накопления для каждой энергии
                     for (var i = 0; i < energies.Length; i++)
                     {
-                        builder.Append(string.Format("{0:e3}{1}", energies[i], colDelimeter));
+                        builder.Append(string.Format("{0:e" + precision + "}{1}", energies[i], colDelimeter));
 
                         //Записываем значения коэффициентов расчета фактора накопления для каждого материала
                         for (var j = 0; j < materialsNames.Length; j++)
                             for (var k = 0; k < buildupCoefficientsNames.Length; k++)
-                                builder.Append(string.Format("{0:e3}{1}", this.BuildupFactors[i][j][k], colDelimeter));
+                                builder.Append(string.Format("{0:e" + precision + "}{1}", this.BuildupFactors[i][j][k], colDelimeter));
 
                         builder.Append("\n");
                     }
@@ -242,7 +242,7 @@ namespace BSP.BL.Calculation
                     builder.Append(string.Format("{0}{1}{2}\n", "Energy(MeV)", colDelimeter, $"{doseFactorName} ({units})"));
                     for (var i = 0; i < energies.Length; i++)
                     {
-                        builder.AppendLine(string.Format("{0:e3}{1}{2:e3}{3}", energies[i], colDelimeter, doseFactors[i], colDelimeter));
+                        builder.AppendLine(string.Format("{0:e3}{1}{2:e" + precision + "}{3}", energies[i], colDelimeter, doseFactors[i], colDelimeter));
                     }
                 }
 

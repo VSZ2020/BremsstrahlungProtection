@@ -137,6 +137,7 @@
     <v:String x:Key="ResultsView_SourceMaterial">Source material</v:String>
     <v:String x:Key="ResultsView_CalculationPoint">Distance</v:String>
     <v:String x:Key="ResultsView_Energy">Energy, MeV</v:String>
+    <v:String x:Key="ResultsView_EnergyFluxDensity">Energy flux density, MeV/(s cm2)</v:String>
     <v:String x:Key="ResultsView_DoseRate">Dose rate</v:String>
     <!--#endregion-->
 

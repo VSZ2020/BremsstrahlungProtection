@@ -1,52 +1,55 @@
 ﻿using BSP.BL.Geometries;
-using System.Threading.Tasks;
 
 namespace BSP.BL.Calculation
 {
     public class Calculation
     {
-        private const double CONVERSION_CONST = 1.6E-10 * 3600; //(Дж/кг)/(МэВ/г) * (ч/сек)
+        private const double CONVERSION_CONST = 1.6E-10 * 3600; //(Дж/кг)/(МэВ/г) * (сек/ч)
 
         public static async Task<OutputValue> StartAsync(InputData input, BaseGeometry form)
         {
             //Создаем выходной массив
-            int EnergiesCount = input.BremsstrahlungFlux.Length;
-            OutputValue doseRate = new OutputValue();
-            doseRate.PartialDoseRates = new double[EnergiesCount];
-
+            int energiesCount = input.BremsstrahlungFlux.Length;
+            OutputValue output = new OutputValue();
+            output.PartialEnergyFluxDensity = new double[energiesCount];
+            output.PartialAirKerma = new double[energiesCount];
+            
             var calcTask = Task.Run(() =>
             {
                 int calculatedEnergiesCount = 0;
 
-                Parallel.For(0, EnergiesCount, EnergyIndex =>
+                Parallel.For(0, energiesCount, energyIndex =>
                 {
                     //Вычисляем интеграл
-                    double Fluence = form.GetFluence(input.BuildSingleEnergyInputData(EnergyIndex));
+                    double fluence = form.GetFluence(input.BuildSingleEnergyInputData(energyIndex));
 
-                    //Вычисляем парциальную мощность воздушной кермы: K = [МэВ/(с * г) → Гр/ч] / (4 * pi) * k * Am * Ib * um(air) * Intergral
-                    doseRate.PartialDoseRates[EnergyIndex] =
-                            CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[EnergyIndex] * input.BremsstrahlungFlux[EnergyIndex] * Fluence;
-
+                    //Вычисляем парциальную плотность потока энергии [МэВ/(с * см2)]
+                    output.PartialEnergyFluxDensity[energyIndex] = input.BremsstrahlungFlux[energyIndex] * fluence;
+                    //Вычисляем парциальную мощность воздушной кермы [Гр/ч]
+                    output.PartialAirKerma[energyIndex] =
+                        CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[energyIndex] * output.PartialEnergyFluxDensity[energyIndex];
+                    
                     //Если значение NaN, то ...
-                    if (double.IsNaN(doseRate.PartialDoseRates[EnergyIndex]))
+                    if (double.IsNaN(output.PartialAirKerma[energyIndex]))
                     {
-                        doseRate.PartialDoseRates[EnergyIndex] = 0.0;
+                        output.PartialAirKerma[energyIndex] = 0.0;
                         //Записываем в лог
                     }
                     //Если значение Inf, то ...
-                    if (double.IsInfinity(doseRate.PartialDoseRates[EnergyIndex]))
+                    if (double.IsInfinity(output.PartialAirKerma[energyIndex]))
                     {
-                        doseRate.PartialDoseRates[EnergyIndex] = 0.0;
+                        output.PartialAirKerma[energyIndex] = 0.0;
                         //Записываем в лог
                     }
 
-                    calculatedEnergiesCount++;
-                    input.Progress?.Report(calculatedEnergiesCount * 100 / EnergiesCount);
+                    Interlocked.Increment(ref calculatedEnergiesCount);
+                    //calculatedEnergiesCount++;
+                    input.Progress?.Report(calculatedEnergiesCount * 100 / energiesCount);
                 });
             });
 
             await calcTask;
-            return doseRate;
+            return output;
         }
     }
 }

@@ -1,12 +1,4 @@
-﻿/*
- * Создано в SharpDevelop.
- * Пользователь: Slava Izgagin
- * Дата: 06-Mar-20
- * Время: 19:21
- * 
- * Для изменения этого шаблона используйте меню "Инструменты | Параметры | Кодирование | Стандартные заголовки".
- */
-using System;
+﻿using System;
 
 namespace BSP.BL.Interpolation.Functions
 {
@@ -89,7 +81,7 @@ namespace BSP.BL.Interpolation.Functions
                         }
                     }
                 }
-                interpolatedValues[i] = sp.A + sp.B * (new_x[i] - sp.X) + sp.C * Math.Pow(new_x[i] - sp.X, 2) + sp.D * Math.Pow(new_x[i] - sp.X, 3);
+                interpolatedValues[i] = sp.A + sp.B * (new_x[i] - sp.X) + sp.C * (new_x[i] - sp.X) * (new_x[i] - sp.X) + sp.D * (new_x[i] - sp.X) * (new_x[i] - sp.X) * (new_x[i] - sp.X);
             }
             return interpolatedValues;
         }

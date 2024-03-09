@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using BSP.BL.Materials;
 
 namespace BSP.ViewModels
 {
@@ -161,8 +162,7 @@ namespace BSP.ViewModels
                 //Блокируем интерфейс
                 IsEvaluationInProgress = true;
                 ResetProgress();
-
-                var shieldLayersIds = ShieldingTab.ShieldLayers.Select(s => s.Id).ToArray();
+                
                 tokenSource = new CancellationTokenSource();
 
                 //Bremsstrahlung
@@ -183,10 +183,20 @@ namespace BSP.ViewModels
 
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
                 //Array.Sort(energies, bremsstrahlungEnergyFluxes);
-
+                var shields = ShieldingTab.ShieldLayers.ToList();
+                //Добавляем последним слоем слой среды с расстоянием, равным расстоянию до точки регистрации излучения
+                shields.Add(new ShieldLayer()
+                {
+                    Id = SelectedEnvironmentMaterial!.Id,
+                    Density = SelectedEnvironmentMaterial.Density,
+                    D = CalculationDistance
+                });
+                //Выбираем идентификаторы слоев защиты
+                var shieldLayersIds = shields.Select(s => s.Id).ToArray();
+                
                 var builder = App.GetService<InputDataBuilder>();
                 InputData input = builder
-                    .WithShieldLayers(ShieldingTab.ShieldLayers.ToList())
+                    .WithShieldLayers(shields)
                     .WithAttenuationFactors(SourceTab.SelectedSourceMaterial.Id, shieldLayersIds, energies)
                     .WithEnvironmentAbsorptionFactors(energies, SelectedEnvironmentMaterial?.Id ?? 1)
                     .WithBremsstrahlungEnergyFluxes(bremsstrahlungEnergyFluxes)
@@ -196,9 +206,11 @@ namespace BSP.ViewModels
                         SourceTab.SelectedSourceMaterial.Id,
                         shieldLayersIds, energies)
                     .WithSourceDensity(SourceTab.SourceDensity)
-                    .WithCalculationPoint(CalculationDistance)
+                    //Устанавливаем 0, т.к. расстояние уже учитывается последним слоем среды
+                    .WithCalculationPoint(0)
                     .WithCancellationToken(this.tokenSource.Token)
-                    .WithProgress(progress).WithSelfabsorption(!IsPointSource)
+                    .WithProgress(progress)
+                    .WithSelfabsorption(!IsPointSource)
                     .Build();
 
                 var doseFactors = App.GetService<DoseFactorsService>().GetDoseConversionFactors(
@@ -217,7 +229,8 @@ namespace BSP.ViewModels
                     DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
                     DoseFactorsTab.SelectedExposureGeometry.Id,
                     DoseFactorsTab.SelectedOrganTissue.Id,
-                    isShowInterpolatedInputData);
+                    isShowInterpolatedInputData,
+                    this.precision);
 
                 //Source form processor
                 var dimensions = SourceTab.SourceDimensions.Select(d => d.Value).ToArray();
@@ -225,10 +238,10 @@ namespace BSP.ViewModels
                 var formProcessor = GeometryService.GetGeometryInstance(SourceTab.SelectedSourceForm.FormType, dimensions, discreteness);
 
                 var airKermaDoseRates = await Calculation.StartAsync(input, formProcessor);
-                airKermaDoseRates.PartialDoseRates = airKermaDoseRates.ConvertTo(doseFactors);
+                airKermaDoseRates.PartialAirKerma = airKermaDoseRates.ConvertTo(doseFactors);
                 progress.Report(100);
 
-                FillOutputTable(airKermaDoseRates, energies);
+                FillOutputTable(airKermaDoseRates, energies, this.precision);
 
                 IsEvaluationInProgress = false;
             }
@@ -253,18 +266,18 @@ namespace BSP.ViewModels
 
 
         #region FillOutputTable
-        private void FillOutputTable(OutputValue results, double[] energies)
+        private void FillOutputTable(OutputValue results, double[] energies, int precise = 3)
         {
             if (tokenSource.IsCancellationRequested)
             {
                 return;
             }
-
+            
             //CalculationDate   Form    Material    Distance    DoseRate    Units
-            string generalFormat = "{0,-20:dd.MM.yyyy HH:mm}{1,-30}{2,30}{3,10} cm{4,15:e3} {5}\n";
+            string generalFormat = "{0,-20:dd.MM.yyyy HH:mm}{1,-30}{2,30}{3,10} cm{4,15:e" + precise + "} {5}\n";
 
             //Energy    DoseRate    Units
-            string partialDataFormat = "\t{0,10:0.####}\t{1,10:e3}\t{2}\n";
+            string partialDataFormat = "\t{0,10:e" + precise +"}\t{1,10:e"+ precise +"}\t{2,10:e"+ precise + "}\t{3}\n";
 
 
             //Запрашиваем единицы измерения дозы
@@ -292,14 +305,16 @@ namespace BSP.ViewModels
             {
                 ResultsText += string.Format(partialDataFormat,
                     Application.Current.Resources["ResultsView_Energy"] ?? "Energy, MeV",
+                    Application.Current.Resources["ResultsView_EnergyFluxDensity"] ?? "Energy Flux Density",
                     Application.Current.Resources["ResultsView_DoseRate"] ?? "Dose rate",
                     "");
 
-                for (var i = 0; i < results.PartialDoseRates.Length; i++)
+                for (var i = 0; i < results.PartialAirKerma.Length; i++)
                 {
                     ResultsText += string.Format(partialDataFormat,
                     energies[i],
-                    results.PartialDoseRates[i],
+                    results.PartialEnergyFluxDensity[i],
+                    results.PartialAirKerma[i],
                     units);
                 }
             }
