@@ -2,6 +2,7 @@
 using BSP.BL.Materials;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 
@@ -31,9 +32,9 @@ namespace BSP.BL.Calculation
         public bool IsSelfAbsorptionAllowed = true;
 
         /// <summary>
-        /// Расстояние от точечного источника до точки регистрации излучения
+        /// Координаты точки регистрации излучения
         /// </summary>
-        public double CalculationDistance = 1;
+        public Vector3 CalculationPoint;
 
         /// <summary>
         /// Рассчитанные потоки энергий тормозного излучения [МэВ/(с * распад)]
@@ -56,7 +57,7 @@ namespace BSP.BL.Calculation
                 Layers = Layers,
                 massAttenuationFactors = massAttenuationFactors[EnergyIndex],
                 SourceDensity = SourceDensity,
-                CalculationDistance = CalculationDistance,
+                CalculationPoint = CalculationPoint,
                 BuildupProcessor = BuildupProcessor,
                 BuildupFactors = BuildupFactors != null ? BuildupFactors[EnergyIndex] : new double[0][],
                 CancellationToken = CancellationToken,

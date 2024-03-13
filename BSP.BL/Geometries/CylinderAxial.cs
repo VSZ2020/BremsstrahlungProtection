@@ -31,7 +31,7 @@ namespace BSP.BL.Geometries
             double R = form.Radius;
             double H = form.Height;
             //Координата точки регистрации флюенса
-            double b = input.CalculationDistance + input.Layers.Select(l => l.D).Sum();
+            double b = input.Layers.Select(l => l.D).Sum();
 
             //Первый интеграл по усеченному конусу
             var P1 = ExternalIntegralByAngle(
@@ -136,7 +136,7 @@ namespace BSP.BL.Geometries
             double R = form.Radius;
             double H = form.Height;
             //Координата точки регистрации флюенса
-            double b = input.CalculationDistance + input.Layers.Select(l => l.D).Sum();
+            double b = input.Layers.Select(l => l.D).Sum();
 
             double func(double theta, double r)
             {

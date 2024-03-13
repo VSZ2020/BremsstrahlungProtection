@@ -9,7 +9,7 @@ namespace BSP.BL.Buildups
 
         }
 
-        public override string Description => "Evaluates buildup for heterogeneous medium using Broder experssion";
+        public override string Description => "Evaluates buildup for heterogeneous medium using Broder expression.";
 
         public override double EvaluateComplexBuildup(double[] mfp, double[][] coefficients)
         {

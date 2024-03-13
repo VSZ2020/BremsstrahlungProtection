@@ -43,6 +43,24 @@ namespace BSP.BL.Services
         }
 
         /// <summary>
+        /// Возвращает слагаемое для расчета толщины воздушного зазора между источником и точкой измерения
+        /// </summary>
+        /// <param name="geometryType"></param>
+        /// <param name="dimensions"></param>
+        /// <returns></returns>
+        public static float GetSubstractionTermForAirgapCalculation(Type geometryType, float[] dimensions)
+        {
+            return geometryType switch
+            {
+                Type e when e == typeof(CylinderRadial) => dimensions[0],
+                Type e when e == typeof(CylinderAxial) => 0,
+                Type e when e == typeof(Parallelepiped) => dimensions[0],
+                Type e when e == typeof(PointGeometry) => 0,
+                _ => 0
+            };
+        }
+
+        /// <summary>
         /// Возвращает ключ словаря, в котором содержится название для текущей локализации приложения
         /// </summary>
         /// <param name="geometryType"></param>

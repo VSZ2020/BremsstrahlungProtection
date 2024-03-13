@@ -14,7 +14,7 @@ namespace BSP.BL.Buildups
 
         }
 
-        public override string Description => "Evaluates buildup for heterogeneous medium as buildup of the last layer with full optical length";
+        public override string Description => "Evaluates buildup for heterogeneous medium as buildup of the last layer with full optical length. Warning! This expression works well with lats layer MFP > 3.";
 
         public override double EvaluateComplexBuildup(double[] mfp, double[][] factors)
         {

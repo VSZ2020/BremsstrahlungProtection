@@ -6,4 +6,5 @@
     <system:Double x:Key="TextBoxMinWidth">80</system:Double>
     <system:Double x:Key="ToolBarButtonSize">26</system:Double>
     <conv:InversedBoolConverter x:Key="InversedBooleanConverter"/>
+    <BooleanToVisibilityConverter x:Key="DefaultVisibilityConverter"/>
 </ResourceDictionary>

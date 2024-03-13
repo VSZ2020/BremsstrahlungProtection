@@ -12,10 +12,10 @@ namespace BSP.Tests.Geometries
         {
             input = new()
             {
-                massAttenuationFactors = [0.5f],
+                massAttenuationFactors = [0.5f, 0],
                 SourceDensity = 2.4f,
-                CalculationDistance = 100.0,
-                Layers = new List<BL.Materials.ShieldLayer>()
+                CalculationPoint = new System.Numerics.Vector3(120,5,25),
+                Layers = new List<BL.Materials.ShieldLayer>() { new BL.Materials.ShieldLayer() { D = 100, Density = 0.0012928f } }
             };
         }
 

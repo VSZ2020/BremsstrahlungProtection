@@ -7,7 +7,8 @@
     <Grid>
         <GroupBox Header="{StaticResource ResultsView_GroupHeader}" Style="{StaticResource DefaultGroupBox}">
             <RichTextBox
-                 VerticalScrollBarVisibility="Auto">
+                 VerticalScrollBarVisibility="Auto"
+                IsReadOnly="True">
                 <RichTextBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{StaticResource contextMenu_ExportToTextFile}" Command="{Binding ExportResultsToTextFile}"/>

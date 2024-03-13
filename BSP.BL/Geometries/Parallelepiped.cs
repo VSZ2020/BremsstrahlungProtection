@@ -23,7 +23,7 @@ namespace BSP.BL.Geometries
 
 
         /// <summary>
-        /// Вычисление радиальной составляющей излучения от прямоугольного параллелепипеда
+        /// Вычисление радиальной составляющей излучения от прямоугольного параллелепипеда. Метод средних прямоугольников
         /// </summary>
         /// <param name="input"></param>
         /// <param name="EnergyIndex"></param>
@@ -36,11 +36,10 @@ namespace BSP.BL.Geometries
         [Obsolete]
         public double StandardIntegrator(SingleEnergyInputData input)
         {
-            var layersThickness = input.Layers.Select(l => l.D).ToArray();
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
 
             //Расстояние до точки детектирования
-            var b = input.CalculationDistance + layersThickness.Sum();
+            var b = input.Layers.Select(l => l.D).Sum();
 
             //Переменные для расчета
             var dx = form.Thickness / form.NThickness;
@@ -48,11 +47,11 @@ namespace BSP.BL.Geometries
             var dz = form.Height / form.NHeight;
 
             //Начальные координаты точки регистрации
-            var x0 = input.CalculationDistance + layersThickness.Sum() + form.Thickness;
-            var y0 = form.Width / 2.0;
-            var z0 = form.Height / 2.0;
+            var x0 = input.CalculationPoint.X;
+            var y0 = input.CalculationPoint.Y;
+            var z0 = input.CalculationPoint.Z;
 
-            double sumIntegral = 0.0;
+            double sum = 0.0;
 
             for (int i = 0; i < form.NThickness && !input.CancellationToken.IsCancellationRequested; i++)
             {
@@ -84,13 +83,13 @@ namespace BSP.BL.Geometries
                         //Расчет вклада поля рассеянного излучения
                         double buildupFactor = input.BuildupProcessor != null && ud.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
-                        sumIntegral += totalLooseExp / R2 * dx * dy * dz * buildupFactor;
+                        sum += totalLooseExp / R2 * dx * dy * dz * buildupFactor;
                     }
                 }
             }
 
             var sourceVolume = form.GetNormalizationFactor();
-            return !input.CancellationToken.IsCancellationRequested ? sumIntegral / sourceVolume / (4.0 * Math.PI) : 0;
+            return !input.CancellationToken.IsCancellationRequested ? sum / sourceVolume / (4.0 * Math.PI) : 0;
         }
 
 
@@ -100,12 +99,12 @@ namespace BSP.BL.Geometries
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
 
             //Расстояние до точки детектирования
-            var b = input.CalculationDistance + layersThickness.Sum();
+            var b = layersThickness.Sum();
 
-            //Начальные координаты точки регистрации
-            var x0 = input.CalculationDistance + layersThickness.Sum() + form.Thickness;
-            var y0 = form.Width / 2.0;
-            var z0 = form.Height / 2.0;
+            //Начальные координаты точки регистрации. Абсолютные координаты
+            var x0 = layersThickness.Sum() + form.Thickness;
+            var y0 = input.CalculationPoint.Y;
+            var z0 = input.CalculationPoint.Z; 
 
             var integral = Integrate((x, y, z) => 
             {

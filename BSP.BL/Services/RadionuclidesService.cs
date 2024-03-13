@@ -86,12 +86,12 @@ namespace BSP.BL.Services
         /// <returns></returns>
         public RadionuclideDto GetRadionuclideWithMaxEnergyIntensity(int[] selectedRadionuclidesIds)
         {
-            var primaryRadionuclide = context.RadionuclideEnergyIntensityData
+            var energyIntensityEntities = context.RadionuclideEnergyIntensityData
                 .AsNoTracking()
-                .Where(e => selectedRadionuclidesIds.Contains(e.Id))
-                .ToList()
-                .MaxBy(e => e.EndpointEnergy * e.Yield);
-            return GetRadionuclideById(primaryRadionuclide.Id);
+                .Where(e => selectedRadionuclidesIds.Contains(e.RadionuclideId))
+                .ToList();
+            var primaryEnergyIntensity = energyIntensityEntities.MaxBy(e => e.EndpointEnergy * e.Yield);
+            return GetRadionuclideById(primaryEnergyIntensity.RadionuclideId);
         }
 
 

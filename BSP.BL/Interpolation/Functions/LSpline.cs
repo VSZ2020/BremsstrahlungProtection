@@ -38,7 +38,14 @@ namespace BSP.BL.Interpolation.Functions
                 {
                     //Если новое значение в пределах текущего интервала массива исходной функции, то рассчитываем новое значение Y по новому значению X
                     if (x[i] < newX[j] && newX[j] <= x[i + 1])
-                        newY[j] = slopes[i] * newX[j] + intercepts[i];
+                    {
+                        if (AreEqual(x[i], x[i + 1]))
+                        {
+                            newY[j] = Math.Max(y[i], y[i + 1]);
+                        }
+                        else
+                            newY[j] = slopes[i] * newX[j] + intercepts[i];
+                    }
 
                     //Если новое значение точки левее нижней границы значений X исходной функции, то экстраполируем по последнему интервалу
                     else if (newX[j] < x[0])
@@ -50,6 +57,11 @@ namespace BSP.BL.Interpolation.Functions
 
                 }
             return newY;
+        }
+
+        private bool AreEqual(double a, double b, double TOL = 1e-6)
+        {
+            return Math.Abs(a - b) <= TOL;
         }
     }
 }

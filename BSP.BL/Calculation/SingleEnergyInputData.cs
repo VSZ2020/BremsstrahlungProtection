@@ -1,5 +1,6 @@
 ﻿using BSP.BL.Buildups.Common;
 using BSP.BL.Materials;
+using System.Numerics;
 
 namespace BSP.BL.Calculation
 {
@@ -21,9 +22,9 @@ namespace BSP.BL.Calculation
         public bool IsSelfAbsorptionAllowed = true;
 
         /// <summary>
-        /// Расстояние от точечного источника до точки регистрации излучения
+        /// Коорлинаты точки регистрации излучения
         /// </summary>
-        public double CalculationDistance = 1;
+        public Vector3 CalculationPoint;
 
         /// <summary>
         /// Класс, содержащий метод расчета фактора накопления для гетерогенной защиты. Внутри него хранится ссылка на метод расчета фактора накопления для гомогенной защиты

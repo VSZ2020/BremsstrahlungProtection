@@ -14,7 +14,9 @@ namespace BSP.BL.Calculation
             output.PartialFluxDensity = new double[energiesCount];
             output.PartialEnergyFluxDensity = new double[energiesCount];
             output.PartialAirKerma = new double[energiesCount];
-            
+
+            var bremsstrahlungFractions = Bremsstrahlung.GetBremsstrahlungFractions();
+
             var calcTask = Task.Run(() =>
             {
                 int calculatedEnergiesCount = 0;
@@ -23,9 +25,11 @@ namespace BSP.BL.Calculation
                 {
                     //Вычисляем интеграл
                     double fluence = form.GetFluence(input.BuildSingleEnergyInputData(energyIndex));
-                    
+
+                    output.DosePoint = input.CalculationPoint;
+
                     //Вычисляем парциальную плотность потока квантов тормозного излучения [1/см2/с]
-                    output.PartialFluxDensity[energyIndex] = fluence * input.SourceActivity;
+                    output.PartialFluxDensity[energyIndex] = fluence * input.SourceActivity * bremsstrahlungFractions[energyIndex];
                     //Вычисляем парциальную плотность потока энергии [МэВ/см2/с]
                     output.PartialEnergyFluxDensity[energyIndex] = input.BremsstrahlungEnergyFluxes[energyIndex] * fluence;
                     //Вычисляем парциальную мощность воздушной кермы [Гр/ч]

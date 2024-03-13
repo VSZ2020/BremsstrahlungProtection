@@ -102,6 +102,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource DefaultDataGridColumn}"/>
         <Setter Property="RowHeaderWidth" Value="0"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
     </Style>
 
     <Style TargetType="ComboBox" x:Key="DefaultCombobox">

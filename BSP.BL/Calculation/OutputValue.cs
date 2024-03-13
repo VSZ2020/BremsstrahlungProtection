@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using System.Numerics;
 
 namespace BSP.BL.Calculation
 {
     public class OutputValue
     {
+        public Vector3 DosePoint;
 
         /// <summary>
         /// Возвращает суммарную мощность дозы

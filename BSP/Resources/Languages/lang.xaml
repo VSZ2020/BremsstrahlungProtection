@@ -118,16 +118,19 @@
     <v:String x:Key="tab_DoseFactors_ExposureGeometry">Exposure geometry</v:String>
     <v:String x:Key="tab_DoseFactors_OrganOrTissue">Organ/Tissue</v:String>
 
-    <v:String x:Key="tab_Output_Evaluation_GroupName">Evaluation parameters</v:String>
     <v:String x:Key="tab_Output_Precision">Number of decimal places</v:String>
     <v:String x:Key="tab_Output_IsPointSource">Point source approximation</v:String>
     <v:String x:Key="tab_Output_PartialDoseRates">Show partial dose rates</v:String>
 
-    <v:String x:Key="tab_Output_OutputValue_GroupName">Output value parameters</v:String>
-    <v:String x:Key="tab_Output_CalculationDistance">Calculation distance, cm</v:String>
+    <v:String x:Key="tab_Output_OutputValue_GroupName">Output parameters</v:String>
+    <v:String x:Key="tab_Output_CalculationPoints">List of dose points</v:String>
 
     <v:String x:Key="tab_Output_Environment_GroupHeader">Environment material</v:String>
     <v:String x:Key="tab_Output_ShowInterpolatedInput">Show input data in results box</v:String>
+    
+    <v:String x:Key="tab_Output_X_Coordinate">X, cm</v:String>
+    <v:String x:Key="tab_Output_Y_Coordinate">Y, cm</v:String>
+    <v:String x:Key="tab_Output_Z_Coordinate">Z, cm</v:String>
     <!--#endregion-->
 
 
@@ -136,7 +139,7 @@
     <v:String x:Key="ResultsView_LaunchTime">Launch time</v:String>
     <v:String x:Key="ResultsView_SourceForm">Form</v:String>
     <v:String x:Key="ResultsView_SourceMaterial">Source material</v:String>
-    <v:String x:Key="ResultsView_CalculationPoint">Distance</v:String>
+    <v:String x:Key="ResultsView_DosePoint">Dose point</v:String>
     <v:String x:Key="ResultsView_Energy">Energy, MeV</v:String>
     <v:String x:Key="ResultsView_PhotonsFluxDensity">Flux density, 1/cm2/s</v:String>
     <v:String x:Key="ResultsView_EnergyFluxDensity">Energy flux density, MeV/cm2/s</v:String>
@@ -219,7 +222,6 @@
     <v:String x:Key="msg_Error_ZeroDimension">Dimension should be greated zero</v:String>
     <v:String x:Key="msg_Error_EmptyEnergyYieldData">Energy and Yield data are empty. Click update to generate data or enter it manually</v:String>
     <v:String x:Key="msg_Error_ZeroTotalActivity">Source total activity is zero or empty</v:String>
-    <v:String x:Key="msg_Error_ZeroCalculationDistance">Calculation distance have to be greater zero</v:String>
     <v:String x:Key="msg_Error_ZeroOrLessDecimalPlaces">Number of decimal places is less zero</v:String>
 
     <v:String x:Key="msg_ValidationDimension">{0} must be greater zero</v:String>

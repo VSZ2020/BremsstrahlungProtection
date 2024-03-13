@@ -2,13 +2,9 @@
 using BSP.BL.DTO;
 using BSP.BL.Services;
 using BSP.Common;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace BSP.ViewModels.Tabs
 {
@@ -24,10 +20,12 @@ namespace BSP.ViewModels.Tabs
 
             SourceDimensions = new();
             SelectedRadionuclides = new();
+            DosePoints = new();   //По-умолчанию всегда должна быть хотя бы одна точка
             EnergyYieldList = new();
 
             SelectedSourceForm = AvailableSourceForms.FirstOrDefault();
             SelectedSourceMaterial = AvailableDataController.AvailableMaterials.FirstOrDefault();
+            AddDosePoint();
         }
         #endregion
 
@@ -49,6 +47,7 @@ namespace BSP.ViewModels.Tabs
         private SourceFormVM _selectedSourceForm;
         private RadionuclideVM _selectedRadionuclide;
         private MaterialDto _selectedSourceMaterial;
+        private DosePointVM? _selectedDosePoint;
 
         private bool HasAvailableNuclides => AvailableDataController.AvailableNuclides.Count > 0;
         #endregion
@@ -66,6 +65,10 @@ namespace BSP.ViewModels.Tabs
 
         public ObservableCollection<DimensionVM> SourceDimensions { get; }
         public ObservableCollection<RadionuclideVM> SelectedRadionuclides { get; }
+
+        public ObservableCollection<DosePointVM> DosePoints { get; }
+        public DosePointVM? SelectedDosePoint { get => _selectedDosePoint; set { _selectedDosePoint = value; OnChanged(); } }
+
         /// <summary>
         /// Коллекция для таблицы с энергиями и выходами тормозного излучения
         /// </summary>
@@ -76,7 +79,7 @@ namespace BSP.ViewModels.Tabs
 
         public float SourceZ { get => sourceMaterialZ; set { sourceMaterialZ = value; OnChanged(); } }
         public float SourceDensity { get => sourceMaterialDensity; set { sourceMaterialDensity = value; OnChanged(); } }
-        public double SourceTotalActivity { get => sourceTotalActivity; set { sourceTotalActivity = value; OnChanged(); } }
+        public double SourceTotalActivity { get => sourceTotalActivity; set { sourceTotalActivity = value; OnChanged(); /*OnTotalActivityChanged();*/ } }
         public double SourceMaxYield { get => sourceMaxYield; set { sourceMaxYield = value; OnChanged(); } }
 
         public float CutoffBremsstrahlungEnergy { get => cutoffBremsstrahlungEnergy; set { cutoffBremsstrahlungEnergy = value > 0.015F ? value : 0.015F; OnChanged(); } }
@@ -92,12 +95,18 @@ namespace BSP.ViewModels.Tabs
 
         RelayCommand updateYieldsCommand;
 
+        RelayCommand addDosePointCommand;
+        RelayCommand removeDosePointCommand;
+
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
         public RelayCommand AddNuclideCommand => addNuclideCommand ?? (addNuclideCommand = new RelayCommand(obj => AddRadionuclide(), o => HasAvailableNuclides));
         public RelayCommand RemoveNuclideCommand => removeNuclideCommand ?? (removeNuclideCommand = new RelayCommand(obj => RemoveRadionuclide(), o => HasAvailableNuclides && _selectedRadionuclide != null));
 
-        public RelayCommand UpdateYieldsCommand => updateYieldsCommand ?? (updateYieldsCommand = new RelayCommand(obj => UpdateYields(), o => SelectedRadionuclides.Count > 0));
+        public RelayCommand UpdateYieldsCommand => updateYieldsCommand ?? (updateYieldsCommand = new RelayCommand(obj => OnRadionuclidesListUpdated(), o => SelectedRadionuclides.Count > 0));
+
+        public RelayCommand AddDosePointCommand => addDosePointCommand ?? (addDosePointCommand = new RelayCommand(obj => AddDosePoint()));
+        public RelayCommand RemoveDosePointCommand => removeDosePointCommand ?? (removeDosePointCommand = new RelayCommand(obj => RemoveDosePoint(), obj => DosePoints.Count > 1));
         #endregion
 
         #region FillBremsstrahlungEnergyYieldData
@@ -110,10 +119,11 @@ namespace BSP.ViewModels.Tabs
                 return;
 
             var majorBetaRadionuclide = radionuclidesService.GetRadionuclideWithMaxEnergyIntensity(SelectedRadionuclides.Select(r => r.Id).ToArray());
-            (var endpointBetaEnergies, _, var betaYields) = radionuclidesService.GetEnergyIntensityDataArrays(majorBetaRadionuclide.Id);
+            (var endpointBetaEnergies, var averageBetaEnergies, var betaYields) = radionuclidesService.GetEnergyIntensityDataArrays(majorBetaRadionuclide.Id);
 
             (var bremsstrahlungEnergies, var bremsstrahlungEnergyYields) = Bremsstrahlung.GetEnergyYieldData(
-                nuclideEnergies: endpointBetaEnergies, 
+                nuclideEndpointEnergies: endpointBetaEnergies, 
+                nuclideAverageEnergies: averageBetaEnergies,
                 nuclideYields: betaYields, 
                 Zeff: SourceZ, 
                 useAverageBinEnergy: true);
@@ -139,10 +149,10 @@ namespace BSP.ViewModels.Tabs
         }
         #endregion
 
+        #region OnSourceFormTypeChanged
         /// <summary>
         /// Действие при смене геометрии источника. Отвечает за здание полей ввода размеров источника излучения
         /// </summary>
-        #region OnSourceFormTypeChanged
         public void OnSourceFormTypeChanged()
         {
             var dimensionsInfo = GeometryService.GetDimensionsInfo(_selectedSourceForm.FormType);
@@ -157,13 +167,25 @@ namespace BSP.ViewModels.Tabs
                 };
                 SourceDimensions.Add(dimensionVM);
             }
+        }
+        #endregion
+
+        #region OnTotalActivityChanged
+        private void OnTotalActivityChanged()
+        {
+            foreach (var item in EnergyYieldList)
+            {
+                item.EnergyFlux = item.EnergyYield * SourceTotalActivity;
+            }
         } 
         #endregion
 
+        #region ClearYieldsData
         public void ClearYieldsData()
         {
             EnergyYieldList.Clear();
-        }
+        } 
+        #endregion
 
         #region EnergyYieldCreationModeChanged
         private void EnergyYieldCreationModeChanged()
@@ -188,7 +210,6 @@ namespace BSP.ViewModels.Tabs
             }
         }
         #endregion
-
 
         #region GetBremsstrahlungSpectrum
         /// <summary>
@@ -221,19 +242,26 @@ namespace BSP.ViewModels.Tabs
             //        .Select(y => y.EnergyYield)
             //        .ToArray(), 
             //    this.SourceTotalActivity);
+            if (!IsAutoGeneratedModeChecked)
+            {
+                OnTotalActivityChanged();
+            }
             var bremsstrahlungEnergyFluxes = energyYieldData.Select(e => e.EnergyFlux).ToArray();
 
             return (energies, bremsstrahlungEnergyFluxes);
-        } 
+        }
         #endregion
 
+        #region OnRadionuclidesListUpdated
         public void OnRadionuclidesListUpdated()
         {
             ClearYieldsData();
             SourceTotalActivity = SelectedRadionuclides.Sum(r => r.Activity);
             FillBremsstrahlungEnergyYieldData();
-        }
+        } 
+        #endregion
 
+        #region Radionuclides control
         public void AddRadionuclide()
         {
             SelectedRadionuclides.Add(new RadionuclideVM()
@@ -249,13 +277,48 @@ namespace BSP.ViewModels.Tabs
         {
             SelectedRadionuclides.Remove(_selectedRadionuclide);
             OnRadionuclidesListUpdated();
-        }
+        } 
+        #endregion
 
-        public void UpdateYields()
+        #region Dose point control
+        public void AddDosePoint()
         {
-            OnRadionuclidesListUpdated();
+            DosePoints.Add(new DosePointVM() { X = 100, Y = 0, Z = 0 });
         }
 
+        public void RemoveDosePoint()
+        {
+            DosePoints.Remove(_selectedDosePoint);
+        } 
+        #endregion
+
+
+        #region ValidateModel
+        public bool ValidateModel(BaseValidationViewModel validationContext)
+        {
+            if (DosePoints.Count == 0)
+                validationContext.AddError("At least one dose point must to be");
+
+            if (DosePoints.Any(p => p.X < 0 || p.Y < 0 || p.Z < 0))
+                validationContext.AddError("Dose point coordinates are positive values");
+
+
+            if (SourceDimensions.Count > 0)
+            {
+                if (DosePoints.Any(p => p.X <= SourceDimensions.First().Value))
+                    validationContext.AddError("Dose point on the edge or inside source volume");
+
+                if (SourceDimensions.Count > 1 && DosePoints.Any(p => p.X <= 0) && DosePoints.Any(p => p.Y <= SourceDimensions[1].Value))
+                    validationContext.AddError("Y coordinate of dose point on the edge or inside source volume");
+
+                if (SourceDimensions.Count > 2 && DosePoints.Any(p => p.X <= 0) && DosePoints.Any(p => p.Z <= SourceDimensions[2].Value))
+                    validationContext.AddError("Z coordinate of dose point on the edge or inside source volume");
+            }
+
+
+            return validationContext.IsValid;
+        } 
+        #endregion
 
         #region IDataError 
         public string Error => string.Empty;

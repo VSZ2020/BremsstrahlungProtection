@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:BSP.Views"
              mc:Ignorable="d" >
     <ToolBarTray Style="{StaticResource MainToolbarTray}">
-        <ToolBar Margin="-2,-1,0,0" Padding="0" VerticalContentAlignment="Center" Style="{StaticResource MainToolbar}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+        <ToolBar Margin="-2,-1,0,0" Padding="0" 
+                 VerticalContentAlignment="Center" 
+                 Style="{StaticResource MainToolbar}" 
+                 IsEnabled="{Binding IsEvaluationNotInProgress}">
             <!--Buildup-->
             <ToggleButton IsChecked="{Binding BuildupTab.IsIncludeBuildup}" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" Margin="0" ToolTip="{StaticResource tooltipIncludeScatter}">
                 <Image Source="/Resources/Images/iconScattering.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>

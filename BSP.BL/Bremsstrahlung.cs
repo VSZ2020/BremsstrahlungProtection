@@ -36,12 +36,12 @@ namespace BSP.BL
         /// Рассчитывается выход тормозного излучения в заданном материале для набора энергий бета-радионуклида и выходов бета-излучения для каждой энергии
         /// </summary>
         /// <param name="Zeff">Эффективный атомный номер материала вещества</param>
-        /// <param name="energies">Массив средний энергий бета-излучения</param>
-        /// <param name="yields">Массив выходов бета-частиц заданных энергий</param>
+        /// <param name="betaEnergies">Массив средний энергий бета-излучения</param>
+        /// <param name="betaYields">Массив выходов бета-частиц заданных энергий</param>
         /// <returns>Выход тормозного излучения для бета-радионуклида</returns>
-        private static double WyardBremsstrahlungYield(float Zeff, float[] energies, float[] yields)
+        private static double WyardBremsstrahlungYield(float Zeff, float[] betaEnergies, float[] betaYields)
         {
-            var sumEI = Enumerable.Range(0, energies.Length).Select(i => energies[i] * energies[i] * yields[i]).Sum();
+            var sumEI = Enumerable.Range(0, betaEnergies.Length).Select(i => betaEnergies[i] * betaEnergies[i] * betaYields[i]).Sum();
             return 8.5E-4 * (Zeff + 3) * sumEI;
         }
 
@@ -92,10 +92,10 @@ namespace BSP.BL
         }
 
 
-        public static (float[] energies, double[] yields) GetEnergyYieldData(float[] nuclideEnergies, float[] nuclideYields, float Zeff, bool useAverageBinEnergy = true, bool isMonoenergeticElectrons = false, float cutoffEnergy = 0.015f)
+        public static (float[] energies, double[] yields) GetEnergyYieldData(float[] nuclideEndpointEnergies, float[] nuclideAverageEnergies, float[] nuclideYields, float Zeff, bool useAverageBinEnergy = true, bool isMonoenergeticElectrons = false, float cutoffEnergy = 0.015f)
         {
-            var energies = useAverageBinEnergy ? GetEnergyBinsAverageEnergies(nuclideEnergies.Max()) : GetEnergyBinsRightEdges(nuclideEnergies.Max());
-            var yields = GetBremsstrahlungEnergyYields(nuclideEnergies, nuclideYields, Zeff, isMonoenergeticElectrons);
+            var energies = useAverageBinEnergy ? GetEnergyBinsAverageEnergies(nuclideEndpointEnergies.Max()) : GetEnergyBinsRightEdges(nuclideEndpointEnergies.Max());
+            var yields = GetBremsstrahlungEnergyYields(nuclideAverageEnergies, nuclideYields, Zeff, isMonoenergeticElectrons);
             return (energies, yields);
         }
 
@@ -118,10 +118,10 @@ namespace BSP.BL
         /// <param name="Zeff">Эффективный атомный номер материала источника</param>
         /// <returns></returns>
         /// <exception cref="NullReferenceException"></exception>
-        public static double[] GetBremsstrahlungEnergyYields(float[] nuclideEnergies, float[] nuclideYields, float Zeff, bool isMonoenergeticElectrons = false)
+        public static double[] GetBremsstrahlungEnergyYields(float[] nuclideAverageEnergies, float[] nuclideYields, float Zeff, bool isMonoenergeticElectrons = false)
         {
             //Вычисление максимального выхода тормозного излучения для доминирующего нуклида
-            var bremsstrahlungYield = WyardBremsstrahlungYield(Zeff, nuclideEnergies, nuclideYields);
+            var bremsstrahlungYield = WyardBremsstrahlungYield(Zeff, nuclideAverageEnergies, nuclideYields);
 
             //Вычисление энергетических выходов тормозного излучения для базового нуклида [МэВ/распад]
             return GetBremsstrahlungFractions(isMonoenergeticElectrons).Select(f => f * bremsstrahlungYield).ToArray();

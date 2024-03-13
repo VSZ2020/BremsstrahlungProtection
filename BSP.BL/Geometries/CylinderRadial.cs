@@ -32,7 +32,7 @@ namespace BSP.BL.Geometries
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
 
             //Расстояние до точки измерения начиная от поверхности контейнера источника
-            var b = input.CalculationDistance + R + layersThickness.Sum();
+            var b = R + layersThickness.Sum();
 
             //Шаги интегрирования
             var dro = R / form.NRadius;  //0..R
@@ -95,7 +95,7 @@ namespace BSP.BL.Geometries
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
 
             //Расстояние до точки измерения начиная от поверхности контейнера источника
-            double b = input.CalculationDistance + R + layersThickness.Sum();
+            double b = R + layersThickness.Sum();
 
             var sourceVolume = form.GetNormalizationFactor();
 

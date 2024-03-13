@@ -1,10 +1,8 @@
 ﻿using BSP.BL.Buildups.Common;
 using BSP.BL.Materials;
 using BSP.BL.Services;
-using System;
-using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
-using System.Threading;
 
 namespace BSP.BL.Calculation
 {
@@ -39,7 +37,7 @@ namespace BSP.BL.Calculation
         /// <summary>
         /// Расстояние от точечного источника до точки регистрации излучения
         /// </summary>
-        public double CalculationDistance = 1;
+        public Vector3 CalculationPoint;
 
         /// <summary>
         /// Рассчитанные потоки энергий тормозного излучения [МэВ/с]
@@ -91,9 +89,15 @@ namespace BSP.BL.Calculation
             return this;
         }
 
-        public InputDataBuilder WithCalculationPoint(double distance)
+        public InputDataBuilder WithCalculationPoint(Vector3 vector)
         {
-            this.CalculationDistance = distance;
+            this.CalculationPoint = vector;
+            return this;
+        }
+
+        public InputDataBuilder WithCalculationPoint(float X, float Y, float Z)
+        {
+            this.CalculationPoint = new Vector3(X, Y, Z);
             return this;
         }
 
@@ -137,7 +141,7 @@ namespace BSP.BL.Calculation
                 BremsstrahlungEnergyFluxes = this.BremsstrahlungEnergyFluxes,
                 BuildupFactors = this.BuildupFactors,
                 BuildupProcessor = this.BuildupProcessor,
-                CalculationDistance = this.CalculationDistance,
+                CalculationPoint = this.CalculationPoint,
                 CancellationToken = this.CancellationToken,
                 SourceDensity = this.SourceDensity,
                 SourceActivity =  this.SourceActivity,

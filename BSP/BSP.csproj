@@ -8,7 +8,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Images\BSP_Icon.ico</ApplicationIcon>
     <AssemblyVersion>1.5.0.1</AssemblyVersion>
-    <NeutralLanguage>en</NeutralLanguage>
+	<InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
