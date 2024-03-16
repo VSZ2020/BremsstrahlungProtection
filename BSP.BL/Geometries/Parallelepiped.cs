@@ -95,14 +95,11 @@ namespace BSP.BL.Geometries
 
         public double AlternativeIntegration(SingleEnergyInputData input)
         {
-            var layersThickness = input.Layers.Select(l => l.D).ToArray();
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
-
-            //Расстояние до точки детектирования
-            var b = layersThickness.Sum();
+            var b = input.Layers.Select(l => l.D).Sum();
 
             //Начальные координаты точки регистрации. Абсолютные координаты
-            var x0 = layersThickness.Sum() + form.Thickness;
+            var x0 = input.CalculationPoint.X;
             var y0 = input.CalculationPoint.Y;
             var z0 = input.CalculationPoint.Z; 
 
@@ -115,10 +112,10 @@ namespace BSP.BL.Geometries
                 var R = Math.Sqrt(R2);
 
                 //Длина самопоглощения в источнике
-                var xe = R * c / (c + b);
+                var xe = R * c / (x0 - x);
 
                 //Коэффициент перехода от толщины защиты d к эффективной толщине ослабления в защите y
-                var m = R / (c + b);
+                var m = R / (x0 - x);
                 var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
 
                 if (!input.IsSelfAbsorptionAllowed)

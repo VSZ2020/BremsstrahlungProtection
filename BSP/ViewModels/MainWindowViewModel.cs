@@ -185,6 +185,7 @@ namespace BSP.ViewModels
                 
                 var builder = App.GetService<InputDataBuilder>();
                 var inputBuilder = builder
+                    .WithEnergies(energies)
                     .WithShieldLayers(shields)
                     .WithAttenuationFactors(SourceTab.SelectedSourceMaterial.Id, shieldLayersIds, energies)
                     .WithEnvironmentAbsorptionFactors(energies, SelectedEnvironmentMaterial?.Id ?? 1)

@@ -16,10 +16,13 @@ namespace BSP.ViewModels
         public float Energy { get => energy; set { energy = value; OnChanged(); } }
 
         /// <summary>
-        /// Выход энергии томозного излучения для группы в [МэВ/распад]
+        /// Выход энергии тормозного излучения для группы в [МэВ/распад]
         /// </summary>
         public double EnergyYield { get => energyYield; set { energyYield = value; OnChanged(); } }
 
+        /// <summary>
+        /// Поток энергии тормозного излучения
+        /// </summary>
         public double EnergyFlux { get => energyFlux;  set{ energyFlux = value; OnChanged(); }  }
 
         public string this[string columnName]

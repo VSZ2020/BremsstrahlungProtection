@@ -13,6 +13,7 @@ namespace BSP.BL.Calculation
     /// </summary>
     public class InputData
     {
+        public double[] Energies;
         public double[] massEnvironmentAbsorptionFactors;
         public double[][] massAttenuationFactors;
         public double[][][] BuildupFactors;

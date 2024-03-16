@@ -19,6 +19,7 @@ namespace BSP.BL.Calculation
         private readonly BuildupService buildupService;
         private readonly DoseFactorsService doseFactorsService;
 
+        public double[] Energies;
         public double[] massEnvironmentAbsorptionFactors;
         public double[][] massAttenuationFactors;
         public double[][][] BuildupFactors;
@@ -53,6 +54,12 @@ namespace BSP.BL.Calculation
 
         public IProgress<int> Progress;
         
+
+        public InputDataBuilder WithEnergies(double[] energies)
+        {
+            this.Energies = energies;
+            return this; 
+        }
 
         public InputDataBuilder WithBremsstrahlungEnergyFluxes(double[] fluxes)
         {
@@ -136,6 +143,7 @@ namespace BSP.BL.Calculation
         {
             return new InputData()
             {
+                Energies = this.Energies,
                 massEnvironmentAbsorptionFactors = this.massEnvironmentAbsorptionFactors,
                 massAttenuationFactors = this.massAttenuationFactors,
                 BremsstrahlungEnergyFluxes = this.BremsstrahlungEnergyFluxes,
@@ -144,7 +152,7 @@ namespace BSP.BL.Calculation
                 CalculationPoint = this.CalculationPoint,
                 CancellationToken = this.CancellationToken,
                 SourceDensity = this.SourceDensity,
-                SourceActivity =  this.SourceActivity,
+                SourceActivity = this.SourceActivity,
                 Layers = this.Layers ?? new List<ShieldLayer>(),
                 Progress = this.Progress,
                 IsSelfAbsorptionAllowed = this.IsSelfAbsorptionAllowed

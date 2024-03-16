@@ -31,7 +31,7 @@ namespace BSP.BL.Geometries
             double R = form.Radius;
             double H = form.Height;
             //Координата точки регистрации флюенса
-            double b = input.Layers.Select(l => l.D).Sum();
+            double b = input.CalculationPoint.X;
 
             //Первый интеграл по усеченному конусу
             var P1 = ExternalIntegralByAngle(
@@ -62,7 +62,7 @@ namespace BSP.BL.Geometries
                 input.IsSelfAbsorptionAllowed);
 
             var sourceVolume = form.GetNormalizationFactor();
-            return 2.0 * Math.PI * (P1 + P2) / sourceVolume;
+            return 2.0 * Math.PI * (P1 + P2) / sourceVolume / (4.0 * Math.PI);
         }
 
         #region ExternalIntegralByAngle
@@ -136,7 +136,7 @@ namespace BSP.BL.Geometries
             double R = form.Radius;
             double H = form.Height;
             //Координата точки регистрации флюенса
-            double b = input.Layers.Select(l => l.D).Sum();
+            double b = input.CalculationPoint.X;
 
             double func(double theta, double r)
             {
@@ -171,88 +171,7 @@ namespace BSP.BL.Geometries
                 Math.Atan(R / (b + H)), Math.Atan(R / b), form.NHeight, input.CancellationToken);
 
             var sourceVolume = form.GetNormalizationFactor();
-            return 2.0 * Math.PI * (P1 + P2) / sourceVolume;
+            return 2.0 * Math.PI * (P1 + P2) / sourceVolume / (4.0 * Math.PI);
         }
-
-        //public override double GetFluence(SingleEnergyInputData input)
-        //{
-        //    var layersThickness = input.Layers.Select(l => l.D).ToArray();
-        //    var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
-
-        //    //Радиус цилиндра
-        //    double R = form.Radius;
-        //    double H = form.Height;
-        //    //Координата точки регистрации флюенса
-        //    double b = input.CalculationDistance + layersThickness.Sum();
-
-        //    //Параметры первого частичного интеграла
-        //    double theta1 = Math.Atan(R / (b + H));
-        //    double dtheta1 = theta1 / form.NRadius;
-
-        //    //Параметры второго частичного интеграла
-        //    double theta2 = Math.Atan(R / b);
-        //    double dtheta2 = (theta2 - theta1) / form.NRadius;
-
-        //    double externalIntergaral = 0.0;
-
-        //    for (int i = 0; i < form.NRadius && !input.CancellationToken.IsCancellationRequested; i++)
-        //    {
-        //        //Итерируемая тета для первого интеграла
-        //        double thetaI_1 = dtheta1 / 2.0 + dtheta1 * i;
-        //        //Итерируемая тета для второго интеграла
-        //        double thetaI_2 = theta1 + dtheta2 / 2.0 + dtheta2 * i;
-
-        //        //Пределы для внутреннего интеграла первого частичного интеграла
-        //        double bsecTheta_1 = b * sec(thetaI_1);
-        //        double bHsecTheta_1 = (b + H) * sec(thetaI_1);
-
-        //        //Пределы для внутреннего интеграла второго частичного интеграла
-        //        double bsecTheta_2 = b * sec(thetaI_2);
-        //        double rcosecTheta_2 = R * cosec(thetaI_2);
-
-        //        //Шаг интегрирования для внутр. интеграла первого частичного интеграла по dr
-        //        double dr1 = (bHsecTheta_1 - bsecTheta_1) / form.NRadius;
-
-        //        //Шаг интегрирования для внутр. интеграла второго частичного интеграла по dr
-        //        double dr2 = (rcosecTheta_2 - bsecTheta_2) / form.NRadius;
-
-        //        for (int j = 0; j < form.NRadius && !input.CancellationToken.IsCancellationRequested; j++)
-        //        {
-        //            double r1 = bsecTheta_1 + dr1 / 2.0 + dr1 * j;
-        //            double r2 = bsecTheta_2 + dr2 / 2.0 + dr2 * j;
-
-        //            //Рассчитываем начальные проихведения u*d для всех слоев защиты, включая материал источника
-        //            double[] UD_1 = GetUDWithFactors(
-        //                massAttenuationFactors: input.massAttenuationFactors,
-        //                sourceDensity: input.SourceDensity,
-        //                selfabsorptionLength: r1 - bsecTheta_1,
-        //                shieldsMassThicknesses: layersMassThickness,
-        //                shieldEffecThicknessFactor: sec(thetaI_1));
-
-        //            double[] UD_2 = GetUDWithFactors(
-        //                massAttenuationFactors: input.massAttenuationFactors,
-        //                sourceDensity: input.SourceDensity,
-        //                selfabsorptionLength: r2 - bsecTheta_2,
-        //                shieldsMassThicknesses: layersMassThickness,
-        //                shieldEffecThicknessFactor: sec(thetaI_2)); ;
-
-        //            //Полные интегралы
-        //            double cI_1 = Math.Sin(thetaI_1) * Math.Exp(-UD_1.Sum()) * dr1 * dtheta1;
-        //            double cI_2 = Math.Sin(thetaI_2) * Math.Exp(-UD_2.Sum()) * dr2 * dtheta2;
-
-        //            //Учет вклада поля рассеянного излучения                                                                       
-        //            var buildupFactor1 = input.BuildupProcessor?.EvaluateComplexBuildup(UD_1, input.BuildupFactors) ?? 1.0;
-        //            var buildupFactor2 = input.BuildupProcessor?.EvaluateComplexBuildup(UD_2, input.BuildupFactors) ?? 1.0;
-        //            if (double.IsNaN(buildupFactor1) || double.IsInfinity(buildupFactor1)) buildupFactor1 = 1;
-        //            if (double.IsNaN(buildupFactor2) || double.IsInfinity(buildupFactor2)) buildupFactor2 = 1;
-
-        //            externalIntergaral += cI_1 * buildupFactor1 + cI_2 * buildupFactor2;                                            //Суммируем расчетные значения в один общий интеграл
-
-        //        }
-        //    }
-
-        //    var sourceVolume = form.GetNormalizationFactor();
-        //    return !input.CancellationToken.IsCancellationRequested ? 2.0 * Math.PI * externalIntergaral / sourceVolume : 0;
-        //}
     }
 }

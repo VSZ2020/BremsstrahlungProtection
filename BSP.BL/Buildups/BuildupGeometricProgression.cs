@@ -1,23 +1,30 @@
 ﻿using BSP.BL.Buildups.Common;
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace BSP.BL.Buildups
 {
     public class BuildupGeometricProgression : BaseBuildup
     {
-        public const double tanh2_1 = 1.96402758007581688395;
-        public const double tanh2 = -0.96402758007581688395;
+        public const double ONE_MINUS_TANH_OF_MINUS_2 = 1.9640275801;
+        public const double TANH_OF_MINUS_2 = -0.9640275801;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Calculate(double ud, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
+        public static double Calculate(double mfp, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
         {
-            //TODO: Проверить правильность преобразования к типу int
-            var K = (int)(c * Math.Pow(ud, a) + d * (Math.Tanh(ud / xi - 2.0) - tanh2) / tanh2_1);
+            //if (mfp > 40)
+            //{
+            //    return 1.0;
+            //}
+
+            var K = (int)Math.Round((c * Math.Pow(mfp, a) + d * (Math.Tanh(mfp / xi - 2.0) - TANH_OF_MINUS_2) / ONE_MINUS_TANH_OF_MINUS_2), 0);
 
             if (K == 1)
-                return (1.0 + (b - 1.0) * ud) * barrierFactor;
-            return (1.0 + (b - 1.0) * (Math.Pow(K, ud) - 1.0) / (K - 1.0)) * barrierFactor;
+                return (1.0 + (b - 1.0) * mfp) * barrierFactor;
+            var buildup = (1.0 + (b - 1.0) * (Math.Pow(K, mfp) - 1.0) / (K - 1.0)) * barrierFactor;
+            
+            return buildup;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

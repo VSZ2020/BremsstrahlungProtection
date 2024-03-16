@@ -29,7 +29,7 @@ namespace BSP.BL.Calculation
                     output.DosePoint = input.CalculationPoint;
 
                     //Вычисляем парциальную плотность потока квантов тормозного излучения [1/см2/с]
-                    output.PartialFluxDensity[energyIndex] = fluence * input.SourceActivity * bremsstrahlungFractions[energyIndex];
+                    output.PartialFluxDensity[energyIndex] = input.BremsstrahlungEnergyFluxes[energyIndex] / input.Energies[energyIndex] * fluence;
                     //Вычисляем парциальную плотность потока энергии [МэВ/см2/с]
                     output.PartialEnergyFluxDensity[energyIndex] = input.BremsstrahlungEnergyFluxes[energyIndex] * fluence;
                     //Вычисляем парциальную мощность воздушной кермы [Гр/ч]

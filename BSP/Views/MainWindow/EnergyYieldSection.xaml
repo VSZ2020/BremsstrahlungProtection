@@ -48,6 +48,10 @@
                                         Binding="{Binding EnergyFlux, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
                                         EditingElementStyle="{StaticResource textboxWithError}"
                                         Width="*" IsReadOnly="true"/>-->
+                    <!--<DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_PhotonsFlux}" 
+                                        Binding="{Binding EnergyFlux, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
+                                        EditingElementStyle="{StaticResource textboxWithError}"
+                                        Width="*"/>-->
                 </DataGrid.Columns>
             </DataGrid>
 
