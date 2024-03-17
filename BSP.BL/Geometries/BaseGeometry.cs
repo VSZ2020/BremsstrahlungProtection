@@ -1,12 +1,17 @@
 ﻿using BSP.BL.Calculation;
-using System.Linq;
-using System.Numerics;
 
 namespace BSP.BL.Geometries
 {
     public abstract class BaseGeometry
     {
+        public BaseGeometry(float[] dims, int[] discreteness)
+        {
+            AssignDimensions(dims, discreteness);
+        }
+
         public abstract double GetFluence(SingleEnergyInputData input);
+
+        public abstract void AssignDimensions(float[] dims, int[] dicreteness);
 
         protected double[] GetUD(float[] u, float[] d)
         {

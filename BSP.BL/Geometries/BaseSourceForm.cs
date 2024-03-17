@@ -18,6 +18,11 @@ namespace BSP.BL.Geometries
         {
             return 1;
         }
+
+        public static IEnumerable<DimensionsInfo> GetDimensionsInfo()
+        {
+            return Enumerable.Empty<DimensionsInfo>();
+        }
     }
 
 
@@ -32,6 +37,15 @@ namespace BSP.BL.Geometries
         public override double GetNormalizationFactor()
         {
             return Height * Math.PI * Radius * Radius;
+        }
+
+        public static IEnumerable<DimensionsInfo> GetDimensionsInfo()
+        {
+            return new List<DimensionsInfo>()
+            {
+                new DimensionsInfo(){ Name = "Radius", DefaultValue = 10, Discreteness = 100},
+                new DimensionsInfo(){ Name = "Height",DefaultValue = 30, Discreteness = 300},
+            };
         }
     }
 
@@ -48,6 +62,16 @@ namespace BSP.BL.Geometries
         public override double GetNormalizationFactor()
         {
             return Height * Thickness * Width;
+        }
+
+        public static IEnumerable<DimensionsInfo> GetDimensionsInfo()
+        {
+            return new List<DimensionsInfo>()
+            {
+                new DimensionsInfo(){ Name = "Thickness", DefaultValue = 10, Discreteness = 100},
+                new DimensionsInfo(){ Name = "Width", DefaultValue = 10, Discreteness = 100},
+                new DimensionsInfo(){ Name = "Height", DefaultValue = 10, Discreteness = 100},
+            };
         }
     }
 }

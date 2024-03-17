@@ -1,12 +1,15 @@
 ﻿using BSP.BL.Calculation;
-using System;
-using System.Linq;
 
 namespace BSP.BL.Geometries
 {
     public sealed class Parallelepiped : BaseGeometry
     {
-        public Parallelepiped(float[] dims, int[] discreteness)
+        public Parallelepiped(float[] dims, int[] discreteness) : base(dims, discreteness) { }
+
+        private ParallelepipedForm form;
+
+        #region AssignDimensions
+        public override void AssignDimensions(float[] dims, int[] discreteness)
         {
             form = new ParallelepipedForm()
             {
@@ -17,11 +20,10 @@ namespace BSP.BL.Geometries
                 NWidth = discreteness[1],
                 NHeight = discreteness[2]
             };
-        }
+        } 
+        #endregion
 
-        private ParallelepipedForm form;
-
-
+        #region GetFluence
         /// <summary>
         /// Вычисление радиальной составляющей излучения от прямоугольного параллелепипеда. Метод средних прямоугольников
         /// </summary>
@@ -31,8 +33,10 @@ namespace BSP.BL.Geometries
         public override double GetFluence(SingleEnergyInputData input)
         {
             return AlternativeIntegration(input);
-        }
+        } 
+        #endregion
 
+        #region StandardIntegrator
         [Obsolete]
         public double StandardIntegrator(SingleEnergyInputData input)
         {
@@ -91,8 +95,9 @@ namespace BSP.BL.Geometries
             var sourceVolume = form.GetNormalizationFactor();
             return !input.CancellationToken.IsCancellationRequested ? sum / sourceVolume / (4.0 * Math.PI) : 0;
         }
+        #endregion
 
-
+        #region AlternativeIntegration
         public double AlternativeIntegration(SingleEnergyInputData input)
         {
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
@@ -101,9 +106,9 @@ namespace BSP.BL.Geometries
             //Начальные координаты точки регистрации. Абсолютные координаты
             var x0 = input.CalculationPoint.X;
             var y0 = input.CalculationPoint.Y;
-            var z0 = input.CalculationPoint.Z; 
+            var z0 = input.CalculationPoint.Z;
 
-            var integral = Integrate((x, y, z) => 
+            var integral = Integrate((x, y, z) =>
             {
                 var c = form.Thickness - x;
 
@@ -134,5 +139,6 @@ namespace BSP.BL.Geometries
             input.CancellationToken);
             return integral / form.GetNormalizationFactor() / (4.0 * Math.PI);
         }
+        #endregion
     }
 }

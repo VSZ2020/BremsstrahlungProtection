@@ -5,7 +5,12 @@ namespace BSP.BL.Geometries
 {
     public class CylinderAxial : BaseGeometry
     {
-        public CylinderAxial(float[] dims, int[] discreteness)
+        public CylinderAxial(float[] dims, int[] discreteness): base(dims, discreteness) {}
+
+        private CylinderForm form;
+
+        #region AssignDimensions
+        public override void AssignDimensions(float[] dims, int[] discreteness)
         {
             form = new CylinderForm()
             {
@@ -15,14 +20,16 @@ namespace BSP.BL.Geometries
                 NHeight = discreteness[1]
             };
         }
+        #endregion
 
-        private CylinderForm form;
-
+        #region GetFluence
         public override double GetFluence(SingleEnergyInputData input)
         {
             return AlternativeIntegrator(input);
-        }
+        } 
+        #endregion
 
+        #region StandardIntegrator
         public double StandardIntegrator(SingleEnergyInputData input)
         {
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
@@ -63,7 +70,8 @@ namespace BSP.BL.Geometries
 
             var sourceVolume = form.GetNormalizationFactor();
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume / (4.0 * Math.PI);
-        }
+        } 
+        #endregion
 
         #region ExternalIntegralByAngle
         private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
@@ -128,6 +136,7 @@ namespace BSP.BL.Geometries
             return 1.0 / Math.Sin(x);
         }
 
+        #region AlternativeIntegrator
         public double AlternativeIntegrator(SingleEnergyInputData input)
         {
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
@@ -153,7 +162,7 @@ namespace BSP.BL.Geometries
 
                 //Учет вклада поля рассеянного излучения                                                                       
                 var buildupFactor = UD.Length > 0 && input.BuildupProcessor != null ? input.BuildupProcessor.EvaluateComplexBuildup(UD, input.BuildupFactors) : 1.0;
-                
+
                 if (double.IsNaN(buildupFactor) || double.IsInfinity(buildupFactor))
                     buildupFactor = 0.0;
 
@@ -172,6 +181,7 @@ namespace BSP.BL.Geometries
 
             var sourceVolume = form.GetNormalizationFactor();
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume / (4.0 * Math.PI);
-        }
+        } 
+        #endregion
     }
 }

@@ -5,7 +5,12 @@ namespace BSP.BL.Geometries
 {
     public class CylinderRadial : BaseGeometry
     {
-        public CylinderRadial(float[] dims, int[] discreteness)
+        public CylinderRadial(float[] dims, int[] discreteness): base(dims, discreteness) { }
+
+        private CylinderForm form;
+
+        #region AssignDimensions
+        public override void AssignDimensions(float[] dims, int[] discreteness)
         {
             form = new CylinderForm()
             {
@@ -15,14 +20,16 @@ namespace BSP.BL.Geometries
                 NHeight = discreteness[1]
             };
         }
+        #endregion
 
-        private CylinderForm form;
-
+        #region GetFluence
         public override double GetFluence(SingleEnergyInputData input)
         {
             return AlternativeIntegrator(input);
-        }
+        } 
+        #endregion
 
+        #region StandardIntegrator
         public double StandardIntegrator(SingleEnergyInputData input)
         {
             //Задаем размеры источника
@@ -34,11 +41,11 @@ namespace BSP.BL.Geometries
             var b = input.CalculationPoint.X;
             var phi0 = Math.Atan2(input.CalculationPoint.Y, input.CalculationPoint.X);
             var z0 = input.CalculationPoint.Z;
-            
+
             //Шаги интегрирования
             var dro = R / form.NRadius;
-            var dz = form.Height / form.NHeight;  
-            var dPhi = 2 * Math.PI / form.NRadius;  
+            var dz = form.Height / form.NHeight;
+            var dPhi = 2 * Math.PI / form.NRadius;
 
             double currIntegral = 0.0;
             for (int i = 0; i < form.NRadius && !input.CancellationToken.IsCancellationRequested; i++)
@@ -55,7 +62,7 @@ namespace BSP.BL.Geometries
                         //double c = rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
 
                         //Длина самопоглощения в источнике
-                        double selfabsorptionLength = SelfabsorptionLength(rho, z, phi, b, R, phi0, z0);
+                        double selfabsorptionLength = SelfabsorptionLength(rho, z - z0, phi - phi0, b, R);
                         var effShieldThicknessFactor = Math.Sqrt(cFull) / (b - rho * Math.Cos(phi - phi0));
 
                         double[] mfp = GetUDWithFactors(
@@ -70,7 +77,7 @@ namespace BSP.BL.Geometries
 
                         //Полная экспонента ослабления
                         double totalLooseExp = Math.Exp(-mfp.Sum());
-                        
+
 
                         //Расчет вклада поля рассеянного излучения
                         double buildupFactor = input.BuildupProcessor != null && mfp.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(mfp, input.BuildupFactors) : 1.0;
@@ -84,8 +91,10 @@ namespace BSP.BL.Geometries
             var sourceVolume = form.GetNormalizationFactor();
             return !input.CancellationToken.IsCancellationRequested ? currIntegral * dro * dz * dPhi / sourceVolume / (4.0 * Math.PI) : 0;
         }
+        #endregion
 
 
+        #region AlternativeIntegrator
         public double AlternativeIntegrator(SingleEnergyInputData input)
         {
             //Задаем размеры источника
@@ -107,7 +116,7 @@ namespace BSP.BL.Geometries
                 var cFull = rho * rho + rho0 * rho0 + (z - z0) * (z - z0) - 2.0 * rho * rho0 * Math.Cos(phi - phi0);
 
                 //Длина самопоглощения в источнике
-                double selfabsorptionLength = SelfabsorptionLength(rho, z, phi, rho0, R, phi0, z0);
+                double selfabsorptionLength = SelfabsorptionLength(rho, z - z0, phi - phi0, rho0, R);
                 var effShieldThicknessFactor = Math.Sqrt(cFull) / (rho0 - rho * Math.Cos(phi - phi0));
 
                 double[] ud = GetUDWithFactors(
@@ -127,7 +136,7 @@ namespace BSP.BL.Geometries
                 double buildupFactor = input.BuildupProcessor != null && ud.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(ud, input.BuildupFactors) : 1.0;
 
                 var result = rho * totalLooseExp / cFull * buildupFactor;
-                
+
                 return result;
             }
 
@@ -139,7 +148,9 @@ namespace BSP.BL.Geometries
 
             return integral / sourceVolume / (4 * Math.PI);
         }
+        #endregion
 
+        #region SelfabsorptionLength
         /// <summary>
         /// Длина самопоглощения
         /// </summary>
@@ -149,12 +160,13 @@ namespace BSP.BL.Geometries
         /// <param name="b"></param>
         /// <param name="R"></param>
         /// <returns></returns>
-        public double SelfabsorptionLength(double rho, double z, double phi, double b, double R, double phi0 = 0, double z0 = 0)
+        public double SelfabsorptionLength(double rho, double z, double phi, double b, double R)
         {
-            var rho_b_z = (z - z0) * (z - z0) + rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi - phi0);
-            var rho_b = rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi - phi0);
-            var x = (rho * rho - rho * b * Math.Cos(phi - phi0) + Math.Sqrt(R * R * rho_b - rho * rho * b * b * Math.Sin(phi - phi0) * Math.Sin(phi - phi0))) * Math.Sqrt(rho_b_z) / rho_b;
+            var rho_b_z = z * z + rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
+            var rho_b = rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
+            var x = (rho * rho - rho * b * Math.Cos(phi) + Math.Sqrt(R * R * rho_b - rho * rho * b * b * Math.Sin(phi) * Math.Sin(phi))) * Math.Sqrt(rho_b_z) / rho_b;
             return x > 1E-15 ? x : 0;
-        }
+        } 
+        #endregion
     }
 }

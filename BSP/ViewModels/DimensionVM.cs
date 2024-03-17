@@ -12,11 +12,12 @@ namespace BSP.ViewModels
         private string? name;
         private float value = 10;
         private int discreteness = 10;
-
+        private bool isValueAvailable = true;
 
         public string? Name { get { return name; } set { name = value; OnChanged(); } }
         public float Value { get { return this.value; } set { this.value = value; OnChanged(); } }
         public int Discreteness { get { return discreteness; } set { discreteness = value; OnChanged(); } }
+        public bool IsValueAvailable { get => isValueAvailable; set { isValueAvailable = value; OnChanged(); } }
 
         public string this[string columnName]
         {
