@@ -28,7 +28,7 @@
                        Grid.Row="1" Grid.Column="0" 
                        VerticalAlignment="Center"
                        ToolTip="{StaticResource tooltipSourceMaterialZeff}"/>
-            <TextBox Text="{Binding SourceTab.SourceZ, Mode=OneWay}" 
+            <TextBox Text="{Binding SourceTab.SourceZ, Mode=Default}" 
                      Grid.Row="1" Grid.Column="1" 
                      VerticalAlignment="Center"
                      Margin="5,0,0,0"

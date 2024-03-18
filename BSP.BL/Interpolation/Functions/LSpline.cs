@@ -59,7 +59,7 @@ namespace BSP.BL.Interpolation.Functions
             return newY;
         }
 
-        private bool AreEqual(double a, double b, double TOL = 1e-6)
+        private bool AreEqual(double a, double b, double TOL = 1e-5)
         {
             return Math.Abs(a - b) <= TOL;
         }
