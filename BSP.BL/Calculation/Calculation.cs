@@ -51,7 +51,7 @@ namespace BSP.BL.Calculation
 
                     Interlocked.Increment(ref calculatedEnergiesCount);
                     //calculatedEnergiesCount++;
-                    input.Progress?.Report(calculatedEnergiesCount * 100 / energiesCount);
+                    input.Progress?.Report(calculatedEnergiesCount / energiesCount);
                 });
             });
 

@@ -32,7 +32,7 @@ namespace BSP.ViewModels
             LanguagesVM = new();
 
             string progressLabel = (string)Application.Current.Resources["msg_Progress"] ?? "Progress";
-            progress = new Progress<int>(i =>
+            progress = new Progress<double>(i =>
             {
                 ProgressValue = i;
                 //ShowStatusMessage($"{progressLabel} {i}%");
@@ -59,8 +59,8 @@ namespace BSP.ViewModels
         private MaterialDto _selectedEnvironmentMaterial;
         private CancellationTokenSource tokenSource;
 
-        private int progressValue = 0;
-        private IProgress<int> progress { get; }
+        private double progressValue = 0;
+        private IProgress<double> progress { get; }
         #endregion
 
         #region Properties
@@ -82,7 +82,7 @@ namespace BSP.ViewModels
         /// <summary>
         /// Текущий прогресс вычислений
         /// </summary>
-        public int ProgressValue { get => progressValue; set { progressValue = value; OnChanged(); } }
+        public double ProgressValue { get => progressValue; set { progressValue = value; OnChanged(); } }
         #endregion
 
         #region ViewModels
@@ -272,7 +272,7 @@ namespace BSP.ViewModels
 
                 results.PartialAirKerma = results.ConvertToAnotherDose(doseFactors);
                 FillOutputTable(results, energies, this.precision);
-                progress?.Report(100);
+                progress?.Report(1);
             }
         } 
         #endregion

@@ -49,7 +49,7 @@ namespace BSP.BL.Calculation
 
         public CancellationToken CancellationToken;
 
-        public IProgress<int> Progress;
+        public IProgress<double> Progress;
 
         public SingleEnergyInputData BuildSingleEnergyInputData(int EnergyIndex)
         {

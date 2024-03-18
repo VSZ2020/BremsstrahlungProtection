@@ -52,7 +52,7 @@ namespace BSP.BL.Calculation
 
         public CancellationToken CancellationToken;
 
-        public IProgress<int> Progress;
+        public IProgress<double> Progress;
         
 
         public InputDataBuilder WithEnergies(double[] energies)
@@ -127,7 +127,7 @@ namespace BSP.BL.Calculation
             return this;
         }
 
-        public InputDataBuilder WithProgress(IProgress<int> prg)
+        public InputDataBuilder WithProgress(IProgress<double> prg)
         {
             this.Progress = prg;
             return this;

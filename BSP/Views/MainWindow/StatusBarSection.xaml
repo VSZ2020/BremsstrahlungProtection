@@ -12,7 +12,7 @@
             </StatusBar.Background>
 
             <StatusBarItem>
-                <ProgressBar MinWidth="150" MinHeight="16" Value="{Binding ProgressValue}" Maximum="100"/>
+                <ProgressBar MinWidth="150" MinHeight="16" Value="{Binding ProgressValue}" Maximum="1"/>
             </StatusBarItem>
 
             <StatusBarItem>

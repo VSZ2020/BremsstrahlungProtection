@@ -31,7 +31,7 @@ namespace BSP.BL.Calculation
         /// </summary>
         public BaseHeterogeneousBuildup BuildupProcessor;
 
-        public IProgress<int> Progress;
+        public IProgress<double> Progress;
         public CancellationToken CancellationToken;
     }
 }
