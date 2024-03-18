@@ -69,7 +69,7 @@ namespace BSP.BL.Calculation
 
         public InputDataBuilder WithEnvironmentAbsorptionFactors(double[] energies, int environmentMaterialId)
         {
-            this.massEnvironmentAbsorptionFactors = materialsService.GetAbsorptionFactors(environmentMaterialId, energies);
+            this.massEnvironmentAbsorptionFactors = materialsService.GetMassAbsorptionFactors(environmentMaterialId, energies);
             return this;
         }
 

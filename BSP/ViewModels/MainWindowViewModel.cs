@@ -15,6 +15,7 @@ using BSP.BL.Materials;
 using System.Numerics;
 using System.Drawing;
 using BSP.BL.Geometries;
+using BSP.Views;
 
 namespace BSP.ViewModels
 {
@@ -100,17 +101,27 @@ namespace BSP.ViewModels
         RelayCommand stopCommand;
         RelayCommand clearResultsCommand;
         RelayCommand exportResultsToTextFile;
+        RelayCommand showInterpolatedDataViewer;
 
         public RelayCommand StartCommand => startCommand ?? (startCommand = new RelayCommand(obj => StartCalculation(), o => !IsEvaluationInProgress));
         public RelayCommand StopCommand => stopCommand ?? (stopCommand = new RelayCommand(obj => StopCalculation(), o => IsEvaluationInProgress));
         public RelayCommand ClearResultsCommand => clearResultsCommand ?? (clearResultsCommand = new RelayCommand(o => ClearResultsView()));
         public RelayCommand ExportResultsToTextFile => exportResultsToTextFile ?? (exportResultsToTextFile = new RelayCommand(o => ExportResults(), o => !string.IsNullOrEmpty(resultsText)));
+        public RelayCommand ShowInterpolatedDataViewerCommand => showInterpolatedDataViewer ?? (showInterpolatedDataViewer = new RelayCommand(o => ShowInterpolationsViewer()));
 
         public RelayCommand AboutCommand => new RelayCommand(o => new About().ShowDialog());
         public RelayCommand UserManualCommand => new RelayCommand(o =>
         {
             if (File.Exists("UserManual.pdf"))
                 Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = "UserManual.pdf" });
+        });
+
+        public RelayCommand ShowChangelogCommand => new RelayCommand(o =>
+        {
+            if (File.Exists("Changelog.txt"))
+                Process.Start(new ProcessStartInfo() { FileName = "Changelog.txt", UseShellExecute = true });
+            else
+                MessageBox.Show("Changelog file is not found");
         });
         #endregion
 
@@ -365,6 +376,63 @@ namespace BSP.ViewModels
                 }
             }
         }
+        #endregion
+
+        #region ShowInterpolationsViewer
+        private void ShowInterpolationsViewer()
+        {
+            if (SourceTab.EnergyYieldList.Count == 0)
+            {
+                MessageBox.Show("Firstly, group bremsstrahlung energies by click on 'Update' button", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                return;
+            }
+
+            if (SourceTab.SelectedSourceMaterial == null)
+            {
+                MessageBox.Show("Choose source material", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                return;
+            }
+
+            if (SelectedEnvironmentMaterial == null)
+            {
+                MessageBox.Show("Choose environment material", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                return;
+            }
+
+            if (DoseFactorsTab.SelectedDoseFactorType == null)
+            {
+                MessageBox.Show("Choose dose factor type", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                return;
+            }
+
+            if (BuildupTab.SelectedBuildup == null)
+            {
+                MessageBox.Show("Choose buildup type for homogeneous medium", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                return;
+            }
+
+            var selectedMaterialsIds = new List<int>() { SourceTab.SelectedSourceMaterial.Id };
+            foreach (var shield in ShieldingTab.ShieldLayers)
+            {
+                if (selectedMaterialsIds.Contains(shield.Id))
+                    continue;
+
+                selectedMaterialsIds.Add(shield.Id);
+            }
+
+            new InterpolationsViewer(
+                SourceTab.EnergyYieldList.Select(e => (double)e.Energy).ToArray(),
+                SelectedEnvironmentMaterial.Id,
+                selectedMaterialsIds.ToArray(),
+                BuildupTab.SelectedBuildup.BuildupType,
+                App.GetService<MaterialsService>(),
+                App.GetService<BuildupService>(),
+                App.GetService<DoseFactorsService>(),
+                DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
+                DoseFactorsTab.SelectedExposureGeometry.Id,
+                DoseFactorsTab.SelectedOrganTissue.Id
+                ).ShowDialog();
+        } 
         #endregion
 
         #region ResetProgress

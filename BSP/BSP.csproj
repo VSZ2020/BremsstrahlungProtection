@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Images\BSP_Icon.ico</ApplicationIcon>
-    <AssemblyVersion>1.5.0.2</AssemblyVersion>
+    <AssemblyVersion>1.5.0.3</AssemblyVersion>
 	<InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
@@ -20,6 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Changelog.txt" />
     <None Remove="Resources\Images\add.png" />
     <None Remove="Resources\Images\BSP_Icon.ico" />
     <None Remove="Resources\Images\edit.png" />
@@ -34,6 +35,16 @@
 
   <ItemGroup>
     <Content Include="Resources\Images\BSP_Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Changelog.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>

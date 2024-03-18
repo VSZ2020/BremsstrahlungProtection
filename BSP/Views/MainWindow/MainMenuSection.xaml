@@ -27,10 +27,10 @@
             <MenuItem Header="{StaticResource menu_Edit_Preferences}" IsEnabled="false"/>
         </MenuItem>-->
 
-        <!--<MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <MenuItem Header="{StaticResource menu_Tools_Interpolations}"/>
-            <MenuItem Header="{StaticResource menu_Tools_NuclidesEditor}"/>
-        </MenuItem>-->
+        <MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <MenuItem Header="{StaticResource menu_Tools_Interpolations}" Command="{Binding ShowInterpolatedDataViewerCommand}"/>
+            <!--<MenuItem Header="{StaticResource menu_Tools_NuclidesEditor}"/>-->
+        </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Calculation}">
             <MenuItem Header="{StaticResource menu_Calculation_Start}" Command="{Binding StartCommand}"/>
@@ -39,7 +39,7 @@
 
         <MenuItem Header="{StaticResource menu_Help}" IsEnabled="{Binding IsEvaluationNotInProgress}">
             <!--<MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>-->
-            <!--<MenuItem Header="{StaticResource menu_Help_Changelog}"/>-->
+            <MenuItem Header="{StaticResource menu_Help_Changelog}" Command="{Binding ShowChangelogCommand}"/>
             <Separator/>
             <MenuItem Header="{StaticResource menu_Help_About}" Command="{Binding AboutCommand}"/>
         </MenuItem>

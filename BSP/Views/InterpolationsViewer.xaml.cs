@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BSP.BL.Services;
+using BSP.ViewModels.InterpolatedDataViewer;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BSP.Views
 {
@@ -19,8 +9,22 @@ namespace BSP.Views
     /// </summary>
     public partial class InterpolationsViewer : Window
     {
-        public InterpolationsViewer()
+        private InterpolationViewerVM vm;
+
+        public InterpolationsViewer(double[] bremsstrahlungEnergies, int selectedEnvironmentMaterialId, int[] selectedMaterialsIds, Type selectedBuildupType, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService, Type selectedDoseFactorType, int exposureGeometryId, int OrganTissueId)
         {
+            this.vm = new InterpolationViewerVM(
+                bremsstrahlungEnergies, 
+                selectedEnvironmentMaterialId, 
+                selectedMaterialsIds, 
+                selectedBuildupType, 
+                materialsService, 
+                buildupService, 
+                doseFactorsService, 
+                selectedDoseFactorType, 
+                exposureGeometryId, 
+                OrganTissueId);
+            DataContext = vm;
             InitializeComponent();
         }
     }

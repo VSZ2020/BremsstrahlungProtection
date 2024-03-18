@@ -36,12 +36,78 @@ namespace BSP.BL.Services
                 .ToList();
         }
 
+        /// <summary>
+        /// Возвращает объект материала по его идентификатору
+        /// </summary>
+        /// <param name="id">Уникальный идентификатор материала</param>
+        /// <returns></returns>
         public MaterialDto GetMaterialById(int id)
         {
             var e = context.Materials.AsNoTracking().Single(m => m.Id == id);
             return new MaterialDto() { Id = e.Id, Name = e.Name, Density = e.Density, Z = e.Z, Weight = e.Weight };
         }
 
+        /// <summary>
+        /// Табличные значения энергий и массовых коэффициентов ослабления для указанного материала
+        /// </summary>
+        /// <param name="materialsId">Уникальный идентификатор материала</param>
+        /// <returns></returns>
+        public (double[] energies, double[] values) GetTableMassAttenuationFactors(int materialsId)
+        {
+            var tableEntities = context.MassAttenuationFactors.AsNoTracking().Where(e => e.MaterialId == materialsId).ToList();
+            return (tableEntities.Select(e => (double)e.Energy).ToArray(), tableEntities.Select(e => (double)e.Values[0]).ToArray());
+        }
+
+        /// <summary>
+        /// Табличные значения энергий и массовых коэффициентов поглощения для указанного материала
+        /// </summary>
+        /// <param name="materialsId">Уникальный идентификатор материала</param>
+        /// <returns></returns>
+        public (double[] energies, double[] values) GetTableMassAbsoprtionFactors(int materialsId)
+        {
+            var tableEntities = context.MassAbsorptionFactors.AsNoTracking().Where(e => e.MaterialId == materialsId).ToList();
+            return (tableEntities.Select(e => (double)e.Energy).ToArray(), tableEntities.Select(e => (double)e.Values[0]).ToArray());
+        }
+
+
+
+        /// <summary>
+        /// Интерполированные для указанных энергий значения массовых коэффициентов ослабления
+        /// </summary>
+        /// <param name="materialsId">Уникальный идентификатор материала</param>
+        /// <param name="energies">Массив энергий, для которых выполняется интерполяция</param>
+        /// <param name="interpolationType"></param>
+        /// <returns></returns>
+        public double[] GetInterpolatedMassAttenuationFactors(int materialsId, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
+        {
+            (var table_energies, var table_values) = GetTableMassAttenuationFactors(materialsId);
+
+            return Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
+        }
+
+        /// <summary>
+        /// Интерполированные для указанных энергий значения массовых коэффициентов поглощения
+        /// </summary>
+        /// <param name="materialsId"></param>
+        /// <param name="energies"></param>
+        /// <param name="interpolationType"></param>
+        /// <returns></returns>
+        public double[] GetInterpolatedMassAbsorptionFactors(int materialsId, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
+        {
+            (var table_energies, var table_values) = GetTableMassAbsoprtionFactors(materialsId);
+
+            return Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
+        }
+
+
+
+        /// <summary>
+        /// Специально сформированный массив интерполированных массовых коэффициентов ослабления с учетом заданного порядка слоев материалов. Первый индекс массива - энергия, второй - материал
+        /// </summary>
+        /// <param name="materialsIds"></param>
+        /// <param name="energies"></param>
+        /// <param name="interpolationType"></param>
+        /// <returns></returns>
         public double[][] GetMassAttenuationFactors(int[] materialsIds, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
         {
             //Массив для выходных значений
@@ -53,10 +119,7 @@ namespace BSP.BL.Services
                 var entities = context.MassAttenuationFactors.AsNoTracking().Where(e => e.MaterialId == materialsIds[i]).ToList();
                 if (entities.Count > 3)
                 {
-                    var table_energies = entities.Select(e => (double)e.Energy).ToArray();
-                    var table_values = entities.Select(e => (double)e.Value).ToArray();
-                    
-                    interpolated_values = Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
+                    interpolated_values = GetInterpolatedMassAttenuationFactors(materialsIds[i], energies, interpolationType);
                 }
                 else
                 {
@@ -69,21 +132,17 @@ namespace BSP.BL.Services
             return interpolatedData;
         }
 
-        public double[] GetAbsorptionFactors(int materialId, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
+
+        /// <summary>
+        /// Массив интерполированных массовых коэффициентов поглощения
+        /// </summary>
+        /// <param name="materialsIds"></param>
+        /// <param name="energies"></param>
+        /// <param name="interpolationType"></param>
+        /// <returns></returns>
+        public double[] GetMassAbsorptionFactors(int materialId, double[] energies, InterpolationType interpolationType = InterpolationType.Linear)
         {
-            var entities = context.MassAbsorptionFactors.AsNoTracking().Where(e => e.MaterialId == materialId).ToList();
-
-            if (entities.Count < 3)
-            {
-                //TODO: Log absent data
-                return new double[energies.Length];
-            }
-
-            var table_energies = entities.Select(e => (double)e.Energy).ToArray();
-            var table_values = entities.Select(e => (double)e.Value).ToArray();
-
-            var interpolated_values = Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
-            return interpolated_values;
+            return GetInterpolatedMassAbsorptionFactors(materialId, energies, interpolationType);
         }
     }
 }
