@@ -173,6 +173,7 @@
     <v:String x:Key="BuildupNameBroder">Broder</v:String>
 
     <v:String x:Key="BuildupNameGeometricProgression">Geometric Progression</v:String>
+    <v:String x:Key="BuildupNameImprovedGeometricProgression">Improved Geometric Progression</v:String>
     <v:String x:Key="BuildupNameTaylor2EXP">Taylor (2-exponential approximation)</v:String>
     <!--#endregion-->
 

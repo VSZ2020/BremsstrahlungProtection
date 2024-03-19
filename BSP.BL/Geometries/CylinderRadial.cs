@@ -165,7 +165,7 @@ namespace BSP.BL.Geometries
             var rho_b_z = z * z + rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
             var rho_b = rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
             var x = (rho * rho - rho * b * Math.Cos(phi) + Math.Sqrt(R * R * rho_b - rho * rho * b * b * Math.Sin(phi) * Math.Sin(phi))) * Math.Sqrt(rho_b_z) / rho_b;
-            return x > 1E-15 ? x : 0;
+            return x > 0 ? x : 0;
         } 
         #endregion
     }

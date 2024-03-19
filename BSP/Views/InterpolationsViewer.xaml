@@ -54,7 +54,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <oxy:PlotView Model="{Binding PlotModel}" Grid.Row="0"/>
-                <TextBlock Text="MOVE - click mouse right button and move it. ZOOM - scroll mouse wheel or select region of interest with left mouse button. VIEW VALUE - click on graph point to view its value. RESET SCALE - double click on mouse wheel (middle mouse button)" 
+                <TextBlock Text="MOVE - press mouse right button and move it. ZOOM - scroll mouse wheel or select region of interest with left mouse button. VIEW VALUE - click on graph point to view its value. RESET SCALE - double click on mouse wheel (middle mouse button)" 
                            Grid.Row="1" Margin="0,5,0,0" TextWrapping="Wrap" TextAlignment="Justify" Foreground="Gray"/>
             </Grid>
         </Grid>

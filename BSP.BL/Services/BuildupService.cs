@@ -29,6 +29,7 @@ namespace BSP.BL.Services
         private static Dictionary<Type, string> _availableHomogeneousBuildups = new Dictionary<Type, string>()
         {
             {typeof(BuildupGeometricProgression), "Geometric Progression" },
+            {typeof(BuildupImprovedGeometricProgression), "Improved Geometric Progression" },
             {typeof(BuildupTaylor), "Taylor 2-EXP" },
         };
 
@@ -87,6 +88,7 @@ namespace BSP.BL.Services
             return homogenBuildupType switch
             {
                 Type e when e == typeof(BuildupGeometricProgression) => "BuildupNameGeometricProgression",
+                Type e when e == typeof(BuildupImprovedGeometricProgression) => "BuildupNameImprovedGeometricProgression",
                 Type e when e == typeof(BuildupTaylor) => "BuildupNameTaylor2EXP",
                 _ => null
             };
@@ -112,7 +114,7 @@ namespace BSP.BL.Services
             if (buildupType == typeof(BuildupTaylor))
                 table_entities.AddRange(context.Taylor2ExpFactors.AsNoTracking().Where(e => e.MaterialId == materialId).ToList());
 
-            if (buildupType == typeof(BuildupGeometricProgression))
+            if (buildupType == typeof(BuildupGeometricProgression) || buildupType == typeof(BuildupImprovedGeometricProgression))
                 table_entities.AddRange(context.GeometricProgressionFactors.AsNoTracking().Where(e => e.MaterialId == materialId).ToList());
 
             var table_energies = table_entities.Select(e => (double)e.Energy).ToArray();

@@ -4,6 +4,7 @@ using BSP.Common;
 using BSP.Views;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             DoseFactorName = doseFactorTranslation != null ? (string)doseFactorTranslation: "Dose conversion factor";
             doseFactorUnits = DoseFactorsService.GetDoseConversionFactorUnits(selectedDoseFactorType);
 
+            PlotModel = new PlotModel() { IsLegendVisible = true };
             ShowData();
         }
 
@@ -100,7 +102,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         public ObservableCollection<MaterialDto> AvailableMaterials { get; }
         public List<string> AvailableBuildupCoefficients { get; }
 
-        public PlotModel PlotModel { get; private set; } = new();
+        public PlotModel PlotModel { get; private set; }
         #endregion
 
         private bool CanExecute(object parameter)
@@ -267,6 +269,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         {
             PlotModel.Axes.Clear();
             PlotModel.Series.Clear();
+            PlotModel.Legends.Clear();
         }
 
         private void PlotData(double[] tableX, double[] tableY, double[] x, double[] y, string title = "", bool isLogX = false, bool isLogY = false)
@@ -288,16 +291,22 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             else
                 PlotModel.Axes.Add(new LinearAxis() { Title = "Value", Position = AxisPosition.Left, Minimum = minimumY, Maximum = maximumY });
 
-            var tableSeries = new LineSeries() { Color = OxyColors.Blue, SeriesGroupName = "Table values" };
+            var tableSeries = new LineSeries() { Color = OxyColors.Blue, Title = "Table values", RenderInLegend = true };
             tableSeries.Points.AddRange(Enumerable.Range(0, tableX.Length).Select(i => new DataPoint(tableX[i], tableY[i])).ToArray());
 
-            var userSeries = new ScatterSeries() { SeriesGroupName = "Interpolated values", MarkerFill = OxyColors.Red, MarkerType = MarkerType.Circle };
+            var userSeries = new ScatterSeries() {Title = "Interpolated values", RenderInLegend = true, MarkerFill = OxyColors.Red, MarkerType = MarkerType.Circle };
             userSeries.Points.AddRange(Enumerable.Range(0, x.Length).Select(i => new ScatterPoint(x[i], y[i], 3, tag:"o")).ToArray());
 
             PlotModel.Series.Add(tableSeries);
             PlotModel.Series.Add(userSeries);
 
-            PlotModel.InvalidatePlot(false);
+            PlotModel.Legends.Add(new Legend() { 
+                LegendTextColor = OxyColors.Black, 
+                IsLegendVisible = true, 
+                LegendPosition = LegendPosition.TopRight, 
+                LegendPlacement = LegendPlacement.Inside});
+
+            PlotModel.InvalidatePlot(true);
         }
 
         private void OpenTableView()
