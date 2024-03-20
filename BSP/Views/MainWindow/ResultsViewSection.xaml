@@ -11,8 +11,9 @@
                 IsReadOnly="True">
                 <RichTextBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{StaticResource contextMenu_ExportToTextFile}" Command="{Binding ExportResultsToTextFile}"/>
                         <MenuItem Header="{StaticResource contextMenu_ClearResults}" Command="{Binding ClearResultsCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="{StaticResource contextMenu_ExportToTextFile}" Command="{Binding ExportResultsToTextFile}"/>
                     </ContextMenu>
                 </RichTextBox.ContextMenu>
                 <FlowDocument>

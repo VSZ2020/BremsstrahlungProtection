@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Images\BSP_Icon.ico</ApplicationIcon>
-    <AssemblyVersion>1.5.0.3</AssemblyVersion>
+    <AssemblyVersion>1.5.0.4</AssemblyVersion>
 	<InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
@@ -38,9 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Changelog.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Content Include="Changelog.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
