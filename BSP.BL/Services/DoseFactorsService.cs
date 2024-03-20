@@ -5,9 +5,6 @@ using BSP.Data;
 using BSP.Data.Entities;
 using BSP.Data.Entities.DoseConversionFactors;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BSP.BL.Services
 {
@@ -48,7 +45,7 @@ namespace BSP.BL.Services
             switch (doseFactorType)
             {
                 case Type e when e == typeof(EffectiveDoseEntity): return "Sv/Gy";
-                case Type e when e == typeof(AirKermaEntity): return "pGy*cm^2";
+                case Type e when e == typeof(AirKermaEntity): return "Gy*cm^2";
                 case Type e when e == typeof(EquivalentDoseEntity): return "Sv/Gy";
                 case Type e when e == typeof(AmbientDoseEquivalentEntity): return "Sv/Gy";
                 case Type e when e == typeof(ExposureDoseEntity): return "R/Gy";
@@ -114,7 +111,7 @@ namespace BSP.BL.Services
         {
             (var table_energies, var table_values) = GetTableDoseConversionFactors(doseConversionFactorType, exposureGeometryId, organTissueId);
             //Интерполируем табличные данные в промежуточных значениях энергий
-            var doseFactors = Interpolator.Interpolate(table_energies, table_values, energies, interpolatorType);
+            var doseFactors = Interpolator.Interpolate(table_energies, table_values, energies, interpolatorType, true);
 
             return doseFactors;
         }

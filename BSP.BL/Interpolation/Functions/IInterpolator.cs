@@ -2,6 +2,6 @@
 {
     public interface IInterpolator
     {
-        public double[] Interpolate(double[] x, double[] y, double[] new_x);
+        public double[] Interpolate(double[] x, double[] y, double[] new_x, bool interpolateInLogScale = false);
     }
 }

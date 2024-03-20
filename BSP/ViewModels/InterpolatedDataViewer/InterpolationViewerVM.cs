@@ -84,6 +84,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         private List<MaterialDto> userMaterials;
         private MaterialDto environmentMaterial;
 
+        private bool isMaterialsListEnabled = true;
+        private bool isBuildupFactorsListEnabled = true;
+
 
         private InterpolatedParameterType? selectedParameterType;
         public InterpolatedParameterType? SelectedParameterType { get => selectedParameterType; set { selectedParameterType = value; OnChanged(); UpdateBoxes();  } }
@@ -102,6 +105,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         public ObservableCollection<MaterialDto> AvailableMaterials { get; }
         public List<string> AvailableBuildupCoefficients { get; }
 
+        public bool IsMaterialsListEnabled { get => isMaterialsListEnabled; set { isMaterialsListEnabled = value; OnChanged(); } }
+        public bool IsBuildupFactorsListEnabled { get => isBuildupFactorsListEnabled; set { isBuildupFactorsListEnabled = value; OnChanged(); } }
+
         public PlotModel PlotModel { get; private set; }
         #endregion
 
@@ -109,6 +115,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         {
             if (selectedParameterType != null)
             {
+                IsMaterialsListEnabled = selectedParameterType != InterpolatedParameterType.DoseConversionFactors;
+                IsBuildupFactorsListEnabled = selectedParameterType == InterpolatedParameterType.BuildupFactors;
+
                 switch (selectedParameterType)
                 {
                     case InterpolatedParameterType.AbsorptionFactors:

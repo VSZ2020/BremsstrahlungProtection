@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BSP.BL.Extensions;
+using System;
 
 namespace BSP.BL.Interpolation.Functions
 {
     public class LSpline : IInterpolator
     {
-        public double[] Interpolate(double[] x, double[] y, double[] newX)
+        public double[] Interpolate(double[] x, double[] y, double[] newX, bool inlerpolateInLogScale = false)
         {
             if (x == null || y == null)
                 throw new ArgumentNullException("Input arrays are NULL");
@@ -17,6 +18,13 @@ namespace BSP.BL.Interpolation.Functions
 
             int source_length = x.Length;
             int new_data_length = newX.Length;
+
+            if (inlerpolateInLogScale)
+            {
+                x = x.ToLog10();
+                y = y.ToLog10();
+                newX = newX.ToLog10();
+            }
 
             //Новые значения Y
             double[] newY = new double[new_data_length];
@@ -56,7 +64,7 @@ namespace BSP.BL.Interpolation.Functions
                         newY[j] = slopes[^1] * newX[j] + intercepts[^1];
 
                 }
-            return newY;
+            return inlerpolateInLogScale ? newY.ToLinear() : newY;
         }
 
         private bool AreEqual(double a, double b, double TOL = 1e-5)

@@ -1,4 +1,5 @@
 ﻿using BSP.BL.DTO;
+using BSP.BL.Extensions;
 using BSP.BL.Interpolation;
 using BSP.BL.Interpolation.Functions;
 using BSP.Data;
@@ -82,7 +83,7 @@ namespace BSP.BL.Services
         {
             (var table_energies, var table_values) = GetTableMassAttenuationFactors(materialsId);
 
-            return Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
+            return Interpolator.Interpolate(table_energies, table_values, energies, interpolationType, true);
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace BSP.BL.Services
         {
             (var table_energies, var table_values) = GetTableMassAbsoprtionFactors(materialsId);
 
-            return Interpolator.Interpolate(table_energies, table_values, energies, interpolationType);
+            return Interpolator.Interpolate(table_energies, table_values, energies, interpolationType, true);
         }
 
 

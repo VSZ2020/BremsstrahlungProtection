@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BSP.BL.Extensions;
+using System;
 
 namespace BSP.BL.Interpolation.Functions
 {
@@ -16,13 +17,20 @@ namespace BSP.BL.Interpolation.Functions
             public double X;
         }
 
-        public double[] Interpolate(double[] x, double[] y, double[] new_x)
+        public double[] Interpolate(double[] x, double[] y, double[] new_x, bool inlerpolateInLogScale = false)
         {
             if (x.Length < 2)
                 throw new ArgumentException("No sufficient points count for spline construction");
 
             int n = x.Length;
             var splines = new CubicSpline[n];
+
+            if (inlerpolateInLogScale)
+            {
+                x = x.ToLog10();
+                y = y.ToLog10();
+                new_x.ToLog10();
+            }
 
             for (int i = 0; i < n; i++)                 //i = [0,n)
             {
@@ -83,7 +91,7 @@ namespace BSP.BL.Interpolation.Functions
                 }
                 interpolatedValues[i] = sp.A + sp.B * (new_x[i] - sp.X) + sp.C * (new_x[i] - sp.X) * (new_x[i] - sp.X) + sp.D * (new_x[i] - sp.X) * (new_x[i] - sp.X) * (new_x[i] - sp.X);
             }
-            return interpolatedValues;
+            return inlerpolateInLogScale ? interpolatedValues.ToLinear() : interpolatedValues;
         }
 
     }

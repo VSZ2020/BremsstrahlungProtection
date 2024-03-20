@@ -25,11 +25,13 @@
             <TextBlock Text="Material" Margin="0,5,0,2"/>
             <ComboBox ItemsSource="{Binding AvailableMaterials}"
                       SelectedItem="{Binding SelectedMaterial}"
-                      DisplayMemberPath="Name"/>
+                      DisplayMemberPath="Name"
+                      IsEnabled="{Binding IsMaterialsListEnabled}"/>
 
             <TextBlock Text="Buildup coefficients" Margin="0,5,0,2"/>
             <ComboBox ItemsSource="{Binding AvailableBuildupCoefficients}"
-                      SelectedItem="{Binding SelectedBuildupCoefficient}"/>
+                      SelectedItem="{Binding SelectedBuildupCoefficient}"
+                      IsEnabled="{Binding IsBuildupFactorsListEnabled}"/>
 
             <Button Content="Show" Style="{StaticResource DefaultButton}" Margin="0,5,0,0" Height="30" Command="{Binding ShowCommand}"/>
             <TextBlock Text="Choose value of interest and click 'Show' button to draw graph"
