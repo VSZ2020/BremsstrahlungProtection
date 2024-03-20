@@ -1,4 +1,9 @@
-﻿v1.5.0.4
+﻿v1.5.0.5
+- Interpolation of attenuation, absorption and dose conversion factors is in log scale;
+- Interpolation of buildup factors is in half-log scale.
+
+
+v1.5.0.4
 - Database is updated with new materials: Carbon, Copper, Uranium, Water;
 - Database is updated with new Taylor buildup coefficients for all materials;
 - Materials are renamed to full name.

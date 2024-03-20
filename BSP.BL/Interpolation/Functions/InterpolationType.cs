@@ -5,4 +5,12 @@
         Cubic,
         Linear
     }
+
+    public enum AxisLogScale
+    {
+        None,
+        OnlyX,
+        OnlyY,
+        BothXY
+    }
 }

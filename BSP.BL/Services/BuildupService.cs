@@ -6,7 +6,6 @@ using BSP.BL.Interpolation.Functions;
 using BSP.Data;
 using BSP.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Metrics;
 
 namespace BSP.BL.Services
 {
@@ -126,7 +125,7 @@ namespace BSP.BL.Services
 
         public double[] GetInterpolatedBuildupFactors(double[] tableEnergies, double[] tableValues, double[] energies, InterpolationType interpolatorType = InterpolationType.Linear)
         {
-            return Interpolator.Interpolate(tableEnergies, tableValues, energies, interpolatorType);
+            return Interpolator.Interpolate(tableEnergies, tableValues, energies, interpolatorType, AxisLogScale.OnlyX);
         }
 
         public double[][][] GetInterpolatedBuildupFactors(Type buildupType, int[] materialsIds, double[] energies, InterpolationType interpolatorType = InterpolationType.Linear)

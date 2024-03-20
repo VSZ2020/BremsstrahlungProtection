@@ -5,7 +5,7 @@ namespace BSP.BL.Interpolation.Functions
 {
     public class LSpline : IInterpolator
     {
-        public double[] Interpolate(double[] x, double[] y, double[] newX, bool inlerpolateInLogScale = false)
+        public double[] Interpolate(double[] x, double[] y, double[] newX, AxisLogScale interpolationScaleType = AxisLogScale.None)
         {
             if (x == null || y == null)
                 throw new ArgumentNullException("Input arrays are NULL");
@@ -19,11 +19,15 @@ namespace BSP.BL.Interpolation.Functions
             int source_length = x.Length;
             int new_data_length = newX.Length;
 
-            if (inlerpolateInLogScale)
+            if (interpolationScaleType == AxisLogScale.BothXY || interpolationScaleType == AxisLogScale.OnlyX)
             {
                 x = x.ToLog10();
-                y = y.ToLog10();
                 newX = newX.ToLog10();
+            }
+
+            if (interpolationScaleType == AxisLogScale.BothXY || interpolationScaleType == AxisLogScale.OnlyY)
+            {
+                y = y.ToLog10();
             }
 
             //Новые значения Y
@@ -64,7 +68,7 @@ namespace BSP.BL.Interpolation.Functions
                         newY[j] = slopes[^1] * newX[j] + intercepts[^1];
 
                 }
-            return inlerpolateInLogScale ? newY.ToLinear() : newY;
+            return interpolationScaleType == AxisLogScale.BothXY || interpolationScaleType == AxisLogScale.OnlyY ? newY.ToLinear() : newY;
         }
 
         private bool AreEqual(double a, double b, double TOL = 1e-5)

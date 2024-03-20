@@ -17,7 +17,7 @@ namespace BSP.BL.Interpolation.Functions
             public double X;
         }
 
-        public double[] Interpolate(double[] x, double[] y, double[] new_x, bool inlerpolateInLogScale = false)
+        public double[] Interpolate(double[] x, double[] y, double[] new_x, AxisLogScale interpolationScaleType = AxisLogScale.None)
         {
             if (x.Length < 2)
                 throw new ArgumentException("No sufficient points count for spline construction");
@@ -25,11 +25,15 @@ namespace BSP.BL.Interpolation.Functions
             int n = x.Length;
             var splines = new CubicSpline[n];
 
-            if (inlerpolateInLogScale)
+            if (interpolationScaleType == AxisLogScale.BothXY || interpolationScaleType == AxisLogScale.OnlyX)
             {
                 x = x.ToLog10();
+                new_x = new_x.ToLog10();
+            }
+
+            if (interpolationScaleType == AxisLogScale.BothXY || interpolationScaleType == AxisLogScale.OnlyY)
+            {
                 y = y.ToLog10();
-                new_x.ToLog10();
             }
 
             for (int i = 0; i < n; i++)                 //i = [0,n)
@@ -91,7 +95,7 @@ namespace BSP.BL.Interpolation.Functions
                 }
                 interpolatedValues[i] = sp.A + sp.B * (new_x[i] - sp.X) + sp.C * (new_x[i] - sp.X) * (new_x[i] - sp.X) + sp.D * (new_x[i] - sp.X) * (new_x[i] - sp.X) * (new_x[i] - sp.X);
             }
-            return inlerpolateInLogScale ? interpolatedValues.ToLinear() : interpolatedValues;
+            return interpolationScaleType == AxisLogScale.BothXY || interpolationScaleType == AxisLogScale.OnlyY ? interpolatedValues.ToLinear() : interpolatedValues;
         }
 
     }

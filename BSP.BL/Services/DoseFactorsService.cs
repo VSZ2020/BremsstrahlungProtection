@@ -111,7 +111,7 @@ namespace BSP.BL.Services
         {
             (var table_energies, var table_values) = GetTableDoseConversionFactors(doseConversionFactorType, exposureGeometryId, organTissueId);
             //Интерполируем табличные данные в промежуточных значениях энергий
-            var doseFactors = Interpolator.Interpolate(table_energies, table_values, energies, interpolatorType, true);
+            var doseFactors = Interpolator.Interpolate(table_energies, table_values, energies, interpolatorType, AxisLogScale.BothXY);
 
             return doseFactors;
         }
