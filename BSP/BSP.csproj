@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Images\BSP_Icon.ico</ApplicationIcon>
-    <AssemblyVersion>1.5.0.5</AssemblyVersion>
+    <AssemblyVersion>1.5.0.6</AssemblyVersion>
 	<InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
@@ -21,16 +21,27 @@
 
   <ItemGroup>
     <None Remove="Changelog.txt" />
+    <None Remove="Resources\Images\abort.png" />
+    <None Remove="Resources\Images\abort_disabled.png" />
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\add_nuclide.png" />
+    <None Remove="Resources\Images\add_shield.png" />
     <None Remove="Resources\Images\BSP_Icon.ico" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\edit_nuclide.png" />
+    <None Remove="Resources\Images\edit_shield.png" />
     <None Remove="Resources\Images\iconPartials.png" />
     <None Remove="Resources\Images\iconPlay.png" />
-    <None Remove="Resources\Images\iconPointSource.png" />
     <None Remove="Resources\Images\iconScattering.png" />
     <None Remove="Resources\Images\iconStop.png" />
+    <None Remove="Resources\Images\ignore_selfabsorption.png" />
+    <None Remove="Resources\Images\launch.png" />
+    <None Remove="Resources\Images\launch_disabled.png" />
     <None Remove="Resources\Images\Logo.png" />
+    <None Remove="Resources\Images\partial_energies.png" />
     <None Remove="Resources\Images\remove.png" />
+    <None Remove="Resources\Images\remove_nuclide.png" />
+    <None Remove="Resources\Images\remove_shield.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,16 +63,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\abort.png" />
+    <Resource Include="Resources\Images\abort_disabled.png" />
     <Resource Include="Resources\Images\add.png" />
+    <Resource Include="Resources\Images\add_nuclide.png" />
+    <Resource Include="Resources\Images\add_shield.png" />
     <Resource Include="Resources\Images\BSP_Icon.ico" />
     <Resource Include="Resources\Images\edit.png" />
-    <Resource Include="Resources\Images\iconPartials.png" />
-    <Resource Include="Resources\Images\iconPlay.png" />
-    <Resource Include="Resources\Images\iconPointSource.png" />
+    <Resource Include="Resources\Images\edit_nuclide.png" />
+    <Resource Include="Resources\Images\edit_shield.png" />
     <Resource Include="Resources\Images\iconScattering.png" />
-    <Resource Include="Resources\Images\iconStop.png" />
+    <Resource Include="Resources\Images\ignore_selfabsorption.png" />
+    <Resource Include="Resources\Images\launch.png" />
+    <Resource Include="Resources\Images\launch_disabled.png" />
     <Resource Include="Resources\Images\Logo.png" />
+    <Resource Include="Resources\Images\partial_energies.png" />
     <Resource Include="Resources\Images\remove.png" />
+    <Resource Include="Resources\Images\remove_nuclide.png" />
+    <Resource Include="Resources\Images\remove_shield.png" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:Double x:Key="TextBoxMinWidth">80</system:Double>
     <system:Double x:Key="ToolBarButtonSize">26</system:Double>
+    <system:Double x:Key="IconMaxHeight">21</system:Double>
     <conv:InversedBoolConverter x:Key="InversedBooleanConverter"/>
     <BooleanToVisibilityConverter x:Key="DefaultVisibilityConverter"/>
 </ResourceDictionary>

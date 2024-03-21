@@ -45,7 +45,7 @@
         
         <Grid Grid.Row="2" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -58,7 +58,7 @@
                     Command="{Binding ShieldingTab.AddCommand}" 
                     Style="{StaticResource DefaultButton}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="../../Resources/Images/add.png" Margin="0,0,5,0"/>
+                    <Image Source="../../Resources/Images/add_shield.png" Margin="0,0,5,0" MaxHeight="{StaticResource IconMaxHeight}"/>
                     <TextBlock Text="{StaticResource btn_Add}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
@@ -69,7 +69,7 @@
                     Command="{Binding ShieldingTab.EditCommand}" 
                     Style="{StaticResource DefaultButton}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="../../Resources/Images/edit.png" Margin="0,0,5,0"/>
+                    <Image Source="../../Resources/Images/edit_shield.png" Margin="0,0,5,0" MaxHeight="{StaticResource IconMaxHeight}"/>
                     <TextBlock Text="{StaticResource btn_Edit}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
@@ -80,7 +80,7 @@
                     Command="{Binding ShieldingTab.RemoveCommand}" 
                     Style="{StaticResource DefaultButton}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="../../Resources/Images/remove.png" Margin="0,0,5,0"/>
+                    <Image Source="../../Resources/Images/remove_shield.png" Margin="0,0,5,0" MaxHeight="{StaticResource IconMaxHeight}"/>
                     <TextBlock Text="{StaticResource btn_Remove}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>

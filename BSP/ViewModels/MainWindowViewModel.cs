@@ -1,21 +1,17 @@
-﻿using BSP.BL;
-using BSP.BL.Calculation;
+﻿using BSP.BL.Calculation;
 using BSP.BL.DTO;
+using BSP.BL.Materials;
 using BSP.BL.Services;
 using BSP.Common;
 using BSP.Source.XAML_Forms;
 using BSP.ViewModels.Tabs;
+using BSP.Views;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
-using BSP.BL.Buildups;
-using BSP.BL.Materials;
 using System.Numerics;
-using System.Drawing;
-using BSP.BL.Geometries;
-using BSP.Views;
+using System.Windows;
 
 namespace BSP.ViewModels
 {
@@ -52,7 +48,7 @@ namespace BSP.ViewModels
         private bool isEvaluationInProgress = false;
         private int precision = 3;
         private bool isShowPartialDoseRates = false;
-        private bool isPointSource = false;
+        private bool isSelftabsorptionOff = false;
         private bool isShowInterpolatedInputData = false;
         
         private string resultsText;
@@ -67,7 +63,7 @@ namespace BSP.ViewModels
         #region Properties
         public int Precision { get => precision; set { precision = value > 0 && value < 10 ? value : 3; OnChanged(); } }
         public bool IsShowPartialDoseRates { get => isShowPartialDoseRates; set { isShowPartialDoseRates = value; OnChanged(); } }
-        public bool IsPointSource { get => isPointSource; set { isPointSource = value; OnChanged(); } }
+        public bool IsSelfAbsorptionOff { get => isSelftabsorptionOff; set { isSelftabsorptionOff = value; OnChanged(); } }
         public bool IsShowInputData { get => isShowInterpolatedInputData; set { isShowInterpolatedInputData = value; OnChanged(); } }
         
         public string ResultsText { get => resultsText; set { resultsText = value; OnChanged(); } }
@@ -210,7 +206,7 @@ namespace BSP.ViewModels
                     .WithSourceActivity(SourceTab.SourceTotalActivity)
                     .WithCancellationToken(tokenSource.Token)
                     .WithProgress(progress)
-                    .WithSelfabsorption(!IsPointSource);
+                    .WithSelfabsorption(!IsSelfAbsorptionOff);
 
                 var doseFactors = App.GetService<DoseFactorsService>().GetDoseConversionFactors(
                     DoseFactorsTab.SelectedDoseFactorType.DoseFactorType, 

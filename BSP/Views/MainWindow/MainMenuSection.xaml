@@ -27,12 +27,12 @@
             
             <MenuItem Header="{StaticResource menu_Edit_RadionuclideAdd}" Command="{Binding SourceTab.AddNuclideCommand}">
                 <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/add.png" Margin="0"/>
+                    <Image Source="../../Resources/Images/add_nuclide.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="{StaticResource menu_Edit_RadionuclideRemove}" Command="{Binding SourceTab.RemoveNuclideCommand}">
                 <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/remove.png" Margin="0"/>
+                    <Image Source="../../Resources/Images/remove_nuclide.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                 </MenuItem.Icon>
             </MenuItem>
             
@@ -40,17 +40,17 @@
 
             <MenuItem Header="{StaticResource menu_Edit_ShieldingAdd}" Command="{Binding ShieldingTab.AddCommand}">
                 <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/add.png" Margin="0"/>
+                    <Image Source="../../Resources/Images/add_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="{StaticResource menu_Edit_ShieldingEdit}" Command="{Binding ShieldingTab.EditCommand}">
                 <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/edit.png" Margin="0"/>
+                    <Image Source="../../Resources/Images/edit_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="{StaticResource menu_Edit_ShieldingRemove}" Command="{Binding ShieldingTab.RemoveCommand}">
                 <MenuItem.Icon>
-                    <Image Source="../../Resources/Images/remove.png" Margin="0"/>
+                    <Image Source="../../Resources/Images/remove_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                 </MenuItem.Icon>
             </MenuItem>
             
@@ -65,8 +65,16 @@
         </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Calculation}">
-            <MenuItem Header="{StaticResource menu_Calculation_Start}" Command="{Binding StartCommand}"/>
-            <MenuItem Header="{StaticResource menu_Calculation_Abort}" Command="{Binding StopCommand}"/>
+            <MenuItem Header="{StaticResource menu_Calculation_Start}" Command="{Binding StartCommand}">
+                <MenuItem.Icon>
+                    <Image MaxHeight="{StaticResource IconMaxHeight}" Source="/Resources/Images/launch.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{StaticResource menu_Calculation_Abort}" Command="{Binding StopCommand}">
+                <MenuItem.Icon>
+                    <Image MaxHeight="{StaticResource IconMaxHeight}" Source="/Resources/Images/abort.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
         </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Help}" IsEnabled="{Binding IsEvaluationNotInProgress}">

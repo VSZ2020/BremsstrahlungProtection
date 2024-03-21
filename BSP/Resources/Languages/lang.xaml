@@ -125,7 +125,7 @@
     <v:String x:Key="tab_DoseFactors_OrganOrTissue">Organ/Tissue</v:String>
 
     <v:String x:Key="tab_Output_Precision">Number of decimal places</v:String>
-    <v:String x:Key="tab_Output_IsPointSource">Point source approximation</v:String>
+    <v:String x:Key="tab_Output_TurnOffSelfabsorption">Turn off selfabsorption</v:String>
     <v:String x:Key="tab_Output_PartialDoseRates">Show partial dose rates</v:String>
 
     <v:String x:Key="tab_Output_OutputValue_GroupName">Output parameters</v:String>
@@ -158,7 +158,7 @@
     <v:String x:Key="tooltipLaunchCalc">Launch calculation</v:String>
     <v:String x:Key="tooltipStopCalc">Abort the current calculation</v:String>
     <v:String x:Key="tooltipIncludePartial">Print dose rates for each bremsstrahlung energy group</v:String>
-    <v:String x:Key="tooltipIsPointSource">Point source approximation, when calculating dose rate</v:String>
+    <v:String x:Key="tooltipIsSelfabsorptionOff">If selected, self-absorption in the source is not taken into account in the calculations. Works only for extended sources</v:String>
     <v:String x:Key="tooltipSumActivityBox">Total activity of selected radionuclides</v:String>
     <v:String x:Key="tooltipSumIbetaBox">Total bremsstrahlung spectrum yield</v:String>
     <v:String x:Key="tooltipSourceMaterialZeff">Effective atomic number of material</v:String>

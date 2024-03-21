@@ -16,6 +16,9 @@
 # Materials and dose factors data
 Data/
 
+# Adobe illustrator files
+*.ai
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

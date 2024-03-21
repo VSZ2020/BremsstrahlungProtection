@@ -12,17 +12,17 @@
                  IsEnabled="{Binding IsEvaluationNotInProgress}">
             <!--Buildup-->
             <ToggleButton IsChecked="{Binding BuildupTab.IsIncludeBuildup}" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" Margin="0" ToolTip="{StaticResource tooltipIncludeScatter}">
-                <Image Source="/Resources/Images/iconScattering.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image Source="/Resources/Images/iconScattering.png" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="{StaticResource IconMaxHeight}"/>
             </ToggleButton>
 
             <!--Partial Dose Rates-->
             <ToggleButton IsChecked="{Binding IsShowPartialDoseRates}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipIncludePartial}">
-                <Image Source="/Resources/Images/iconPartials.png"></Image>
+                <Image Source="/Resources/Images/partial_energies.png" Stretch="UniformToFill" MaxHeight="{StaticResource IconMaxHeight}"></Image>
             </ToggleButton>
 
             <!--Point source-->
-            <ToggleButton IsChecked="{Binding IsPointSource}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipIsPointSource}">
-                <Image Source="/Resources/Images/iconPointSource.png"></Image>
+            <ToggleButton IsChecked="{Binding IsSelfAbsorptionOff}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipIsSelfabsorptionOff}">
+                <Image Source="/Resources/Images/ignore_selfabsorption.png" Stretch="UniformToFill" MaxHeight="{StaticResource IconMaxHeight}"></Image>
             </ToggleButton>
 
             <!--Show interpolated input-->
@@ -33,12 +33,38 @@
         <ToolBar Style="{StaticResource MainToolbar}">
             <!--Run calculation-->
             <Button Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipLaunchCalc}" Command="{Binding StartCommand}">
-                <Image Source="/Resources/Images/iconPlay.png"/>
+                <Image MaxHeight="{StaticResource IconMaxHeight}">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
+                                    <Setter Property="Source" Value="/Resources/Images/launch.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="False">
+                                    <Setter Property="Source" Value="/Resources/Images/launch_disabled.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
             </Button>
 
             <!--Abort calculation-->
             <Button Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipStopCalc}" Command="{Binding StopCommand}">
-                <Image Source="/Resources/Images/iconStop.png"  Stretch="Fill"/>
+                <Image MaxHeight="{StaticResource IconMaxHeight}">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="True">
+                                    <Setter Property="Source" Value="/Resources/Images/abort.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Value="False">
+                                    <Setter Property="Source" Value="/Resources/Images/abort_disabled.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
             </Button>
         </ToolBar>
     </ToolBarTray>
