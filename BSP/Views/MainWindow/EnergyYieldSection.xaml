@@ -44,14 +44,14 @@
                                         Binding="{Binding EnergyYield, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
                                         EditingElementStyle="{StaticResource textboxWithError}"
                                         Width="*"/>
-                    <!--<DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_EnergyFlux}" 
+                    <DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_EnergyFlux}" 
                                         Binding="{Binding EnergyFlux, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
                                         EditingElementStyle="{StaticResource textboxWithError}"
-                                        Width="*" IsReadOnly="true"/>-->
-                    <!--<DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_PhotonsFlux}" 
-                                        Binding="{Binding EnergyFlux, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
+                                        Width="*" IsReadOnly="False"/>
+                    <DataGridTextColumn Header="{StaticResource tab_Source_Bremsstrahlung_PhotonsFlux}" 
+                                        Binding="{Binding PhotonsFlux, StringFormat={}{0:e3}, ValidatesOnDataErrors=True}" 
                                         EditingElementStyle="{StaticResource textboxWithError}"
-                                        Width="*"/>-->
+                                        Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

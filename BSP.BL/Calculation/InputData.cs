@@ -38,9 +38,9 @@ namespace BSP.BL.Calculation
         public Vector3 CalculationPoint;
 
         /// <summary>
-        /// Рассчитанные потоки энергий тормозного излучения [МэВ/(с * распад)]
+        /// Рассчитанные потоки фотоквантов [фотон/с]
         /// </summary>
-        public double[] BremsstrahlungEnergyFluxes;
+        public double[] PhotonsFluxes;
 
         /// <summary>
         /// Класс, содержащий метод расчета фактора накопления для гетерогенной защиты. Внутри него хранится ссылка на метод расчета фактора накопления для гомогенной защиты

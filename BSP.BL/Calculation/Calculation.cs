@@ -9,11 +9,9 @@ namespace BSP.BL.Calculation
         public static async Task<OutputValue> StartAsync(InputData input, BaseGeometry form)
         {
             //Создаем выходной массив
-            int energiesCount = input.BremsstrahlungEnergyFluxes.Length;
-            OutputValue output = new OutputValue();
-            output.PartialFluxDensity = new double[energiesCount];
-            output.PartialEnergyFluxDensity = new double[energiesCount];
-            output.PartialAirKerma = new double[energiesCount];
+            int energiesCount = input.PhotonsFluxes.Length;
+            OutputValue output = new OutputValue(energiesCount);
+            output.DosePoint = input.CalculationPoint;
 
             var bremsstrahlungFractions = Bremsstrahlung.GetBremsstrahlungFractions();
 
@@ -26,28 +24,30 @@ namespace BSP.BL.Calculation
                     //Вычисляем интеграл
                     double fluence = form.GetFluence(input.BuildSingleEnergyInputData(energyIndex));
 
-                    output.DosePoint = input.CalculationPoint;
-
-                    //Вычисляем парциальную плотность потока квантов тормозного излучения [1/см2/с]
-                    output.PartialFluxDensity[energyIndex] = input.BremsstrahlungEnergyFluxes[energyIndex] / input.Energies[energyIndex] * fluence;
-                    //Вычисляем парциальную плотность потока энергии [МэВ/см2/с]
-                    output.PartialEnergyFluxDensity[energyIndex] = input.BremsstrahlungEnergyFluxes[energyIndex] * fluence;
-                    //Вычисляем парциальную мощность воздушной кермы [Гр/ч]
-                    output.PartialAirKerma[energyIndex] =
-                        CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[energyIndex] * output.PartialEnergyFluxDensity[energyIndex];
-                    
                     //Если значение NaN, то ...
-                    if (double.IsNaN(output.PartialAirKerma[energyIndex]))
+                    if (double.IsNaN(fluence))
                     {
-                        output.PartialAirKerma[energyIndex] = 0.0;
+                        fluence = 0.0;
                         //Записываем в лог
                     }
                     //Если значение Inf, то ...
-                    if (double.IsInfinity(output.PartialAirKerma[energyIndex]))
+                    if (double.IsInfinity(fluence))
                     {
-                        output.PartialAirKerma[energyIndex] = 0.0;
+                        fluence = 0.0;
                         //Записываем в лог
                     }
+
+                    output.Energies[energyIndex] = input.Energies[energyIndex];
+
+                    output.PartialPhotonsFlux[energyIndex] = input.PhotonsFluxes[energyIndex];
+
+                    //Вычисляем парциальную плотность потока квантов тормозного излучения [1/см2/с]
+                    output.PartialFluxDensity[energyIndex] = input.PhotonsFluxes[energyIndex] * fluence;
+
+                    //Вычисляем парциальную мощность воздушной кермы [Гр/ч]
+                    output.PartialAirKerma[energyIndex] =
+                        CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[energyIndex] * output.PartialFluxDensity[energyIndex] * input.Energies[energyIndex];
+                    
 
                     Interlocked.Increment(ref calculatedEnergiesCount);
                     //calculatedEnergiesCount++;

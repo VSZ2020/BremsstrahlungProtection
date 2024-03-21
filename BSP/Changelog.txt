@@ -1,4 +1,10 @@
-﻿v1.5.0.5
+﻿v1.5.0.6
+- Corrections in the calculation method are made for a point source;
+- Now user can see and set both energy flux of bremsstrahlung and bremsstrahlung photons flux in 'Source' tab;
+- Bremsstrahlung energy-intensity section is updated automatically;
+- 'Edit' section was added to main menu.
+
+v1.5.0.5
 - Interpolation of attenuation, absorption and dose conversion factors is in log scale;
 - Interpolation of buildup factors is in half-log scale.
 

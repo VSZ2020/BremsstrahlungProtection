@@ -26,6 +26,11 @@
     <v:String x:Key="menu_Edit_Edit">Edit</v:String>
     <v:String x:Key="menu_Edit_Remove">Remove</v:String>
     <v:String x:Key="menu_Edit_Preferences">Preferences</v:String>
+    <v:String x:Key="menu_Edit_RadionuclideAdd">Add radionuclide</v:String>
+    <v:String x:Key="menu_Edit_RadionuclideRemove">Remove radionuclide</v:String>
+    <v:String x:Key="menu_Edit_ShieldingAdd">Add shield layer</v:String>
+    <v:String x:Key="menu_Edit_ShieldingEdit">Edit shield layer</v:String>
+    <v:String x:Key="menu_Edit_ShieldingRemove">Remove shield layer</v:String>
 
     <v:String x:Key="menu_Calculation">Calculation</v:String>
     <v:String x:Key="menu_Calculation_Start">Launch calculation</v:String>
@@ -247,7 +252,7 @@
     
 
     <!--Application Global messages-->
-    <v:String x:Key="msg_Welcome">Welcome to the 'Bremsstrahlung protection' computer code!</v:String>
+    <v:String x:Key="msg_Welcome">Welcome to the 'Bremsstrahlung protection' computer code! To get started, select a new radionuclide by clicking the “Add” button.</v:String>
     
     <v:String x:Key="msg_RestartApplication">To apply all changes, restart this application!</v:String>
 

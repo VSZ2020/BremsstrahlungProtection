@@ -282,14 +282,14 @@ namespace BSP.ViewModels
                     break;
 
                 results.PartialAirKerma = results.ConvertToAnotherDose(doseFactors);
-                FillOutputTable(results, energies, this.precision);
+                FillOutputTable(results, this.precision);
                 progress?.Report(1);
             }
         } 
         #endregion
 
         #region FillOutputTable
-        private void FillOutputTable(OutputValue results, double[] energies, int precise = 3)
+        private void FillOutputTable(OutputValue results, int precise = 3)
         {
             if (tokenSource.IsCancellationRequested)
             {
@@ -337,9 +337,9 @@ namespace BSP.ViewModels
                 for (var i = 0; i < results.PartialAirKerma.Length; i++)
                 {
                     ResultsText += string.Format(partialDataFormat,
-                    energies[i],
+                    results.Energies[i],
                     results.PartialFluxDensity[i],
-                    results.PartialEnergyFluxDensity[i],
+                    results.PartialFluxDensity[i] * results.Energies[i],
                     results.PartialAirKerma[i],
                     units);
                 }

@@ -19,13 +19,45 @@
             <MenuItem Header="{StaticResource menu_Program_Exit}"/>
         </MenuItem>
 
-        <!--<MenuItem Header="{StaticResource menu_Edit}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <MenuItem Header="{StaticResource menu_Edit_Add}"/>
+        <MenuItem Header="{StaticResource menu_Edit}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <!--<MenuItem Header="{StaticResource menu_Edit_Add}"/>
             <MenuItem Header="{StaticResource menu_Edit_Edit}"/>
-            <MenuItem Header="{StaticResource menu_Edit_Remove}"/>
+            <MenuItem Header="{StaticResource menu_Edit_Remove}"/>-->
             <Separator/>
+            
+            <MenuItem Header="{StaticResource menu_Edit_RadionuclideAdd}" Command="{Binding SourceTab.AddNuclideCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/add.png" Margin="0"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{StaticResource menu_Edit_RadionuclideRemove}" Command="{Binding SourceTab.RemoveNuclideCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/remove.png" Margin="0"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            
+            <Separator/>
+
+            <MenuItem Header="{StaticResource menu_Edit_ShieldingAdd}" Command="{Binding ShieldingTab.AddCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/add.png" Margin="0"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{StaticResource menu_Edit_ShieldingEdit}" Command="{Binding ShieldingTab.EditCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/edit.png" Margin="0"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{StaticResource menu_Edit_ShieldingRemove}" Command="{Binding ShieldingTab.RemoveCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/remove.png" Margin="0"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            
+            <Separator/>
+            
             <MenuItem Header="{StaticResource menu_Edit_Preferences}" IsEnabled="false"/>
-        </MenuItem>-->
+        </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
             <MenuItem Header="{StaticResource menu_Tools_Interpolations}" Command="{Binding ShowInterpolatedDataViewerCommand}"/>
