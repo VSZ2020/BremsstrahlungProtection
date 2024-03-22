@@ -13,6 +13,9 @@ namespace BSP.BL.Buildups
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Calculate(double mfp, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
         {
+            if (mfp > 40)
+                mfp = 40;
+
             var K = (int)Math.Round((c * Math.Pow(mfp, a) + d * (Math.Tanh(mfp / xi - 2.0) - TANH_OF_MINUS_2) / ONE_MINUS_TANH_OF_MINUS_2), 0);
 
             if (K == 1)

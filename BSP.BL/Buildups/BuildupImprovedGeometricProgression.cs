@@ -1,6 +1,4 @@
 ﻿using BSP.BL.Buildups.Common;
-using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace BSP.BL.Buildups
@@ -14,7 +12,12 @@ namespace BSP.BL.Buildups
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Calculate(double mfp, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
         {
-            return mfp <= 40 ? CalculateBuildupLess40MFP(mfp, a, b, c, d, xi, barrierFactor) : CalculateBuildupGreater40MFP(mfp, a, b, c, d, xi, barrierFactor);
+            if (mfp > 100)
+                mfp = 100;
+            var result = mfp <= 40 ? CalculateBuildupLess40MFP(mfp, a, b, c, d, xi, barrierFactor) : CalculateBuildupGreater40MFP(mfp, a, b, c, d, xi, barrierFactor);
+            if (double.IsNaN(result) || double.IsInfinity(result))
+                result = 1.0;
+            return result;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -31,7 +34,7 @@ namespace BSP.BL.Buildups
 
         private static double CalculateBuildupLess40MFP(double mfp, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
         {
-            var K = (int)Math.Round(GetK(mfp, a, c, d, xi),0);
+            var K = (int)GetK(mfp, a, c, d, xi);
             if (K == 1)
                 return (1.0 + (b - 1.0) * mfp) * barrierFactor;
             return (1.0 + (b - 1.0) * (Math.Pow(K, mfp) - 1.0) / (K - 1.0)) * barrierFactor;
@@ -47,10 +50,10 @@ namespace BSP.BL.Buildups
 
             if (0 <= ratio && ratio <= 1)
             {
-                K = (int)Math.Round(1 + (K35 - 1) * Math.Pow(ratio, ksi), 0);
+                K = (int)(1.0 + (K35 - 1) * Math.Pow(ratio, ksi));
             }
             else
-                K = (int)Math.Round(K35 * Math.Pow(K40/K35, Math.Pow(ksi, fm)),0);
+                K = (int)(K35 * Math.Pow(K40/K35, Math.Pow(ksi, fm)));
 
             if (K == 1)
                 return (1.0 + (b - 1.0) * mfp) * barrierFactor;

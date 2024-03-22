@@ -214,7 +214,7 @@ namespace BSP.ViewModels.Tabs
             //Выбираем только пары значений энергии и выхода ТИ, в которых значения отличны от нуля. Сортируем по возрастанию энергии.
             var energyYieldData = EnergyYieldList
                 .OrderBy(ei => ei.Energy)
-                .Where(ei => ei.Energy > 0)
+                .Where(ei => ei.Energy > 0 && ei.PhotonsFlux > 0)
                 .ToList();
 
             //Если задан учет энергии отсечки, то фильтруем данные

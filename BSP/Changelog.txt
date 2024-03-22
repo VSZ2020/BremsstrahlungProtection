@@ -1,4 +1,10 @@
-﻿v1.5.0.6
+﻿v1.5.0.7
+- New logger;
+- Geometric progression constrict is up to 40 MFP;
+- Improved geometric progression constrict is up to 100 MFP. 
+
+
+v1.5.0.6
 - Corrections in the calculation method are made for a point source;
 - Now user can see and set both energy flux of bremsstrahlung and bremsstrahlung photons flux in 'Source' tab;
 - Bremsstrahlung energy-intensity section is updated automatically;

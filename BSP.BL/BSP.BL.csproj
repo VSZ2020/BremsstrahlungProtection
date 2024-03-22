@@ -16,6 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Properties\Новая папка\**" />
+    <EmbeddedResource Remove="Properties\Новая папка\**" />
+    <None Remove="Properties\Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BSP.Data\BSP.Data.csproj" />
   </ItemGroup>
 

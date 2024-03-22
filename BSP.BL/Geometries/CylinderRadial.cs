@@ -1,5 +1,4 @@
 ﻿using BSP.BL.Calculation;
-using System.Diagnostics;
 
 namespace BSP.BL.Geometries
 {
@@ -25,7 +24,7 @@ namespace BSP.BL.Geometries
         #region GetFluence
         public override double GetFluence(SingleEnergyInputData input)
         {
-            return AlternativeIntegrator(input);
+            return StandardIntegrator(input);
         } 
         #endregion
 
@@ -47,6 +46,8 @@ namespace BSP.BL.Geometries
             var dz = form.Height / form.NHeight;
             var dPhi = 2 * Math.PI / form.NRadius;
 
+            //StringBuilder builder = new();
+            //builder.AppendLine("\n"+string.Join(";","rho","phi","z","cFull","xe","MFP[0]","MFP[Air]","EXP(-ud)","Buildup","IntegralSum"));
             double currIntegral = 0.0;
             for (int i = 0; i < form.NRadius && !input.CancellationToken.IsCancellationRequested; i++)
             {
@@ -59,7 +60,6 @@ namespace BSP.BL.Geometries
                         var phi = 0.5 * dPhi + dPhi * k;
 
                         double cFull = (z - z0) * (z - z0) + rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi - phi0);
-                        //double c = rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
 
                         //Длина самопоглощения в источнике
                         double selfabsorptionLength = SelfabsorptionLength(rho, z - z0, phi - phi0, b, R);
@@ -74,22 +74,24 @@ namespace BSP.BL.Geometries
 
                         if (!input.IsSelfAbsorptionAllowed)
                             mfp = mfp.Skip(1).ToArray();
-
+                        
                         //Полная экспонента ослабления
                         double totalLooseExp = Math.Exp(-mfp.Sum());
 
-
                         //Расчет вклада поля рассеянного излучения
                         double buildupFactor = input.BuildupProcessor != null && mfp.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(mfp, input.BuildupFactors) : 1.0;
-
+                        //if (double.IsNaN(buildupFactor))
+                        //    Logger.Log(string.Join("\t", rho, phi, z, selfabsorptionLength, effShieldThicknessFactor, mfp[0], mfp[^1], buildupFactor));
                         //Текущее значение интеграла
-                        currIntegral += rho * totalLooseExp / cFull * buildupFactor;
+                        currIntegral += rho * totalLooseExp / cFull * buildupFactor * dro * dz * dPhi;
+                       
+                        //builder.AppendLine(string.Join(";", rho, phi, z, cFull, selfabsorptionLength, mfp[0], mfp[^1], totalLooseExp, buildupFactor, currIntegral));
                     }
                 }
             }
-
+            //Logger.LogToFile(builder.ToString());
             var sourceVolume = form.GetNormalizationFactor();
-            return !input.CancellationToken.IsCancellationRequested ? currIntegral * dro * dz * dPhi / sourceVolume / (4.0 * Math.PI) : 0;
+            return !input.CancellationToken.IsCancellationRequested ? currIntegral / sourceVolume / (4.0 * Math.PI) : 0;
         }
         #endregion
 
@@ -107,9 +109,6 @@ namespace BSP.BL.Geometries
 
             var layersMassThickness = input.Layers.Select(l => l.Dm).ToArray();
 
-            //Расстояние до точки измерения начиная от поверхности контейнера источника
-            //var b = input.CalculationPoint.X;
-
             var sourceVolume = form.GetNormalizationFactor();
             double func(double rho, double phi, double z)
             {
@@ -118,6 +117,7 @@ namespace BSP.BL.Geometries
                 //Длина самопоглощения в источнике
                 double selfabsorptionLength = SelfabsorptionLength(rho, z - z0, phi - phi0, rho0, R);
                 var effShieldThicknessFactor = Math.Sqrt(cFull) / (rho0 - rho * Math.Cos(phi - phi0));
+
 
                 double[] ud = GetUDWithFactors(
                     massAttenuationFactors: input.massAttenuationFactors,
