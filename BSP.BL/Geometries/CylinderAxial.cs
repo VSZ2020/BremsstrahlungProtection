@@ -38,7 +38,7 @@ namespace BSP.BL.Geometries
             double R = form.Radius;
             double H = form.Height;
             //Координата точки регистрации флюенса
-            double b = input.CalculationPoint.X;
+            double b = input.CalculationPoint.X - H;
 
             //Первый интеграл по усеченному конусу
             var P1 = ExternalIntegralByAngle(
@@ -145,7 +145,7 @@ namespace BSP.BL.Geometries
             double R = form.Radius;
             double H = form.Height;
             //Координата точки регистрации флюенса
-            double b = input.CalculationPoint.X;
+            double b = input.CalculationPoint.X - H;
 
             double func(double theta, double r)
             {

@@ -297,7 +297,7 @@ namespace BSP.ViewModels
             string generalFormat = "{0,-20:dd.MM.yyyy HH:mm}{1,-30}{2,30}{3,20}{4,15:e" + precise + "} {5}\n";
 
             //Energy    FluxDensity     EnergyFluxDensity   DoseRate    Units
-            string partialDataFormat = "\t{0:e" + precise +"}\t{1:e"+ precise +"}\t{2:e"+ precise + "}\t{3:e" + precise + "}\t{4}\n";
+            string partialDataFormat = "{0:e" + precise +"}\t{1:e"+ precise +"}\t{2:e"+ precise + "}\t{3:e" + precise + "}\t{4}\n";
 
 
             //Запрашиваем единицы измерения дозы

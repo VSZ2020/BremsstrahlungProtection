@@ -167,7 +167,8 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             if (selectedParameterType == InterpolatedParameterType.AttenuationFactors || selectedParameterType == InterpolatedParameterType.BuildupFactors)
             {
                 AvailableMaterials.Clear();
-                foreach(var material in userMaterials)
+                AvailableMaterials.Add(environmentMaterial);
+                foreach (var material in userMaterials)
                 {
                     AvailableMaterials.Add(material);
                 }

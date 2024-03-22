@@ -44,7 +44,7 @@ namespace BSP.BL.Services
             return geometryType switch
             {
                 Type e when e == typeof(CylinderRadial) => dimensions[0],
-                Type e when e == typeof(CylinderAxial) => 0,
+                Type e when e == typeof(CylinderAxial) => dimensions[1],
                 Type e when e == typeof(Parallelepiped) => dimensions[0],
                 Type e when e == typeof(PointGeometry) => 0,
                 _ => 0

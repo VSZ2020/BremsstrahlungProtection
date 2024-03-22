@@ -27,8 +27,8 @@ namespace BSP.BL.Services
 
         private static Dictionary<Type, string> _availableHomogeneousBuildups = new Dictionary<Type, string>()
         {
-            {typeof(BuildupGeometricProgression), "Geometric Progression" },
             {typeof(BuildupImprovedGeometricProgression), "Improved Geometric Progression" },
+            {typeof(BuildupGeometricProgression), "Geometric Progression" },
             {typeof(BuildupTaylor), "Taylor 2-EXP" },
         };
 

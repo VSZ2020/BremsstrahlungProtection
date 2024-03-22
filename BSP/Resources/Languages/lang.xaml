@@ -152,7 +152,17 @@
     <v:String x:Key="ResultsView_DoseRate">Dose rate</v:String>
     <!--#endregion-->
 
-    
+
+    <!--#region InterpolationsViewer Window-->
+    <v:String x:Key="interpolationsViewer_InterpolationsViewer">Interpolations Viewer</v:String>
+    <v:String x:Key="interpolationsViewer_Button_Plot">Plot data</v:String>
+    <v:String x:Key="interpolationsViewer_Button_ExportToExcel">Export to Excel</v:String>
+    <v:String x:Key="interpolationsViewer_Button_TableView">Table View</v:String>
+    <v:String x:Key="interpolationsViewer_Button_Material">Material</v:String>
+    <v:String x:Key="interpolationsViewer_Button_BuildupCoefficient">Buildup coefficient</v:String>
+    <v:String x:Key="interpolationsViewer_Button_ParameterType">Parameter to show</v:String>
+    <!--#endregion-->
+
     <!--#region Tooltips -->
     <v:String x:Key="tooltipIncludeScatter">Include scattered radiation</v:String>
     <v:String x:Key="tooltipLaunchCalc">Launch calculation</v:String>
@@ -164,6 +174,8 @@
     <v:String x:Key="tooltipSourceMaterialZeff">Effective atomic number of material</v:String>
     <v:String x:Key="tooltipSourceMaterialDensity">Density of material</v:String>
     <v:String x:Key="tooltipShowInterpolatedInputInResults">Prints interpolated values of input coefficients for each materials and energy</v:String>
+    <v:String x:Key="tooltip_InterpolationsViewer_PlotButton">Choose value of interest and click 'Show' button to draw graph</v:String>
+    <v:String x:Key="tooltip_InterpolationsViewer_GraphNavigation">MOVE - press mouse right button and move it. ZOOM - scroll mouse wheel or select region of interest with left mouse button. VIEW VALUE - click on graph point to view its value. RESET SCALE - double click on mouse wheel (middle mouse button)</v:String>
     <!--#endregion-->
 
 
@@ -177,8 +189,8 @@
     <!--#region Buildup names -->
     <v:String x:Key="BuildupNameBroder">Broder</v:String>
 
-    <v:String x:Key="BuildupNameGeometricProgression">Geometric Progression</v:String>
-    <v:String x:Key="BuildupNameImprovedGeometricProgression">Improved Geometric Progression</v:String>
+    <v:String x:Key="BuildupNameGeometricProgression">Geometric Progression (MFP &lt; 40)</v:String>
+    <v:String x:Key="BuildupNameImprovedGeometricProgression">Improved Geometric Progression (MFP &lt; 100)</v:String>
     <v:String x:Key="BuildupNameTaylor2EXP">Taylor (2-exponential approximation)</v:String>
     <!--#endregion-->
 
