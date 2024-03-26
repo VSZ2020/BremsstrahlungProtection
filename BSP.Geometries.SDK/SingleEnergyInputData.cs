@@ -1,14 +1,15 @@
-﻿using BSP.BL.Buildups.Common;
-using BSP.BL.Materials;
-using System.Numerics;
+﻿using System.Numerics;
 
-namespace BSP.BL.Calculation
+namespace BSP.Geometries.SDK
 {
     /// <summary>
     /// Файл с входными параметрами для геометрии для фиксированной энергии излучения
     /// </summary>
     public class SingleEnergyInputData
     {
+        public float[] Dimensions;
+        public int[] Discreteness;
+        
         public double[] massAttenuationFactors;
         public double[][] BuildupFactors;
 

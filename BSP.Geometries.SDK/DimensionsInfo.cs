@@ -1,4 +1,4 @@
-﻿namespace BSP.BL.Geometries
+﻿namespace BSP.Geometries.SDK
 {
     public class DimensionsInfo
     {
