@@ -101,8 +101,7 @@
                     
                     <!--Environment material-->
                     <GroupBox Grid.Row="1" Header="{StaticResource tab_Output_Environment_GroupHeader}" 
-                              Style="{StaticResource DefaultGroupBox}"
-                              IsEnabled="False">
+                              Style="{StaticResource DefaultGroupBox}">
                         <StackPanel>
                             <ComboBox ItemsSource="{Binding Source={x:Static vm:AvailableDataController.AvailableMaterials}}"
                                       SelectedItem="{Binding SelectedEnvironmentMaterial}"

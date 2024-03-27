@@ -1,27 +1,25 @@
 ﻿using BSP.BL.DTO;
-using BSP.BL.Materials;
 using BSP.BL.Services;
 using BSP.Common;
 using BSP.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using BSP.Geometries.SDK;
 
 namespace BSP.ViewModels.Tabs
 {
     public class ShieldingTabVM : BaseViewModel
     {
-        public ShieldingTabVM(MaterialsService materialsService)
+        public ShieldingTabVM()
         {
-            AvailableMaterials = new List<MaterialDto>(materialsService.GetAllMaterials());
-            ShieldLayers = new ObservableCollection<ShieldLayer>();
+            ShieldLayers = new();
         }
 
-        private bool hasMaterials => AvailableMaterials.Count > 0;
-        private ShieldLayer _selectedShieldLayer;
-
-        public static List<MaterialDto> AvailableMaterials { get; private set; }
-        public ObservableCollection<ShieldLayer> ShieldLayers { get; }
-        public ShieldLayer SelectedShieldLayer { get => _selectedShieldLayer; set { _selectedShieldLayer = value; OnChanged(); } }
+        private bool hasMaterials => AvailableDataController.AvailableMaterials.Count > 0;
+        private ShieldLayerVM? _selectedShieldLayer;
+        
+        public ObservableCollection<ShieldLayerVM> ShieldLayers { get; }
+        public ShieldLayerVM? SelectedShieldLayer { get => _selectedShieldLayer; set { _selectedShieldLayer = value; OnChanged(); } }
 
 
         #region Commands
@@ -62,12 +60,20 @@ namespace BSP.ViewModels.Tabs
                 }
                 else
                     ShieldLayers.Add(addWnd.Layer);
+
+                SelectedShieldLayer = ShieldLayers.SingleOrDefault(l => l.Id == addWnd.Layer.Id);
             }
         }
 
         public void RemoveShieldLayer()
         {
+            var index = ShieldLayers.IndexOf(_selectedShieldLayer);
             ShieldLayers.Remove(_selectedShieldLayer);
+
+            if (index > 0 && index < ShieldLayers.Count)
+                SelectedShieldLayer = ShieldLayers[index - 1];
+            else if (ShieldLayers.Count > 0)
+                SelectedShieldLayer = ShieldLayers[0];
         }
 
         public void EditShieldLayer()

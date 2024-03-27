@@ -1,30 +1,49 @@
 ﻿using BSP.BL.Calculation;
+using BSP.BL.Integration;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Geometries
 {
-    public class CylinderRadial : BaseGeometry
+    public class CylinderRadial : IGeometry
     {
-        public CylinderRadial(float[] dims, int[] discreteness): base(dims, discreteness) { }
+        private CylinderForm form = new();
 
-        private CylinderForm form;
+        public string Name => "Cylinder Radial";
+        public string Description => "";
 
-        #region AssignDimensions
-        public override void AssignDimensions(float[] dims, int[] discreteness)
+        public string Author => "IVS";
+
+        #region GetDimensionsInfo
+        public IEnumerable<DimensionsInfo> GetDimensionsInfo()
         {
-            form = new CylinderForm()
+            return new List<DimensionsInfo>()
             {
-                Radius = dims[0],
-                Height = dims[1],
-                NRadius = discreteness[0],
-                NHeight = discreteness[1]
+                new (){ Name = "Radius", DefaultValue = 10, Discreteness = 100},
+                new (){ Name = "Height",DefaultValue = 30, Discreteness = 300},
+                new (){ Name = "Angle", DefaultValue = 360, Discreteness = 10, IsValueEnabled = false},
             };
         }
         #endregion
 
-        #region GetFluence
-        public override double GetFluence(SingleEnergyInputData input)
+        public double GetNormalizationFactor(float[] dims)
         {
-            return StandardIntegrator(input);
+            return dims[1] * Math.PI * dims[0] * dims[0];
+        }
+        
+        #region GetFluence
+        public double GetFluence(SingleEnergyInputData input)
+        {
+            form = new CylinderForm()
+            {
+                Radius = input.Dimensions[0],
+                Height = input.Dimensions[1],
+                Angle = input.Dimensions[2],
+                NRadius = input.Discreteness[0],
+                NHeight = input.Discreteness[1],
+                NAngle = input.Discreteness[2]
+            };
+            
+            return AlternativeIntegrator(input);
         } 
         #endregion
 
@@ -44,7 +63,7 @@ namespace BSP.BL.Geometries
             //Шаги интегрирования
             var dro = R / form.NRadius;
             var dz = form.Height / form.NHeight;
-            var dPhi = 2 * Math.PI / form.NRadius;
+            var dPhi = 2 * Math.PI / form.NAngle;
 
             //StringBuilder builder = new();
             //builder.AppendLine("\n"+string.Join(";","rho","phi","z","cFull","xe","MFP[0]","MFP[Air]","EXP(-ud)","Buildup","IntegralSum"));
@@ -65,8 +84,8 @@ namespace BSP.BL.Geometries
                         double selfabsorptionLength = SelfabsorptionLength(rho, z - z0, phi - phi0, b, R);
                         var effShieldThicknessFactor = Math.Sqrt(cFull) / (b - rho * Math.Cos(phi - phi0));
 
-                        double[] mfp = GetUDWithFactors(
-                            massAttenuationFactors: input.massAttenuationFactors,
+                        double[] mfp = IGeometry.GetUdWithFactors(
+                            massAttenuationFactors: input.MassAttenuationFactors,
                             sourceDensity: input.SourceDensity,
                             selfabsorptionLength: selfabsorptionLength,
                             shieldsMassThicknesses: layersMassThickness,
@@ -119,8 +138,8 @@ namespace BSP.BL.Geometries
                 var effShieldThicknessFactor = Math.Sqrt(cFull) / (rho0 - rho * Math.Cos(phi - phi0));
 
 
-                double[] ud = GetUDWithFactors(
-                    massAttenuationFactors: input.massAttenuationFactors,
+                double[] ud = IGeometry.GetUdWithFactors(
+                    massAttenuationFactors: input.MassAttenuationFactors,
                     sourceDensity: input.SourceDensity,
                     selfabsorptionLength: selfabsorptionLength,
                     shieldsMassThicknesses: layersMassThickness,
@@ -140,9 +159,9 @@ namespace BSP.BL.Geometries
                 return result;
             }
 
-            var integral = Integrate(func,
+            var integral = Integrators.Integrate(func,
                 0, R, form.NRadius,
-                0, 2.0 * Math.PI, form.NRadius,
+                0, 2.0 * Math.PI, form.NAngle,
                 0, H, form.NHeight,
                 input.CancellationToken);
 

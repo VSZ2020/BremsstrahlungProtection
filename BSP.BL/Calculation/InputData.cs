@@ -1,10 +1,10 @@
 ﻿using BSP.BL.Buildups.Common;
-using BSP.BL.Materials;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 using System.Threading;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Calculation
 {
@@ -13,6 +13,9 @@ namespace BSP.BL.Calculation
     /// </summary>
     public class InputData
     {
+        public float[] Dimensions;
+        public int[] Discreteness;
+        
         public double[] Energies;
         public double[] massEnvironmentAbsorptionFactors;
         public double[][] massAttenuationFactors;
@@ -55,8 +58,10 @@ namespace BSP.BL.Calculation
         {
             return new SingleEnergyInputData()
             {
+                Dimensions = this.Dimensions,
+                Discreteness =  this.Discreteness,
                 Layers = Layers,
-                massAttenuationFactors = massAttenuationFactors[EnergyIndex],
+                MassAttenuationFactors = massAttenuationFactors[EnergyIndex],
                 SourceDensity = SourceDensity,
                 CalculationPoint = CalculationPoint,
                 BuildupProcessor = BuildupProcessor,

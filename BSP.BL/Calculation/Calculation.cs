@@ -1,4 +1,5 @@
 ﻿using BSP.BL.Geometries;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Calculation
 {
@@ -6,15 +7,13 @@ namespace BSP.BL.Calculation
     {
         private const double CONVERSION_CONST = 1.6E-10 * 3600; //(Дж/кг)/(МэВ/г) * (сек/ч)
 
-        public static async Task<OutputValue> StartAsync(InputData input, BaseGeometry form)
+        public static async Task<OutputValue> StartAsync(InputData input, IGeometry form)
         {
             //Создаем выходной массив
             int energiesCount = input.PhotonsFluxes.Length;
             OutputValue output = new OutputValue(energiesCount);
             output.DosePoint = input.CalculationPoint;
-
-            var bremsstrahlungFractions = Bremsstrahlung.GetBremsstrahlungFractions();
-
+            
             var calcTask = Task.Run(() =>
             {
                 int calculatedEnergiesCount = 0;
@@ -50,7 +49,6 @@ namespace BSP.BL.Calculation
                     
 
                     Interlocked.Increment(ref calculatedEnergiesCount);
-                    //calculatedEnergiesCount++;
                     input.Progress?.Report(calculatedEnergiesCount / energiesCount);
                 });
             });

@@ -1,14 +1,11 @@
-﻿using BSP.BL.DTO;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace BSP.BL.Materials
+﻿namespace BSP.Geometries.SDK
 {
     /// <summary>
     /// Слой защиты
     /// </summary>
     public class ShieldLayer
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public float Z { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using BSP.BL.Geometries;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Services
 {
@@ -15,9 +16,9 @@ namespace BSP.BL.Services
         public static Dictionary<Type, string> Geometries => availableGeometries;
 
 
-        public static BaseGeometry GetGeometryInstance(Type geometryType, float[] dimensions, int[] discreteness)
+        public static IGeometry GetGeometryInstance(Type geometryType)
         {
-            return Activator.CreateInstance(geometryType, new object[] { dimensions, discreteness }) as BaseGeometry;
+            return Activator.CreateInstance(geometryType) as IGeometry;
         }
 
         public static IEnumerable<DimensionsInfo> GetDimensionsInfo(Type geometryType)

@@ -10,7 +10,7 @@ namespace BSP.Geometries.SDK
         public float[] Dimensions;
         public int[] Discreteness;
         
-        public double[] massAttenuationFactors;
+        public double[] MassAttenuationFactors;
         public double[][] BuildupFactors;
 
         public List<ShieldLayer> Layers;

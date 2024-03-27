@@ -6,15 +6,8 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Shapes;
 
 namespace BSP.ViewModels.InterpolatedDataViewer
 {
@@ -25,15 +18,15 @@ namespace BSP.ViewModels.InterpolatedDataViewer
     {
         public InterpolationViewerVM(double[] bremsstrahlungEnergies, int selectedEnvironmentMaterialId, int[] selectedMaterialsIds, Type selectedBuildupType, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService, Type selectedDoseFactorType, int exposureGeometryId, int OrganTissueId)
         {
-            this.energies = bremsstrahlungEnergies;
-            this.selectedBuildupType = selectedBuildupType;
+            this._energies = bremsstrahlungEnergies;
+            this._selectedBuildupType = selectedBuildupType;
 
-            this.materialsService = materialsService;
-            this.buildupService = buildupService;
+            this._materialsService = materialsService;
+            this._buildupService = buildupService;
 
-            environmentMaterial = materialsService.GetMaterialById(selectedEnvironmentMaterialId);
-            userMaterials = materialsService.GetMaterialsById(selectedMaterialsIds);
-            AvailableMaterials = new ObservableCollection<MaterialDto>();
+            _environmentMaterial = materialsService.GetMaterialById(selectedEnvironmentMaterialId);
+            _userMaterials = materialsService.GetMaterialsById(selectedMaterialsIds);
+            AvailableMaterials = new ObservableCollection<MaterialDto>(_userMaterials);
 
             AvailableBuildupCoefficients = new(BuildupService.GetBuildupCoefficientsNames(selectedBuildupType));
 
@@ -44,25 +37,22 @@ namespace BSP.ViewModels.InterpolatedDataViewer
                 InterpolatedParameterType.BuildupFactors,
                 InterpolatedParameterType.DoseConversionFactors
             };
-            SelectedParameterType = AvailableParamaters.FirstOrDefault();
-            SelectedMaterial = userMaterials.FirstOrDefault();
-            SelectedBuildupCoefficient = AvailableBuildupCoefficients.FirstOrDefault();
 
             //Заранее интерполируем и заполняем данные по коэффициентам конверсии
-            (tableDoseFactorsEnergies, tableDoseFactorsValues) = doseFactorsService.GetTableDoseConversionFactors(selectedDoseFactorType, exposureGeometryId, OrganTissueId);
-            interpolatedDoseFactors = doseFactorsService.GetDoseConversionFactors(selectedDoseFactorType, bremsstrahlungEnergies, exposureGeometryId, OrganTissueId);
+            (_tableDoseFactorsEnergies, _tableDoseFactorsValues) = doseFactorsService.GetTableDoseConversionFactors(selectedDoseFactorType, exposureGeometryId, OrganTissueId);
+            _interpolatedDoseFactors = doseFactorsService.GetDoseConversionFactors(selectedDoseFactorType, bremsstrahlungEnergies, exposureGeometryId, OrganTissueId);
             var doseFactorTranslation = Application.Current.TryFindResource(DoseFactorsService.GetTranslationKey(selectedDoseFactorType));
-            DoseFactorName = doseFactorTranslation != null ? (string)doseFactorTranslation: "Dose conversion factor";
-            doseFactorUnits = DoseFactorsService.GetDoseConversionFactorUnits(selectedDoseFactorType);
+            _doseFactorName = doseFactorTranslation != null ? (string)doseFactorTranslation: "Dose conversion factor";
+            _doseFactorUnits = DoseFactorsService.GetDoseConversionFactorUnits(selectedDoseFactorType);
 
             PlotModel = new PlotModel() { IsLegendVisible = true };
-            ShowData();
+
+            SelectedParameterType = AvailableParamaters.FirstOrDefault();
+            SelectedMaterial = AvailableMaterials.FirstOrDefault();
+            SelectedBuildupCoefficient = AvailableBuildupCoefficients.FirstOrDefault();
         }
 
         #region Commands
-        private RelayCommand showCommand;
-        public RelayCommand ShowCommand => showCommand ?? (showCommand = new RelayCommand(o => ShowData(), CanExecute));
-
         private RelayCommand exportToExcel;
         public RelayCommand ExportToExcelCommand => exportToExcel ?? (exportToExcel = new RelayCommand(o => ExportToExcel(), o => false));
 
@@ -71,63 +61,63 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         #endregion
 
         #region Properties and fields
-        private readonly MaterialsService materialsService;
-        private readonly BuildupService buildupService;
+        private readonly MaterialsService _materialsService;
+        private readonly BuildupService _buildupService;
 
-        public string DoseFactorName { get; set; }
-        private string doseFactorUnits;
-        private double[] tableDoseFactorsEnergies;
-        private double[] tableDoseFactorsValues;
-        private double[] interpolatedDoseFactors;
+        private string _doseFactorName;
+        private readonly string _doseFactorUnits;
+        private readonly double[] _tableDoseFactorsEnergies;
+        private readonly double[] _tableDoseFactorsValues;
+        private readonly double[] _interpolatedDoseFactors;
 
-        private Type selectedBuildupType;
-        private List<MaterialDto> userMaterials;
-        private MaterialDto environmentMaterial;
+        private readonly Type _selectedBuildupType;
+        private readonly List<MaterialDto> _userMaterials;
+        private readonly MaterialDto _environmentMaterial;
 
-        private bool isMaterialsListEnabled = true;
-        private bool isBuildupFactorsListEnabled = true;
+        private bool _isMaterialsListEnabled = true;
+        private bool _isBuildupFactorsListEnabled = true;
 
 
-        private InterpolatedParameterType? selectedParameterType;
-        public InterpolatedParameterType? SelectedParameterType { get => selectedParameterType; set { selectedParameterType = value; OnChanged(); UpdateBoxes();  } }
+        private InterpolatedParameterType? _selectedParameterType;
+        public InterpolatedParameterType? SelectedParameterType { get => _selectedParameterType; set { _selectedParameterType = value; OnChanged(); UpdateBoxes(); PlotData(); } }
 
-        private MaterialDto? selectedMaterial;
-        public MaterialDto? SelectedMaterial { get => selectedMaterial; set { selectedMaterial = value; OnChanged(); } }
+        private MaterialDto? _selectedMaterial;
+        public MaterialDto? SelectedMaterial { get => _selectedMaterial; set { _selectedMaterial = value; OnChanged(); PlotData(); } }
 
-        private string selectedBuildupCoefficient;
-        public string SelectedBuildupCoefficient { get => selectedBuildupCoefficient; set { selectedBuildupCoefficient = value; OnChanged(); } }
+        private string? _selectedBuildupCoefficient;
+        public string? SelectedBuildupCoefficient { get => _selectedBuildupCoefficient; set { _selectedBuildupCoefficient = value; OnChanged(); PlotData(); } }
 
         public List<InterpolatedParameterType> AvailableParamaters { get; }
 
-        private readonly double[] energies;
+        private readonly double[] _energies;
         
 
         public ObservableCollection<MaterialDto> AvailableMaterials { get; }
         public List<string> AvailableBuildupCoefficients { get; }
 
-        public bool IsMaterialsListEnabled { get => isMaterialsListEnabled; set { isMaterialsListEnabled = value; OnChanged(); } }
-        public bool IsBuildupFactorsListEnabled { get => isBuildupFactorsListEnabled; set { isBuildupFactorsListEnabled = value; OnChanged(); } }
+        public bool IsMaterialsListEnabled { get => _isMaterialsListEnabled; set { _isMaterialsListEnabled = value; OnChanged(); } }
+        public bool IsBuildupFactorsListEnabled { get => _isBuildupFactorsListEnabled; set { _isBuildupFactorsListEnabled = value; OnChanged(); } }
 
         public PlotModel PlotModel { get; private set; }
         #endregion
 
         private bool CanExecute(object parameter)
         {
-            if (selectedParameterType != null)
+            if (_selectedParameterType != null)
             {
-                IsMaterialsListEnabled = selectedParameterType != InterpolatedParameterType.DoseConversionFactors;
-                IsBuildupFactorsListEnabled = selectedParameterType == InterpolatedParameterType.BuildupFactors;
+                IsMaterialsListEnabled = _selectedParameterType != InterpolatedParameterType.DoseConversionFactors;
+                IsBuildupFactorsListEnabled = _selectedParameterType == InterpolatedParameterType.BuildupFactors;
 
-                switch (selectedParameterType)
+                switch (_selectedParameterType)
                 {
                     case InterpolatedParameterType.AbsorptionFactors:
-                        return selectedMaterial != null;
+                        return _selectedMaterial != null;
                         
                     case InterpolatedParameterType.AttenuationFactors:
-                        return selectedMaterial != null;
+                        return _selectedMaterial != null;
 
                     case InterpolatedParameterType.BuildupFactors:
-                        return selectedMaterial != null && selectedBuildupCoefficient != null;
+                        return _selectedMaterial != null && _selectedBuildupCoefficient != null;
 
                     case InterpolatedParameterType.DoseConversionFactors:
                         return true;
@@ -139,7 +129,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
         public void UpdateBoxes()
         {
-            switch (selectedParameterType)
+            switch (_selectedParameterType)
             {
                 case InterpolatedParameterType.AbsorptionFactors:
                     UpdateMaterialsList();
@@ -158,29 +148,33 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
         private void UpdateMaterialsList()
         {
-            if (selectedParameterType == InterpolatedParameterType.AbsorptionFactors)
+            if (_selectedParameterType == InterpolatedParameterType.AbsorptionFactors)
             {
                 AvailableMaterials.Clear();
-                AvailableMaterials.Add(environmentMaterial);
+                AvailableMaterials.Add(_environmentMaterial);
             }
 
-            if (selectedParameterType == InterpolatedParameterType.AttenuationFactors || selectedParameterType == InterpolatedParameterType.BuildupFactors)
+            if (_selectedParameterType == InterpolatedParameterType.AttenuationFactors || _selectedParameterType == InterpolatedParameterType.BuildupFactors)
             {
                 AvailableMaterials.Clear();
-                AvailableMaterials.Add(environmentMaterial);
-                foreach (var material in userMaterials)
+                AvailableMaterials.Add(_environmentMaterial);
+                foreach (var material in _userMaterials)
                 {
-                    AvailableMaterials.Add(material);
+                    if (!AvailableMaterials.Select(m => m.Id).ToArray().Contains(material.Id))
+                        AvailableMaterials.Add(material);
                 }
             }
             SelectedMaterial = AvailableMaterials.FirstOrDefault();
         }
 
-        public void ShowData()
+        public void PlotData()
         {
+            if (_selectedParameterType == null || SelectedMaterial == null || SelectedBuildupCoefficient == null)
+                return;
+
             ClearPlotData();
 
-            switch (selectedParameterType)
+            switch (_selectedParameterType)
             {
                 case InterpolatedParameterType.AbsorptionFactors:
                     PlotAbsorptionCoefficients();
@@ -200,7 +194,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) RequestDataToPlot()
         {
-            switch (selectedParameterType)
+            switch (_selectedParameterType)
             {
                 case InterpolatedParameterType.AbsorptionFactors:
                     return ReturnAbsorptionData();
@@ -219,60 +213,60 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnAttenuationData()
         {
-            (var table_energies, var table_values) = materialsService.GetTableMassAttenuationFactors(selectedMaterial.Id);
-            var interpolatedValues = materialsService.GetInterpolatedMassAttenuationFactors(selectedMaterial.Id, energies);
-            return (table_energies, table_values, interpolatedValues, $"Attenuation coefficients for {selectedMaterial.Name}");
+            (var table_energies, var table_values) = _materialsService.GetTableMassAttenuationFactors(_selectedMaterial!.Id);
+            var interpolatedValues = _materialsService.GetInterpolatedMassAttenuationFactors(_selectedMaterial.Id, _energies);
+            return (table_energies, table_values, interpolatedValues, $"Attenuation coefficients for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm3)");
         }
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnAbsorptionData()
         {
-            (var table_energies, var table_values) = materialsService.GetTableMassAbsoprtionFactors(selectedMaterial.Id);
-            var interpolatedValues = materialsService.GetInterpolatedMassAbsorptionFactors(selectedMaterial.Id, energies);
-            return (table_energies, table_values, interpolatedValues, $"Mass absorption coefficients for {selectedMaterial.Name}");
+            (var table_energies, var table_values) = _materialsService.GetTableMassAbsoprtionFactors(_selectedMaterial!.Id);
+            var interpolatedValues = _materialsService.GetInterpolatedMassAbsorptionFactors(_selectedMaterial.Id, _energies);
+            return (table_energies, table_values, interpolatedValues, $"Mass absorption coefficients for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm3)");
         }
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnBuildupData()
         {
-            var coefficientIndex = AvailableBuildupCoefficients.IndexOf(selectedBuildupCoefficient);
+            var coefficientIndex = AvailableBuildupCoefficients.IndexOf(_selectedBuildupCoefficient);
             if (coefficientIndex < 0)
                 return (new double[0], new double[0], new double[0], "");
 
-            (var tableEnergies, var tableValuesArray) = buildupService.GetTableFactors(selectedBuildupType, selectedMaterial.Id);
+            (var tableEnergies, var tableValuesArray) = _buildupService.GetTableFactors(_selectedBuildupType, _selectedMaterial!.Id);
             var tableValues = tableValuesArray.Select(v => v[coefficientIndex]).ToArray();
 
-            var interpolatedValues = buildupService.GetInterpolatedBuildupFactors(tableEnergies, tableValues, energies);
-            return (tableEnergies, tableValues, interpolatedValues, $"Buildup factor '{selectedBuildupCoefficient}' for {selectedMaterial.Name}");
+            var interpolatedValues = _buildupService.GetInterpolatedBuildupFactors(tableEnergies, tableValues, _energies);
+            return (tableEnergies, tableValues, interpolatedValues, $"Buildup factor '{_selectedBuildupCoefficient}' for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm3)");
         }
 
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnDoseFactorsData()
         {
-            return (tableDoseFactorsEnergies, tableDoseFactorsValues, interpolatedDoseFactors, $"{DoseFactorName} ({doseFactorUnits})");
+            return (_tableDoseFactorsEnergies, _tableDoseFactorsValues, _interpolatedDoseFactors, $"{_doseFactorName} ({_doseFactorUnits})");
         }
 
 
         private void PlotAttenuationCoefficients()
         {
             (var tableEnergies, var tableValues, var interpolatedData, var title) = ReturnAttenuationData();
-            PlotData(tableEnergies, tableValues, energies, interpolatedData, title, isLogX: true, isLogY: true);
+            PlotData(tableEnergies, tableValues, _energies, interpolatedData, title, isLogX: true, isLogY: true);
         }
 
         private void PlotAbsorptionCoefficients()
         {
             (var tableEnergies, var tableValues, var interpolatedData, var title) = ReturnAbsorptionData();
-            PlotData(tableEnergies, tableValues, energies, interpolatedData, title, isLogX: true, isLogY: true);
+            PlotData(tableEnergies, tableValues, _energies, interpolatedData, title, isLogX: true, isLogY: true);
         }
 
         private void PlotDoseConversionFactors()
         {
             (var tableEnergies, var tableValues, var interpolatedData, var title) = ReturnDoseFactorsData();
-            PlotData(tableEnergies, tableValues, energies, interpolatedData, title, isLogX: true, isLogY: true);
+            PlotData(tableEnergies, tableValues, _energies, interpolatedData, title, isLogX: true, isLogY: true);
         }
 
         private void PlotBuildupFactors()
         {
             (var tableEnergies, var tableValues, var interpolatedData, var title) = ReturnBuildupData();
-            PlotData(tableEnergies, tableValues, energies, interpolatedData, title, isLogX: true, isLogY: false);
+            PlotData(tableEnergies, tableValues, _energies, interpolatedData, title, isLogX: true, isLogY: false);
         }
 
         private void ClearPlotData()
@@ -322,7 +316,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         private void OpenTableView()
         {
             (var tableX, var tableY, var Y, string title) = RequestDataToPlot();
-            new InterpolatedDataTableView(tableX, tableY, energies, Y, title).ShowDialog();
+            new InterpolatedDataTableView(tableX, tableY, _energies, Y, title).Show();
         }
 
         private void ExportToExcel()

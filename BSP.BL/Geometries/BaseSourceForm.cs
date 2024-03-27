@@ -1,4 +1,5 @@
 ﻿using System;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Geometries
 {
@@ -30,9 +31,11 @@ namespace BSP.BL.Geometries
     {
         public float Radius;
         public float Height;
+        public float Angle;
 
         public int NRadius;
         public int NHeight;
+        public int NAngle;
 
         public override double GetNormalizationFactor()
         {
@@ -45,6 +48,7 @@ namespace BSP.BL.Geometries
             {
                 new DimensionsInfo(){ Name = "Radius", DefaultValue = 10, Discreteness = 100},
                 new DimensionsInfo(){ Name = "Height",DefaultValue = 30, Discreteness = 300},
+                new DimensionsInfo(){ Name = "Angle", DefaultValue = 360, Discreteness = 10, IsValueEnabled = false},
             };
         }
     }

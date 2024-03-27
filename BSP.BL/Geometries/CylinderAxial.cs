@@ -1,30 +1,49 @@
 ﻿using BSP.BL.Calculation;
 using System.Runtime.CompilerServices;
+using BSP.BL.Integration;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Geometries
 {
-    public class CylinderAxial : BaseGeometry
+    public class CylinderAxial : IGeometry
     {
-        public CylinderAxial(float[] dims, int[] discreteness): base(dims, discreteness) {}
-
         private CylinderForm form;
 
-        #region AssignDimensions
-        public override void AssignDimensions(float[] dims, int[] discreteness)
+        public string Name => "Cylinder Axial";
+        public string Description => "";
+
+        public string Author => "IVS";
+        
+        #region GetDimensionsInfo
+        public IEnumerable<DimensionsInfo> GetDimensionsInfo()
         {
-            form = new CylinderForm()
+            return new List<DimensionsInfo>()
             {
-                Radius = dims[0],
-                Height = dims[1],
-                NRadius = discreteness[0],
-                NHeight = discreteness[1]
+                new (){ Name = "Radius", DefaultValue = 10, Discreteness = 100},
+                new (){ Name = "Height",DefaultValue = 30, Discreteness = 300},
+                new (){ Name = "Angle", DefaultValue = 360, Discreteness = 10, IsValueEnabled = false},
             };
         }
         #endregion
-
-        #region GetFluence
-        public override double GetFluence(SingleEnergyInputData input)
+        
+        public double GetNormalizationFactor(float[] dims)
         {
+            return dims[1] * Math.PI * dims[0] * dims[0];
+        }
+        
+        #region GetFluence
+        public double GetFluence(SingleEnergyInputData input)
+        {
+            form = new CylinderForm()
+            {
+                Radius = input.Dimensions[0],
+                Height = input.Dimensions[1],
+                Angle = input.Dimensions[2],
+                NRadius = input.Discreteness[0],
+                NHeight = input.Discreteness[1],
+                NAngle = input.Discreteness[2]
+            };
+            
             return AlternativeIntegrator(input);
         } 
         #endregion
@@ -46,8 +65,9 @@ namespace BSP.BL.Geometries
                 0, Math.Atan(R / (b + H)),
                 //From To limits for inner integral
                 angle => b * sec(angle), angle => (b + H) * sec(angle),
-                form.NRadius, input.SourceDensity,
-                input.massAttenuationFactors,
+                form.NAngle, form.NRadius,
+                input.SourceDensity,
+                input.MassAttenuationFactors,
                 layersMassThickness,
                 input.CancellationToken,
                 input.BuildupFactors,
@@ -60,8 +80,9 @@ namespace BSP.BL.Geometries
                 Math.Atan(R / (b + H)), Math.Atan(R / b),
                 //From To limits for inner integral
                 angle => b * sec(angle), angle => R * cosec(angle),
-                form.NRadius, input.SourceDensity,
-                input.massAttenuationFactors,
+                form.NAngle, form.NRadius, 
+                input.SourceDensity,
+                input.MassAttenuationFactors,
                 layersMassThickness,
                 input.CancellationToken,
                 input.BuildupFactors,
@@ -74,10 +95,10 @@ namespace BSP.BL.Geometries
         #endregion
 
         #region ExternalIntegralByAngle
-        private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int N, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
+        private double ExternalIntegralByAngle(double from, double to, Func<double, double> innerFrom, Func<double, double> innerTo, int NAngle, int NRadius, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double[], double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
         {
             //Шаг интегрирования по углам
-            double dtheta = (to - from) / N;
+            double dtheta = (to - from) / NAngle;
 
             double sum = 0.0;
             for (int i = 0; i < form.NRadius && !token.IsCancellationRequested; i++)
@@ -85,7 +106,7 @@ namespace BSP.BL.Geometries
                 //Итерируемая тета
                 double theta = from + dtheta / 2.0 + dtheta * i;
 
-                sum += Math.Sin(theta) * InnerIntegralByRadius(innerFrom(theta), innerTo(theta), N, theta, sourceDensity, um, layersDm, token, buildupFactors, BuildupProcessor, isSelfabsorptionAllowed) * dtheta;
+                sum += Math.Sin(theta) * InnerIntegralByRadius(innerFrom(theta), innerTo(theta), NRadius, theta, sourceDensity, um, layersDm, token, buildupFactors, BuildupProcessor, isSelfabsorptionAllowed) * dtheta;
             }
 
             return !token.IsCancellationRequested ? sum : 0;
@@ -93,7 +114,7 @@ namespace BSP.BL.Geometries
         #endregion
 
         #region InnerIntegralByRadius
-        private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
+        private double InnerIntegralByRadius(double from, double to, int N, double theta, double sourceDensity, double[] um, float[] layersDm, CancellationToken token, double[][] buildupFactors, Func<double[], double[][], double[]?, double>? BuildupProcessor = null, bool isSelfabsorptionAllowed = true)
         {
             //Шаг интегрирования для интеграла по dr
             double dr = (to - from) / N;
@@ -104,7 +125,7 @@ namespace BSP.BL.Geometries
                 double r = from + dr / 2.0 + dr * j;
 
                 //Рассчитываем начальные произведения u*d для всех слоев защиты, включая материал источника
-                var UD = GetUDWithFactors(
+                var UD = IGeometry.GetUdWithFactors(
                     massAttenuationFactors: um,
                     sourceDensity: sourceDensity,
                     selfabsorptionLength: r - from,
@@ -115,7 +136,7 @@ namespace BSP.BL.Geometries
                     UD = UD.Skip(1).ToArray();
 
                 //Учет вклада поля рассеянного излучения                                                                       
-                var buildupFactor = BuildupProcessor != null && UD.Length > 0 ? BuildupProcessor.Invoke(UD, buildupFactors) : 1.0;
+                var buildupFactor = BuildupProcessor != null && UD.Length > 0 ? BuildupProcessor.Invoke(UD, buildupFactors, null) : 1.0;
 
                 sum += Math.Exp(-UD.Sum()) * buildupFactor;
             }
@@ -150,8 +171,8 @@ namespace BSP.BL.Geometries
             double func(double theta, double r)
             {
                 //Рассчитываем начальные произведения u*d для всех слоев защиты, включая материал источника
-                var UD = GetUDWithFactors(
-                            massAttenuationFactors: input.massAttenuationFactors,
+                var UD = IGeometry.GetUdWithFactors(
+                            massAttenuationFactors: input.MassAttenuationFactors,
                             sourceDensity: input.SourceDensity,
                             selfabsorptionLength: r - b * sec(theta),
                             shieldsMassThicknesses: layersMassThickness,
@@ -169,14 +190,14 @@ namespace BSP.BL.Geometries
                 return Math.Exp(-UD.Sum()) * buildupFactor;
             }
 
-            var P1 = Integrate(
-                theta => Integrate(
-                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), (b + H) * sec(theta), form.NRadius, input.CancellationToken),
+            var P1 = Integrators.Integrate(
+                theta => Integrators.Integrate(
+                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), (b + H) * sec(theta), form.NAngle, input.CancellationToken),
                 0, Math.Atan(R / (b + H)), form.NHeight, input.CancellationToken);
 
-            var P2 = Integrate(
-                theta => Integrate(
-                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), R * cosec(theta), form.NRadius, input.CancellationToken),
+            var P2 = Integrators.Integrate(
+                theta => Integrators.Integrate(
+                    r => Math.Sin(theta) * func(theta, r), b * sec(theta), R * cosec(theta), form.NAngle, input.CancellationToken),
                 Math.Atan(R / (b + H)), Math.Atan(R / b), form.NHeight, input.CancellationToken);
 
             var sourceVolume = form.GetNormalizationFactor();

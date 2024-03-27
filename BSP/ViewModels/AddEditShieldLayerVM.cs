@@ -1,16 +1,16 @@
 ﻿using BSP.BL.DTO;
-using BSP.BL.Materials;
 using BSP.Common;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
+using BSP.Geometries.SDK;
 
 namespace BSP.ViewModels
 {
     public class AddEditShieldLayerVM : BaseValidationViewModel, IDataErrorInfo
     {
-        public AddEditShieldLayerVM(ShieldLayer? layer = null)
+        public AddEditShieldLayerVM(ShieldLayerVM? layer = null)
         {
             if (layer != null)
             {
@@ -21,7 +21,7 @@ namespace BSP.ViewModels
             else
             {
                 SelectedMaterial = AvailableDataController.AvailableMaterials.FirstOrDefault();
-                this.Layer = new ShieldLayer()
+                this.Layer = new ShieldLayerVM()
                 {
                     Name = selectedMaterial?.Name ?? "",
                     Z = selectedMaterial?.Z ?? 0,
@@ -40,7 +40,7 @@ namespace BSP.ViewModels
         public float Density { get => density; set { density = value; OnChanged(); } }
         public MaterialDto? SelectedMaterial { get => selectedMaterial; set { selectedMaterial = value; OnChanged(); Density = selectedMaterial?.Density ?? 0; } }
 
-        public ShieldLayer? Layer { get; set; }
+        public ShieldLayerVM? Layer { get; set; }
 
         public bool IsAppliedChanges { get; private set; } = false;
 
@@ -68,7 +68,7 @@ namespace BSP.ViewModels
         {
             if (ValidateInputs())
             {
-                Layer = new ShieldLayer()
+                Layer = new ShieldLayerVM()
                 {
                     Id = selectedMaterial!.Id,
                     Name = selectedMaterial.Name,

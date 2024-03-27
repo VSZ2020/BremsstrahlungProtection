@@ -13,12 +13,9 @@ namespace BSP.Launcher
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            AppSplashScreen screen = new AppSplashScreen();
-            this.MainWindow = screen;
-            screen.Show();
+          
             var updater = new ApplicationUpdater();
             updater.CheckApplicationUpdate();
-            screen.Close();
         }
     }
 

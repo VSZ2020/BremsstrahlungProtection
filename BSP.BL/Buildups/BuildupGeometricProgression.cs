@@ -16,7 +16,7 @@ namespace BSP.BL.Buildups
             if (mfp > 40)
                 mfp = 40;
 
-            var K = (int)Math.Round((c * Math.Pow(mfp, a) + d * (Math.Tanh(mfp / xi - 2.0) - TANH_OF_MINUS_2) / ONE_MINUS_TANH_OF_MINUS_2), 0);
+            var K = (int)(c * Math.Pow(mfp, a) + d * (Math.Tanh(mfp / xi - 2.0) - TANH_OF_MINUS_2) / ONE_MINUS_TANH_OF_MINUS_2);
 
             if (K == 1)
                 return (1.0 + (b - 1.0) * mfp) * barrierFactor;

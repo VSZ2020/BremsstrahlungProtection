@@ -16,6 +16,15 @@
             <MenuItem Header="{StaticResource menu_Program_Save}" IsEnabled="False"/>
             <MenuItem Header="{StaticResource menu_Program_SaveAs}" IsEnabled="False"/>-->
             <Separator/>
+            <MenuItem Header="{StaticResource menu_Bremsstrahlung}">
+                <MenuItem Command="{Binding SourceTab.ImportEnergyIntensityDataCommand}" Header="{StaticResource menu_Bremsstrahlung_Import_EnergyIntensityData}">
+
+                </MenuItem>
+                <MenuItem Command="{Binding SourceTab.ExportEnergyIntensityDataCommand}" Header="{StaticResource menu_Bremsstrahlung_Export_EnergyIntensityData}">
+
+                </MenuItem>
+            </MenuItem>
+            <Separator/>
             <MenuItem Header="{StaticResource menu_Program_Exit}"/>
         </MenuItem>
 
@@ -59,11 +68,6 @@
             <MenuItem Header="{StaticResource menu_Edit_Preferences}" IsEnabled="false"/>
         </MenuItem>
 
-        <MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <MenuItem Header="{StaticResource menu_Tools_Interpolations}" Command="{Binding ShowInterpolatedDataViewerCommand}"/>
-            <!--<MenuItem Header="{StaticResource menu_Tools_NuclidesEditor}"/>-->
-        </MenuItem>
-
         <MenuItem Header="{StaticResource menu_Calculation}">
             <MenuItem Header="{StaticResource menu_Calculation_Start}" Command="{Binding StartCommand}">
                 <MenuItem.Icon>
@@ -77,6 +81,11 @@
             </MenuItem>
         </MenuItem>
 
+        <MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            <MenuItem Header="{StaticResource menu_Tools_Interpolations}" Command="{Binding ShowInterpolatedDataViewerCommand}"/>
+            <!--<MenuItem Header="{StaticResource menu_Tools_NuclidesEditor}"/>-->
+        </MenuItem>
+        
         <MenuItem Header="{StaticResource menu_Help}" IsEnabled="{Binding IsEvaluationNotInProgress}">
             <!--<MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>-->
             <MenuItem Header="{StaticResource menu_Help_Changelog}" Command="{Binding ShowChangelogCommand}"/>

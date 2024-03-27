@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BSP.BL.Buildups.Common
+﻿namespace BSP.Geometries.SDK
 {
     public abstract class BaseHeterogeneousBuildup
     {
@@ -17,6 +15,6 @@ namespace BSP.BL.Buildups.Common
         /// </summary>
         protected Func<double, double[], double> buildup;
 
-        public abstract double EvaluateComplexBuildup(double[] mfp, double[][] factors);
+        public abstract double EvaluateComplexBuildup(double[] mfp, double[][] factors, double[]? complexBuildupFactors = null);
     }
 }

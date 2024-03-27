@@ -5,6 +5,7 @@ using BSP.BL.Interpolation;
 using BSP.BL.Interpolation.Functions;
 using BSP.Data;
 using BSP.Data.Entities;
+using BSP.Geometries.SDK;
 using Microsoft.EntityFrameworkCore;
 
 namespace BSP.BL.Services

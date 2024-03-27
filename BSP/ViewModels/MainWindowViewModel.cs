@@ -1,6 +1,5 @@
 ﻿using BSP.BL.Calculation;
 using BSP.BL.DTO;
-using BSP.BL.Materials;
 using BSP.BL.Services;
 using BSP.Common;
 using BSP.Source.XAML_Forms;
@@ -12,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Numerics;
 using System.Windows;
+using BSP.Geometries.SDK;
 
 namespace BSP.ViewModels
 {
@@ -24,7 +24,7 @@ namespace BSP.ViewModels
 
             SourceTab = new(radionuclidesService, DataController);
             BuildupTab = new();
-            ShieldingTab = new(materialsService);
+            ShieldingTab = new();
             DoseFactorsTab = new(dcfService);
             LanguagesVM = new();
 
@@ -38,6 +38,7 @@ namespace BSP.ViewModels
             SelectedEnvironmentMaterial = AvailableDataController.AvailableMaterials.FirstOrDefault();
 
             ResultsText = ((Application.Current.TryFindResource("msg_Welcome") as string) ?? "Welcome to the 'Bremsstrahlung protection' computer code!") + "\n";
+           
         }
         #endregion
 
@@ -177,7 +178,15 @@ namespace BSP.ViewModels
                 
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
                 //Array.Sort(energies, bremsstrahlungEnergyFluxes);
-                var shields = ShieldingTab.ShieldLayers.ToList();
+                var shields = ShieldingTab.ShieldLayers.Select(l => new ShieldLayer()
+                {
+                    Id = l.Id,
+                    Z = l.Z,
+                    D = l.D, 
+                    Name = l.Name,
+                    Weight = l.Weight,
+                    Density = l.Density,
+                }).ToList();
                 var shieldsTotalLengthWithoutAirgap = shields.Select(l => l.D).Sum();
 
                 //Добавляем последним слоем слой среды с расстоянием, равным расстоянию до точки регистрации излучения
@@ -192,6 +201,9 @@ namespace BSP.ViewModels
                 
                 var builder = App.GetService<InputDataBuilder>();
                 var inputBuilder = builder
+                    .WithDimensions(
+                        SourceTab.SourceDimensions.Select(d => d.Value).ToArray(), 
+                        SourceTab.SourceDimensions.Select(d => d.Discreteness).ToArray())
                     .WithEnergies(energies)
                     .WithShieldLayers(shields)
                     .WithAttenuationFactors(SourceTab.SelectedSourceMaterial.Id, shieldLayersIds, energies)
@@ -255,8 +267,7 @@ namespace BSP.ViewModels
         private async Task EvaluateByPointAsync(InputDataBuilder inputBuilder, float shieldsTotalLengthWithoutAirgap, double[] energies, double[] doseFactors)
         {
             var dimensions = SourceTab.SourceDimensions.Select(d => d.Value).ToArray();
-            var discreteness = SourceTab.SourceDimensions.Select(d => d.Discreteness).ToArray();
-            var formProcessor = GeometryService.GetGeometryInstance(SourceTab.SelectedSourceForm.FormType, dimensions, discreteness);
+            var formProcessor = GeometryService.GetGeometryInstance(SourceTab.SelectedSourceForm.FormType);
             var airgapSubstractionTerm = GeometryService.GetSubstractionTermForAirgapCalculation(SourceTab.SelectedSourceForm.FormType, dimensions);
 
             //Выполняем расчет для каждой точки регистрации излучения
@@ -278,9 +289,9 @@ namespace BSP.ViewModels
                     break;
 
                 results.PartialAirKerma = results.ConvertToAnotherDose(doseFactors);
-                FillOutputTable(results, this.precision);
-                progress?.Report(1);
+                FillOutputTable(results, this.precision);           
             }
+            progress?.Report(0);
         } 
         #endregion
 

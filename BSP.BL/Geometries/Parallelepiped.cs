@@ -1,28 +1,35 @@
 ﻿using BSP.BL.Calculation;
+using BSP.BL.Integration;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Geometries
 {
-    public sealed class Parallelepiped : BaseGeometry
+    public sealed class Parallelepiped : IGeometry
     {
-        public Parallelepiped(float[] dims, int[] discreteness) : base(dims, discreteness) { }
+        private ParallelepipedForm form = new();
 
-        private ParallelepipedForm form;
+        public string Name => "Parallelepiped";
+        public string Description => "";
 
-        #region AssignDimensions
-        public override void AssignDimensions(float[] dims, int[] discreteness)
+        public string Author => "IVS";
+        
+        #region GetDimensionsInfo
+        public IEnumerable<DimensionsInfo> GetDimensionsInfo()
         {
-            form = new ParallelepipedForm()
+            return new List<DimensionsInfo>()
             {
-                Thickness = dims[0],
-                Width = dims[1],
-                Height = dims[2],
-                NThickness = discreteness[0],
-                NWidth = discreteness[1],
-                NHeight = discreteness[2]
+                new (){ Name = "Thickness", DefaultValue = 10, Discreteness = 100},
+                new (){ Name = "Width", DefaultValue = 10, Discreteness = 100},
+                new (){ Name = "Height", DefaultValue = 10, Discreteness = 100},
             };
-        } 
+        }
         #endregion
-
+        
+        public double GetNormalizationFactor(float[] dims)
+        {
+            return dims[0] * dims[1] * dims[2];
+        }
+        
         #region GetFluence
         /// <summary>
         /// Вычисление радиальной составляющей излучения от прямоугольного параллелепипеда. Метод средних прямоугольников
@@ -30,8 +37,18 @@ namespace BSP.BL.Geometries
         /// <param name="input"></param>
         /// <param name="EnergyIndex"></param>
         /// <returns></returns>
-        public override double GetFluence(SingleEnergyInputData input)
+        public double GetFluence(SingleEnergyInputData input)
         {
+            form = new ParallelepipedForm()
+            {
+                Thickness = input.Dimensions[0],
+                Width = input.Dimensions[1],
+                Height = input.Dimensions[2],
+                NThickness = input.Discreteness[0],
+                NWidth = input.Discreteness[1],
+                NHeight = input.Discreteness[2]
+            };
+            
             return AlternativeIntegration(input);
         } 
         #endregion
@@ -77,7 +94,7 @@ namespace BSP.BL.Geometries
 
                         //Коэффициент перехода от толщины защиты d к эффективной толщине ослабления в защите y
                         var m = R / (c + b);
-                        var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
+                        var ud = IGeometry.GetUdWithFactors(input.MassAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
 
                         if (!input.IsSelfAbsorptionAllowed)
                             ud = ud.Skip(1).ToArray();
@@ -108,7 +125,7 @@ namespace BSP.BL.Geometries
             var y0 = input.CalculationPoint.Y;
             var z0 = input.CalculationPoint.Z;
 
-            var integral = Integrate((x, y, z) =>
+            var integral = Integrators.Integrate((x, y, z) =>
             {
                 var c = form.Thickness - x;
 
@@ -121,7 +138,7 @@ namespace BSP.BL.Geometries
 
                 //Коэффициент перехода от толщины защиты d к эффективной толщине ослабления в защите y
                 var m = R / (x0 - x);
-                var ud = GetUDWithFactors(input.massAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
+                var ud = IGeometry.GetUdWithFactors(input.MassAttenuationFactors, input.SourceDensity, xe, layersMassThickness, m);
 
                 if (!input.IsSelfAbsorptionAllowed)
                     ud = ud.Skip(1).ToArray();

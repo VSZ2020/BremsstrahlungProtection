@@ -1,6 +1,6 @@
-﻿using BSP.BL.Materials;
-using BSP.ViewModels;
+﻿using BSP.ViewModels;
 using System.Windows;
+using BSP.Geometries.SDK;
 
 namespace BSP.Views
 {
@@ -11,7 +11,7 @@ namespace BSP.Views
     {
         private AddEditShieldLayerVM vm;
 
-        public AddEditShieldLayerWindow(ShieldLayer? layer = null)
+        public AddEditShieldLayerWindow(ShieldLayerVM? layer = null)
         {
             vm = new AddEditShieldLayerVM(layer);
             DataContext = vm;
@@ -19,7 +19,7 @@ namespace BSP.Views
             this.Title = layer == null ? "Add new shield layer" : $"Edit shield layer {layer.Name}";
         }
 
-        public ShieldLayer? Layer => vm.Layer;
+        public ShieldLayerVM? Layer => vm.Layer;
         public bool IsAppliedChanges => vm.IsAppliedChanges;
 
     }

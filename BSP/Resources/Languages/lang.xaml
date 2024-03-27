@@ -32,6 +32,10 @@
     <v:String x:Key="menu_Edit_ShieldingEdit">Edit shield layer</v:String>
     <v:String x:Key="menu_Edit_ShieldingRemove">Remove shield layer</v:String>
 
+    <v:String x:Key="menu_Bremsstrahlung">Bremsstrahlung</v:String>
+    <v:String x:Key="menu_Bremsstrahlung_Import_EnergyIntensityData">Import Energy-Flux Data</v:String>
+    <v:String x:Key="menu_Bremsstrahlung_Export_EnergyIntensityData">Export Energy-Flux Data</v:String>
+    
     <v:String x:Key="menu_Calculation">Calculation</v:String>
     <v:String x:Key="menu_Calculation_Start">Launch calculation</v:String>
     <v:String x:Key="menu_Calculation_Abort">Abort calculation</v:String>
@@ -155,13 +159,18 @@
 
     <!--#region InterpolationsViewer Window-->
     <v:String x:Key="interpolationsViewer_InterpolationsViewer">Interpolations Viewer</v:String>
-    <v:String x:Key="interpolationsViewer_Button_Plot">Plot data</v:String>
     <v:String x:Key="interpolationsViewer_Button_ExportToExcel">Export to Excel</v:String>
     <v:String x:Key="interpolationsViewer_Button_TableView">Table View</v:String>
     <v:String x:Key="interpolationsViewer_Button_Material">Material</v:String>
     <v:String x:Key="interpolationsViewer_Button_BuildupCoefficient">Buildup coefficient</v:String>
     <v:String x:Key="interpolationsViewer_Button_ParameterType">Parameter to show</v:String>
     <!--#endregion-->
+
+
+    <!--#region App Splash Screen-->
+    <v:String x:Key="splashScreen_DefaultText">Please, wait! Loading data...</v:String>
+    <!--#endregion-->
+
 
     <!--#region Tooltips -->
     <v:String x:Key="tooltipIncludeScatter">Include scattered radiation</v:String>
@@ -174,7 +183,6 @@
     <v:String x:Key="tooltipSourceMaterialZeff">Effective atomic number of material</v:String>
     <v:String x:Key="tooltipSourceMaterialDensity">Density of material</v:String>
     <v:String x:Key="tooltipShowInterpolatedInputInResults">Prints interpolated values of input coefficients for each materials and energy</v:String>
-    <v:String x:Key="tooltip_InterpolationsViewer_PlotButton">Choose value of interest and click 'Show' button to draw graph</v:String>
     <v:String x:Key="tooltip_InterpolationsViewer_GraphNavigation">MOVE - press mouse right button and move it. ZOOM - scroll mouse wheel or select region of interest with left mouse button. VIEW VALUE - click on graph point to view its value. RESET SCALE - double click on mouse wheel (middle mouse button)</v:String>
     <!--#endregion-->
 
@@ -275,11 +283,11 @@
     <v:String x:Key="updaterDialogTitle">Software update</v:String>
     <v:String x:Key="updaterWindow_ProgressTitle">Download in progress</v:String>
     <v:String x:Key="updaterWindow_msgError">An error occurred during download. See log file.</v:String>
-    <v:String x:Key="msg_UpdateApp">The new version ({0}) of app was found. Do you want to update application?</v:String>
+    <v:String x:Key="msg_UpdateApp">New version ({0}) was found. Do you want to update application?</v:String>
         
     <!--About Window-->
     <v:String x:Key="wnd_About_Authors">Author(s):</v:String>
     <v:String x:Key="wnd_About_AuthorsName">Izgagin Vyacheslav, Michael Zhukovsky</v:String>
     <v:String x:Key="wnd_About_Affiliation">Organization:</v:String>
-    <v:String x:Key="wnd_About_AffiliationContent">The Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
+    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
 </ResourceDictionary>

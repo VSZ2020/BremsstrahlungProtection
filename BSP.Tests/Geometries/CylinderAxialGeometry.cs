@@ -1,6 +1,7 @@
 ﻿using BSP.BL.Calculation;
 using BSP.BL.Geometries;
 using System.Diagnostics;
+using BSP.Geometries.SDK;
 
 namespace BSP.Tests.Geometries
 {
@@ -11,21 +12,25 @@ namespace BSP.Tests.Geometries
         [SetUp]
         public void Setup()
         {
+            float[] dimensions = [20.0f, 50.0f];
+            int[] discreteness = [100, 100];
+            
             input = new()
             {
-                massAttenuationFactors = [0.5f, 0],
+                Dimensions = dimensions,
+                Discreteness = discreteness,
+                MassAttenuationFactors = [0.5f, 0],
                 SourceDensity = 2.4f,
                 CalculationPoint = new System.Numerics.Vector3(100, 0, 0),
-                Layers = new List<BL.Materials.ShieldLayer>() { new BL.Materials.ShieldLayer() { D = 100, Density = 0.0012928f } }
+                Layers = new List<ShieldLayer>() { new ShieldLayer() { D = 100, Density = 0.0012928f } }
             };
         }
 
         [Test]
         public void StandardIntegrator()
         {
-            float[] dimensions = [20.0f, 50.0f];
-            int[] discreteness = [100, 100];
-            var processor = new CylinderAxial(dimensions, discreteness);
+            
+            var processor = new CylinderAxial();
             var fluence = processor.GetFluence(input);
             var expectedMathcad = 1.2678E-7;
             Assert.That(fluence, Is.EqualTo(expectedMathcad).Within(1e-6));//Mathcad
@@ -35,9 +40,7 @@ namespace BSP.Tests.Geometries
         [Test]
         public void AlternativeIntegrator()
         {
-            float[] dimensions = [20.0f, 50.0f];
-            int[] discreteness = [100, 100];
-            var processor = new CylinderAxial(dimensions, discreteness);
+            var processor = new CylinderAxial();
             var fluence = processor.AlternativeIntegrator(input);
             var expectedMathcad = 1.2678E-7;
             Assert.That(fluence, Is.EqualTo(expectedMathcad).Within(1e-6));//Mathcad

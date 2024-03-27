@@ -39,9 +39,9 @@
                                         Binding="{Binding Name}" 
                                         IsReadOnly="True" 
                                         Width="0.3*"/>
-                    <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_Value}" 
-                                        Binding="{Binding Value, ValidatesOnDataErrors=True}"
-                                        EditingElementStyle="{StaticResource textboxWithError}"
+                    <DataGridTemplateColumn Header="{StaticResource tab_Source_SourceGeometry_Value}" 
+                                        CellTemplate="{StaticResource DataGridDimensionColumn}"
+                                        CellEditingTemplate="{StaticResource DataGridDimensionEditTemplate}"
                                         Width="0.3*"/>
                     <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_Discreteness}" 
                                         Binding="{Binding Path=Discreteness, ValidatesOnDataErrors=True}" 

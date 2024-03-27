@@ -1,8 +1,8 @@
 ﻿using BSP.BL.Buildups.Common;
-using BSP.BL.Materials;
 using BSP.BL.Services;
 using System.Numerics;
 using System.Text;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Calculation
 {
@@ -59,6 +59,13 @@ namespace BSP.BL.Calculation
         //public IProgress<double> Progress;
         
 
+        public InputDataBuilder WithDimensions(float[] dims, int[] discreteness)
+        {
+            inputClass.Dimensions = dims;
+            inputClass.Discreteness = discreteness;
+            return this; 
+        }
+        
         public InputDataBuilder WithEnergies(double[] energies)
         {
             //this.Energies = energies;
@@ -83,7 +90,8 @@ namespace BSP.BL.Calculation
         public InputDataBuilder WithAttenuationFactors(int sourceMaterialId, int[] shieldMaterialsIds, double[] energies)
         {
             //this.massAttenuationFactors = materialsService.GetMassAttenuationFactors(CombineIds(sourceMaterialId, shieldMaterialsIds), energies);
-            inputClass.massAttenuationFactors = materialsService.GetMassAttenuationFactors(CombineIds(sourceMaterialId, shieldMaterialsIds), energies);
+            var massAttenuationFactors = materialsService.GetMassAttenuationFactors(CombineIds(sourceMaterialId, shieldMaterialsIds), energies);
+            inputClass.massAttenuationFactors = massAttenuationFactors;
             return this;
         }
 
@@ -160,6 +168,8 @@ namespace BSP.BL.Calculation
         {
             return new InputData()
             {
+                Dimensions = inputClass.Dimensions,
+                Discreteness = inputClass.Discreteness,
                 Energies = inputClass.Energies,
                 massEnvironmentAbsorptionFactors = inputClass.massEnvironmentAbsorptionFactors,
                 massAttenuationFactors = inputClass.massAttenuationFactors,

@@ -1,4 +1,5 @@
 ﻿using BSP.BL.Buildups.Common;
+using BSP.Geometries.SDK;
 
 namespace BSP.BL.Buildups
 {
@@ -11,7 +12,7 @@ namespace BSP.BL.Buildups
 
         public override string Description => "Evaluates buildup for heterogeneous medium using Broder expression.";
 
-        public override double EvaluateComplexBuildup(double[] mfp, double[][] coefficients)
+        public override double EvaluateComplexBuildup(double[] mfp, double[][] coefficients, double[]? complexBuildupFactors = null)
         {
             int layersCount = mfp.Length;
 

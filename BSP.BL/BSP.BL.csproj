@@ -23,6 +23,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BSP.Data\BSP.Data.csproj" />
+    <ProjectReference Include="..\BSP.Geometries.SDK\BSP.Geometries.SDK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Materials\" />
   </ItemGroup>
 
 </Project>

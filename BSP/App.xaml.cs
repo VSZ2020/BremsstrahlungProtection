@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using System.Windows;
+using BSP.Source.XAML_Forms;
 
 namespace BSP
 {
@@ -92,10 +93,15 @@ namespace BSP
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppSplashScreen splash = new AppSplashScreen();
+            splash.Show();
+            
             LoadServices();
 
             this.MainWindow = new MainWindow();
             this.MainWindow.Show();
+            
+            splash.Close();
         }
 
         public static T GetService<T>()

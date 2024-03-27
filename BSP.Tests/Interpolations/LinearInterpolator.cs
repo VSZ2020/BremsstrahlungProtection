@@ -11,13 +11,13 @@ namespace BSP.Tests.Geometries
         }
 
         
-        Dataset[] Datasets;
+        List<Dataset> _datasets = new();
 
 
         [SetUp]
         public void Setup()
         {
-            Datasets =
+            _datasets =
             [
                 //Mass attenuation Fe
                 new Dataset()
