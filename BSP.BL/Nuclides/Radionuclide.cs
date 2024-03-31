@@ -1,15 +1,7 @@
-﻿using System.Linq;
-
-namespace BSP.BL.Nuclides
+﻿namespace BSP.BL.Nuclides
 {
     public class Radionuclide
     {
-        public Radionuclide()
-        {
-
-            //RecalculateMeanEnergies();
-        }
-
         /// <summary>
         /// Название радионуклида
         /// </summary>
@@ -45,23 +37,5 @@ namespace BSP.BL.Nuclides
             }
             return maxEnergy;
         }
-        ///// <summary>
-        ///// Пересчитывает групповые энергии тормозного излучения для данного нуклида
-        ///// </summary>
-        //public void RecalculateMeanEnergies()
-        //{
-        //    double maxEnergy = 0.0;
-
-        //    //Поиск максимальной линии энергии с максимальным вкладом
-        //    for (int i = 0; i < MaxEnergies.Count; i++)
-        //    {
-        //        if (MaxEnergies[i] * EnergyYields[i] > maxEnergy)
-        //            maxEnergy = MaxEnergies[i];
-        //    }
-
-        //    var binRightEdges = Bremsstrahlung.GetEnergyBinRightEdges(maxEnergy);
-        //    BSEnergySpectrum = new BsSpectrum(binRightEdges.Length);
-        //    BSEnergySpectrum.MeanEnergies = Bremsstrahlung.GetMeanEnergyBins(binRightEdges);
-        //}
     }
 }

@@ -1,8 +1,15 @@
-﻿v1.5.0.8
+﻿v1.5.0.9
+- Radionuclides viewer was added;
+- Fixed dose point coordinate updating after changing;
+- Updated About window content.
+
+
+v1.5.0.8
 - Opportunity to Import/Export bremsstrahlung energy-intensite data;
 - Splash screen was added;
 - Geometries model was changed;
 - Geometries SDK was prepared.
+
 
 v1.5.0.7
 - New logger;

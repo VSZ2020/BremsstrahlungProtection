@@ -1,7 +1,6 @@
-﻿using BSP.BL.Extensions;
-using System;
+﻿using BSP.MathUtils.Extensions;
 
-namespace BSP.BL.Interpolation.Functions
+namespace BSP.MathUtils.Interpolation.Functions
 {
     public class LSpline : IInterpolator
     {

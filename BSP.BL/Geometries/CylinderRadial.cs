@@ -1,6 +1,5 @@
-﻿using BSP.BL.Calculation;
-using BSP.BL.Integration;
-using BSP.Geometries.SDK;
+﻿using BSP.Geometries.SDK;
+using BSP.MathUtils.Integration;
 
 namespace BSP.BL.Geometries
 {

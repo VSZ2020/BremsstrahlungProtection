@@ -1,5 +1,4 @@
-﻿using System;
-using BSP.Geometries.SDK;
+﻿using BSP.Geometries.SDK;
 
 namespace BSP.BL.Geometries
 {

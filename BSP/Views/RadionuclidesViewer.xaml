@@ -1,0 +1,61 @@
+﻿<Window x:Class="BSP.Views.RadionuclidesViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BSP.ViewModels"
+        mc:Ignorable="d"
+        Title="Radionuclides Viewer" Height="450" Width="545" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="2" Text="{StaticResource radionuclidesViewer_UserHint}" Margin="0,5,0,0" Foreground="Gray" TextWrapping="Wrap" TextAlignment="Right"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.7*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Row="0" Grid.Column="0" Name="RadionuclidesGrid"
+                      ItemsSource="{Binding RadionuclidesList}" SelectedItem="{Binding SelectedRadionuclide}" DisplayMemberPath="Name"
+                      Style="{StaticResource DefaultDataGrid}" IsReadOnly="True"
+                      CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{StaticResource radionuclidesViewer_RadionuclideName}" Binding="{Binding Name}" Width="0.4*"/>
+                    <DataGridTextColumn Header="{StaticResource radionuclidesViewer_RadionuclideHalfLive}" Binding="{Binding FullHalfLive}" Width="0.6*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <GridSplitter Grid.Column="0" Width="5" Background="WhiteSmoke" VerticalAlignment="Stretch"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding ElementName=RadionuclidesGrid, Path=SelectedItem.Name}" Margin="0,0,0,5" HorizontalAlignment="Center" FontWeight="Bold"/>
+                <DataGrid Grid.Row="1" Style="{StaticResource DefaultDataGrid}"
+                          ItemsSource="{Binding EnergyIntensityList}"
+                          SelectionUnit="Cell" SelectionMode="Extended"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" 
+                          RowStyle="{StaticResource GreenDataGridRow}" IsReadOnly="True">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding ExportCommand}" Header="{StaticResource radionuclidesViewer_ExportCommand}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{StaticResource radionuclidesViewer_RadionuclideEndpointEnergy}" Binding="{Binding EndpointEnergy, StringFormat={}{0:E3}}" Width="*"/>
+                        <DataGridTextColumn Header="{StaticResource radionuclidesViewer_RadionuclideAverageEnergy}" Binding="{Binding AverageEnergy, StringFormat={}{0:E3}}" Width="*"/>
+                        <DataGridTextColumn Header="{StaticResource radionuclidesViewer_RadionuclideIntensity}" Binding="{Binding Intensity, StringFormat={}{0:E3}}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+        
+        
+    </Grid>
+</Window>

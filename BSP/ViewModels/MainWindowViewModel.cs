@@ -42,7 +42,6 @@ namespace BSP.ViewModels
         }
         #endregion
 
-
         #region Fields
         private bool hasSelectedRadionuclides => SourceTab.SelectedRadionuclides.Count > 0;
 
@@ -99,12 +98,14 @@ namespace BSP.ViewModels
         RelayCommand clearResultsCommand;
         RelayCommand exportResultsToTextFile;
         RelayCommand showInterpolatedDataViewer;
+        RelayCommand showRadionuclidesViewerCommand;
 
         public RelayCommand StartCommand => startCommand ?? (startCommand = new RelayCommand(obj => StartCalculation(), o => !IsEvaluationInProgress));
         public RelayCommand StopCommand => stopCommand ?? (stopCommand = new RelayCommand(obj => StopCalculation(), o => IsEvaluationInProgress));
         public RelayCommand ClearResultsCommand => clearResultsCommand ?? (clearResultsCommand = new RelayCommand(o => ClearResultsView()));
         public RelayCommand ExportResultsToTextFile => exportResultsToTextFile ?? (exportResultsToTextFile = new RelayCommand(o => ExportResults(), o => !string.IsNullOrEmpty(resultsText)));
         public RelayCommand ShowInterpolatedDataViewerCommand => showInterpolatedDataViewer ?? (showInterpolatedDataViewer = new RelayCommand(o => ShowInterpolationsViewer()));
+        public RelayCommand ShowRadionuclidesViewerCommand => showRadionuclidesViewerCommand ?? (showRadionuclidesViewerCommand = new RelayCommand(o => ShowRadionuclidesViewer()));
 
         public RelayCommand AboutCommand => new RelayCommand(o => new About().ShowDialog());
         public RelayCommand UserManualCommand => new RelayCommand(o =>
@@ -120,6 +121,8 @@ namespace BSP.ViewModels
             else
                 MessageBox.Show("Changelog file is not found");
         });
+
+        public RelayCommand ExitCommand => new RelayCommand(o => Environment.Exit(0));
         #endregion
 
 
@@ -427,7 +430,7 @@ namespace BSP.ViewModels
                 selectedMaterialsIds.Add(shield.Id);
             }
 
-            new InterpolationsViewer(
+            var wnd = new InterpolationsViewer(
                 SourceTab.EnergyYieldList.Select(e => (double)e.Energy).ToArray(),
                 SelectedEnvironmentMaterial.Id,
                 selectedMaterialsIds.ToArray(),
@@ -438,7 +441,16 @@ namespace BSP.ViewModels
                 DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
                 DoseFactorsTab.SelectedExposureGeometry.Id,
                 DoseFactorsTab.SelectedOrganTissue.Id
-                ).ShowDialog();
+                );
+            wnd.Owner = Application.Current.MainWindow;
+            wnd.ShowDialog();
+        }
+        #endregion
+
+        #region ShowRadionuclidesViewer
+        private void ShowRadionuclidesViewer()
+        {
+            new Views.RadionuclidesViewer(App.GetService<RadionuclidesService>()).ShowDialog();
         } 
         #endregion
 

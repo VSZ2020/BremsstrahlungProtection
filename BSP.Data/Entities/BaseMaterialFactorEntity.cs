@@ -7,7 +7,7 @@ namespace BSP.Data.Entities
         public int MaterialId { get; set; }
 
         [ForeignKey(nameof(MaterialId))]
-        public MaterialEntity Material { get; set; }
+        public MaterialEntity? Material { get; set; }
 
         public float Energy { get; set; }
 

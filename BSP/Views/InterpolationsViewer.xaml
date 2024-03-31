@@ -43,6 +43,9 @@
                 <Button Content="{StaticResource interpolationsViewer_Button_ExportToExcel}" Style="{StaticResource DefaultButton}" Grid.Column="0" Command="{Binding ExportToExcelCommand}"/>
                 <Button Content="{StaticResource interpolationsViewer_Button_TableView}" Style="{StaticResource DefaultButton}" Grid.Column="1" Margin="5,0,0,0" Command="{Binding OpenTableViewCommand}"/>
             </Grid>
+
+            <Separator Margin="5"/>
+            <Button Content="{StaticResource interpolationsViewer_Button_ResetScale}" Style="{StaticResource DefaultButton}" Command="{Binding ResetScaleCommand}"/>
         </StackPanel>
         
         <!--Chart Region-->

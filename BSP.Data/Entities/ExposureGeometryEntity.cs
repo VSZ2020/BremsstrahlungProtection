@@ -10,6 +10,6 @@ namespace BSP.Data.Entities
         [Required]
         public string Name { get; set; }
 
-        public List<BaseDoseFactorEntity> Factors { get; set; }
+        public List<BaseDoseFactorEntity>? Factors { get; set; }
     }
 }

@@ -85,15 +85,16 @@
                                       CanUserSortColumns="False"
                                       CanUserReorderColumns="False"
                                       CanUserResizeRows="False"
+                                      IsTabStop="True"
                                       ItemsSource="{Binding SourceTab.DosePoints}"
                                       SelectedItem="{Binding SourceTab.SelectedDosePoint}"
                                       MinHeight="50"
                                       MaxHeight="150"
                                       Margin="0,5,0,0">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="{StaticResource tab_Output_X_Coordinate}" Binding="{Binding X}" Width="*"/>
-                                    <DataGridTextColumn Header="{StaticResource tab_Output_Y_Coordinate}" Binding="{Binding Y}" Width="*"/>
-                                    <DataGridTextColumn Header="{StaticResource tab_Output_Z_Coordinate}" Binding="{Binding Z}" Width="*"/>
+                                    <DataGridTextColumn Header="{StaticResource tab_Output_X_Coordinate}" Binding="{Binding X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="*"/>
+                                    <DataGridTextColumn Header="{StaticResource tab_Output_Y_Coordinate}" Binding="{Binding Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="*"/>
+                                    <DataGridTextColumn Header="{StaticResource tab_Output_Z_Coordinate}" Binding="{Binding Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>

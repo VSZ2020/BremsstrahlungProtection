@@ -8,12 +8,12 @@ namespace BSP.Data.Entities.DoseConversionFactors
         public int ExposureGeometryId { get; set; }
 
         [ForeignKey(nameof(ExposureGeometryId))]
-        public ExposureGeometryEntity ExposureGeometry { get; set; }
+        public ExposureGeometryEntity? ExposureGeometry { get; set; }
 
 
         public int OrganTissueId { get; set; }
 
         [ForeignKey(nameof(OrganTissueId))]
-        public OrganTissueEntity OrganTissue { get; set; }
+        public OrganTissueEntity? OrganTissue { get; set; }
     }
 }

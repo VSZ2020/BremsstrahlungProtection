@@ -1,6 +1,6 @@
-﻿using BSP.BL.Interpolation.Functions;
+﻿using BSP.MathUtils.Interpolation.Functions;
 
-namespace BSP.BL.Interpolation
+namespace BSP.MathUtils.Interpolation
 {
     public class Interpolator
     {

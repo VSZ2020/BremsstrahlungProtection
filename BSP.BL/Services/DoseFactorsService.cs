@@ -1,9 +1,8 @@
 ﻿using BSP.BL.DTO;
-using BSP.BL.Interpolation;
-using BSP.BL.Interpolation.Functions;
 using BSP.Data;
 using BSP.Data.Entities;
 using BSP.Data.Entities.DoseConversionFactors;
+using BSP.MathUtils.Interpolation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BSP.BL.Services

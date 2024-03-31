@@ -25,10 +25,31 @@
                 <Image Source="/Resources/Images/ignore_selfabsorption.png" Stretch="UniformToFill" MaxHeight="{StaticResource IconMaxHeight}"></Image>
             </ToggleButton>
 
+            <Separator/>
             <!--Show interpolated input-->
             <ToggleButton IsChecked="{Binding IsShowInputData}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipShowInterpolatedInputInResults}">
                 <TextBlock Text="SID" FontWeight="Black" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </ToggleButton>
+
+            <Button Command="{Binding ShowRadionuclidesViewerCommand}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource menu_Tools_NuclidesViewer}">
+                <Image Source="/Resources/Images/view_nuclide.png"/>
+            </Button>
+            
+            <Button ToolTip="{StaticResource menu_Tools_Interpolations}" Height="{StaticResource ToolBarButtonSize}" Command="{Binding ShowInterpolatedDataViewerCommand}">
+                <Image Source="/Resources/Images/interpolation_view.png"/>
+            </Button>
+
+            <Separator/>
+            <Button Content="IEFD" FontWeight="Black"
+                    ToolTip="{StaticResource menu_Bremsstrahlung_Import_EnergyIntensityData}"
+                    Command="{Binding SourceTab.ImportEnergyIntensityDataCommand}"
+                    Grid.Column="0"
+                    Height="{StaticResource ToolBarButtonSize}"/>
+            <Button Content="EEFD" FontWeight="Black"
+                    ToolTip="{StaticResource menu_Bremsstrahlung_Import_EnergyIntensityData}"
+                    Command="{Binding SourceTab.ExportEnergyIntensityDataCommand}"
+                    Grid.Column="1"
+                    Height="{StaticResource ToolBarButtonSize}"/>
         </ToolBar>
         <ToolBar Style="{StaticResource MainToolbar}">
             <!--Run calculation-->

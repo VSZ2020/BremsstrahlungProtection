@@ -58,6 +58,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
         private RelayCommand openTableView;
         public RelayCommand OpenTableViewCommand => openTableView ?? (openTableView = new RelayCommand(o => OpenTableView(), CanExecute));
+
+        private RelayCommand resetScaleCommand;
+        public RelayCommand ResetScaleCommand => resetScaleCommand ?? (resetScaleCommand = new RelayCommand(o => ResetScale()));
         #endregion
 
         #region Properties and fields
@@ -101,6 +104,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         public PlotModel PlotModel { get; private set; }
         #endregion
 
+        #region CanExecute
         private bool CanExecute(object parameter)
         {
             if (_selectedParameterType != null)
@@ -112,7 +116,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
                 {
                     case InterpolatedParameterType.AbsorptionFactors:
                         return _selectedMaterial != null;
-                        
+
                     case InterpolatedParameterType.AttenuationFactors:
                         return _selectedMaterial != null;
 
@@ -123,10 +127,12 @@ namespace BSP.ViewModels.InterpolatedDataViewer
                         return true;
                 }
             }
-            
+
             return false;
         }
+        #endregion
 
+        #region UpdateBoxes
         public void UpdateBoxes()
         {
             switch (_selectedParameterType)
@@ -145,7 +151,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
             }
         }
+        #endregion
 
+        #region UpdateMaterialsList
         private void UpdateMaterialsList()
         {
             if (_selectedParameterType == InterpolatedParameterType.AbsorptionFactors)
@@ -166,7 +174,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             }
             SelectedMaterial = AvailableMaterials.FirstOrDefault();
         }
+        #endregion
 
+        #region PlotData
         public void PlotData()
         {
             if (_selectedParameterType == null || SelectedMaterial == null || SelectedBuildupCoefficient == null)
@@ -191,7 +201,9 @@ namespace BSP.ViewModels.InterpolatedDataViewer
 
             }
         }
+        #endregion
 
+        #region RequestDataToPlot
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) RequestDataToPlot()
         {
             switch (_selectedParameterType)
@@ -242,7 +254,8 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnDoseFactorsData()
         {
             return (_tableDoseFactorsEnergies, _tableDoseFactorsValues, _interpolatedDoseFactors, $"{_doseFactorName} ({_doseFactorUnits})");
-        }
+        } 
+        #endregion
 
 
         private void PlotAttenuationCoefficients()
@@ -274,6 +287,12 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             PlotModel.Axes.Clear();
             PlotModel.Series.Clear();
             PlotModel.Legends.Clear();
+        }
+
+        private void ResetScale()
+        {
+            PlotModel.ResetAllAxes();
+            PlotModel.InvalidatePlot(false);
         }
 
         private void PlotData(double[] tableX, double[] tableY, double[] x, double[] y, string title = "", bool isLogX = false, bool isLogY = false)

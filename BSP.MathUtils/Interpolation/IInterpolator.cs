@@ -1,4 +1,4 @@
-﻿namespace BSP.BL.Interpolation.Functions
+﻿namespace BSP.MathUtils.Interpolation
 {
     public interface IInterpolator
     {

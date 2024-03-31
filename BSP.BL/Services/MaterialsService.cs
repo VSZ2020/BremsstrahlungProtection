@@ -1,8 +1,6 @@
 ﻿using BSP.BL.DTO;
-using BSP.BL.Extensions;
-using BSP.BL.Interpolation;
-using BSP.BL.Interpolation.Functions;
 using BSP.Data;
+using BSP.MathUtils.Interpolation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BSP.BL.Services

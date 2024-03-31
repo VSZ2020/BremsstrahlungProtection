@@ -8,7 +8,7 @@
     <Menu Background="{x:Null}">
         <MenuItem Header="{StaticResource menu_Program}">
             <MenuItem Header="{StaticResource menu_Program_Language}" 
-                      IsEnabled="{Binding IsEvaluationNotInProgress}" 
+                      IsEnabled="False" 
                       ItemsSource="{Binding LanguagesVM.AvailableLanguages}" 
                       DisplayMemberPath="Header">
             </MenuItem>
@@ -25,7 +25,7 @@
                 </MenuItem>
             </MenuItem>
             <Separator/>
-            <MenuItem Header="{StaticResource menu_Program_Exit}"/>
+            <MenuItem Header="{StaticResource menu_Program_Exit}" Command="{Binding ExitCommand}"/>
         </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Edit}" IsEnabled="{Binding IsEvaluationNotInProgress}">
@@ -82,7 +82,16 @@
         </MenuItem>
 
         <MenuItem Header="{StaticResource menu_Tools}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <MenuItem Header="{StaticResource menu_Tools_Interpolations}" Command="{Binding ShowInterpolatedDataViewerCommand}"/>
+            <MenuItem Header="{StaticResource menu_Tools_Interpolations}" Command="{Binding ShowInterpolatedDataViewerCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/interpolation_view.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{StaticResource menu_Tools_NuclidesViewer}" Command="{Binding ShowRadionuclidesViewerCommand}">
+                <MenuItem.Icon>
+                    <Image Source="../../Resources/Images/view_nuclide.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
+                </MenuItem.Icon>
+            </MenuItem>
             <!--<MenuItem Header="{StaticResource menu_Tools_NuclidesEditor}"/>-->
         </MenuItem>
         

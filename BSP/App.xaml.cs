@@ -29,6 +29,9 @@ namespace BSP
             m_Languages.Add(new CultureInfo("en-US")); //Нейтральная культура для этого проекта
             m_Languages.Add(new CultureInfo("ru-RU"));
 
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             var savedCulture = BSP.Properties.Settings.Default.AppCulture;
             if (ValidateLanguageDictionary(savedCulture))
                 Language = savedCulture;

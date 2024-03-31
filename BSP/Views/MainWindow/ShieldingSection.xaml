@@ -29,6 +29,25 @@
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   Style="{StaticResource DefaultDataGrid}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{StaticResource menu_Edit_ShieldingAdd}" Command="{Binding ShieldingTab.AddCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/add_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{StaticResource menu_Edit_ShieldingEdit}" Command="{Binding ShieldingTab.EditCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/edit_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{StaticResource menu_Edit_ShieldingRemove}" Command="{Binding ShieldingTab.RemoveCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="../../Resources/Images/remove_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{StaticResource tab_Shielding_Material}" 
                                     Binding="{Binding Name}"

@@ -1,4 +1,4 @@
-﻿namespace BSP.BL.Extensions
+﻿namespace BSP.MathUtils.Extensions
 {
     public static class MathExtensions
     {

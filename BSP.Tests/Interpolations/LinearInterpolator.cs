@@ -1,4 +1,4 @@
-﻿using BSP.BL.Interpolation.Functions;
+﻿using BSP.MathUtils.Interpolation.Functions;
 
 namespace BSP.Tests.Geometries
 {

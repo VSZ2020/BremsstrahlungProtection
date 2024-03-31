@@ -1,7 +1,6 @@
-﻿using BSP.BL.Calculation;
+﻿using BSP.Geometries.SDK;
+using BSP.MathUtils.Integration;
 using System.Runtime.CompilerServices;
-using BSP.BL.Integration;
-using BSP.Geometries.SDK;
 
 namespace BSP.BL.Geometries
 {
@@ -141,10 +140,11 @@ namespace BSP.BL.Geometries
                 sum += Math.Exp(-UD.Sum()) * buildupFactor;
             }
             return !token.IsCancellationRequested ? sum * dr : 0;
-        } 
+        }
         #endregion
 
 
+        #region Sec, Cosec
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double sec(double x)
         {
@@ -155,7 +155,8 @@ namespace BSP.BL.Geometries
         private static double cosec(double x)
         {
             return 1.0 / Math.Sin(x);
-        }
+        } 
+        #endregion
 
         #region AlternativeIntegrator
         public double AlternativeIntegrator(SingleEnergyInputData input)
@@ -187,7 +188,7 @@ namespace BSP.BL.Geometries
                 if (double.IsNaN(buildupFactor) || double.IsInfinity(buildupFactor))
                     buildupFactor = 0.0;
 
-                return Math.Exp(-UD.Sum()) * buildupFactor;
+                return System.Math.Exp(-UD.Sum()) * buildupFactor;
             }
 
             var P1 = Integrators.Integrate(

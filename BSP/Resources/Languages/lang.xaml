@@ -42,6 +42,7 @@
 
     <v:String x:Key="menu_Tools">Tools</v:String>
     <v:String x:Key="menu_Tools_Interpolations">Interpolations Viewer</v:String>
+    <v:String x:Key="menu_Tools_NuclidesViewer">Radionuclides Viewer</v:String>
     <v:String x:Key="menu_Tools_NuclidesEditor">Nuclides editor</v:String>
 
     <v:String x:Key="menu_Help">?</v:String>
@@ -164,9 +165,22 @@
     <v:String x:Key="interpolationsViewer_Button_Material">Material</v:String>
     <v:String x:Key="interpolationsViewer_Button_BuildupCoefficient">Buildup coefficient</v:String>
     <v:String x:Key="interpolationsViewer_Button_ParameterType">Parameter to show</v:String>
+    <v:String x:Key="interpolationsViewer_Button_ResetScale">Reset Scale</v:String>
     <!--#endregion-->
 
+    
+    <!--#region Radionuclide viewer-->
+    <v:String x:Key="radionuclidesViewer_UserHint">The radiation line with the maximum value of the product of energy and intensity is highlighted</v:String>
+    <v:String x:Key="radionuclidesViewer_RadionuclideName">Name</v:String>
+    <v:String x:Key="radionuclidesViewer_RadionuclideHalfLive">Half-Live</v:String>
+    <v:String x:Key="radionuclidesViewer_RadionuclideAverageEnergy">Average beta energy, MeV</v:String>
+    <v:String x:Key="radionuclidesViewer_RadionuclideEndpointEnergy">Endpoint beta energy, MeV</v:String>
+    <v:String x:Key="radionuclidesViewer_RadionuclideIntensity">Yield</v:String>
 
+    <v:String x:Key="radionuclidesViewer_ExportCommand">Export to file</v:String>
+    <!--#endregion-->
+    
+    
     <!--#region App Splash Screen-->
     <v:String x:Key="splashScreen_DefaultText">Please, wait! Loading data...</v:String>
     <!--#endregion-->
@@ -287,7 +301,11 @@
         
     <!--About Window-->
     <v:String x:Key="wnd_About_Authors">Author(s):</v:String>
-    <v:String x:Key="wnd_About_AuthorsName">Izgagin Vyacheslav, Michael Zhukovsky</v:String>
-    <v:String x:Key="wnd_About_Affiliation">Organization:</v:String>
-    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
+    <v:String x:Key="wnd_About_AuthorsName">Vyacheslav S. Izgagin, Michael V. Zhukovsky</v:String>
+    <v:String x:Key="wnd_About_Affiliation">Copyright owner</v:String>
+    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences (https://iie-uran.ru)</v:String>
+    <v:String x:Key="wnd_About_Website">Website</v:String>
+    <v:String x:Key="wnd_About_WebsiteAddress">https://iie-uran.ru</v:String>
+    <v:String x:Key="wnd_About_Email">E-mail</v:String>
+    <v:String x:Key="wnd_About_Email_Content">iie@ecko.uran.ru; ivs@ecko.uran.ru</v:String>
 </ResourceDictionary>

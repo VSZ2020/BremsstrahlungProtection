@@ -1,4 +1,4 @@
-﻿namespace BSP.BL.Integration;
+﻿namespace BSP.MathUtils.Integration;
 
 public class Integrators
 {
@@ -30,17 +30,17 @@ public class Integrators
         }
         return !token.IsCancellationRequested ? sum * step / 3.0 : 0;
     }
-    
-    public static double Integrate(Func<double, double> func, double start, double end,  int N, CancellationToken token)
+
+    public static double Integrate(Func<double, double> func, double start, double end, int N, CancellationToken token)
     {
         return SimpsonMethod(func, start, end, N, token);
     }
-        
+
     public static double Integrate(Func<double, double, double> func, double startA, double endA, int NA, double startB, double endB, int NB, CancellationToken token)
     {
         return Integrate(
             y => Integrate(
-                x => func(x, y), 
+                x => func(x, y),
                 startA, endA, NA, token),
             startB, endB, NB, token);
     }
@@ -51,9 +51,9 @@ public class Integrators
         return Integrate(
             z => Integrate(
                 y => Integrate(
-                    x => func(x,y,z), 
-                    startA, endA, NA, token), 
-                startB, endB, NB, token), 
+                    x => func(x, y, z),
+                    startA, endA, NA, token),
+                startB, endB, NB, token),
             startC, endC, NC, token);
     }
 }

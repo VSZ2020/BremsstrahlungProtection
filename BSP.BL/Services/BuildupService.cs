@@ -1,11 +1,10 @@
 ﻿using BSP.BL.Buildups;
 using BSP.BL.Buildups.Common;
-using BSP.BL.Extensions;
-using BSP.BL.Interpolation;
-using BSP.BL.Interpolation.Functions;
 using BSP.Data;
 using BSP.Data.Entities;
 using BSP.Geometries.SDK;
+using BSP.MathUtils.Extensions;
+using BSP.MathUtils.Interpolation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BSP.BL.Services

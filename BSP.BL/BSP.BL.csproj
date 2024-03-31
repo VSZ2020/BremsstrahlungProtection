@@ -16,18 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Properties\Новая папка\**" />
-    <EmbeddedResource Remove="Properties\Новая папка\**" />
-    <None Remove="Properties\Новая папка\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BSP.Data\BSP.Data.csproj" />
     <ProjectReference Include="..\BSP.Geometries.SDK\BSP.Geometries.SDK.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Materials\" />
+    <ProjectReference Include="..\BSP.MathUtils\BSP.MathUtils.csproj" />
   </ItemGroup>
 
 </Project>
