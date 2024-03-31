@@ -1,6 +1,8 @@
 ﻿v1.5.0.9
 - Radionuclides viewer was added;
 - Fixed dose point coordinate updating after changing;
+- User can reorder shield layers;
+- The Radionuclides Viewer highlights the beta emission line with the maximum product of endpoint energy and intensity.
 - Updated About window content.
 
 

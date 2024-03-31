@@ -26,10 +26,14 @@ namespace BSP.ViewModels.Tabs
         RelayCommand addCommand;
         RelayCommand editCommand;
         RelayCommand removeCommand;
+        RelayCommand moveUpCommand;
+        RelayCommand moveDownCommand;
 
         public RelayCommand AddCommand => addCommand ?? (addCommand = new RelayCommand(obj => AddShieldLayer(), o => hasMaterials));
         public RelayCommand EditCommand => editCommand ?? (editCommand = new RelayCommand(obj => EditShieldLayer(), o => hasMaterials && _selectedShieldLayer != null));
         public RelayCommand RemoveCommand => removeCommand ?? (removeCommand = new RelayCommand(obj => RemoveShieldLayer(), o => hasMaterials && _selectedShieldLayer != null));
+        public RelayCommand MoveUpCommand => moveUpCommand ?? (moveUpCommand = new RelayCommand(o => MoveShieldUp(), o => _selectedShieldLayer != null && ShieldLayers.IndexOf(_selectedShieldLayer) > 0));
+        public RelayCommand MoveDownCommand => moveDownCommand ?? (moveDownCommand = new RelayCommand(o => MoveShieldDown(), o => _selectedShieldLayer != null && ShieldLayers.IndexOf(_selectedShieldLayer) < ShieldLayers.Count - 1));
         #endregion
 
         public void AddShieldLayer()
@@ -61,7 +65,7 @@ namespace BSP.ViewModels.Tabs
                 else
                     ShieldLayers.Add(addWnd.Layer);
 
-                SelectedShieldLayer = ShieldLayers.SingleOrDefault(l => l.Id == addWnd.Layer.Id);
+                SelectedShieldLayer = ShieldLayers.LastOrDefault(l => l.Id == addWnd.Layer.Id);
             }
         }
 
@@ -85,6 +89,18 @@ namespace BSP.ViewModels.Tabs
                 int index = ShieldLayers.IndexOf(_selectedShieldLayer);
                 ShieldLayers[index] = editWnd.Layer;
             }
+        }
+
+        private void MoveShieldUp()
+        {
+            var curIndex = ShieldLayers.IndexOf(_selectedShieldLayer);
+            ShieldLayers.Move(curIndex, curIndex - 1);
+        }
+
+        private void MoveShieldDown()
+        {
+            var curIndex = ShieldLayers.IndexOf(_selectedShieldLayer);
+            ShieldLayers.Move(curIndex, curIndex + 1);
         }
     }
 }

@@ -170,7 +170,7 @@
 
     
     <!--#region Radionuclide viewer-->
-    <v:String x:Key="radionuclidesViewer_UserHint">The radiation line with the maximum value of the product of energy and intensity is highlighted</v:String>
+    <v:String x:Key="radionuclidesViewer_UserHint">The radiation line with the maximum value of the product of endpoint energy and intensity is highlighted</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideName">Name</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideHalfLive">Half-Live</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideAverageEnergy">Average beta energy, MeV</v:String>
