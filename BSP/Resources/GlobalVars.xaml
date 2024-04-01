@@ -8,4 +8,5 @@
     <system:Double x:Key="IconMaxHeight">23</system:Double>
     <conv:InversedBoolConverter x:Key="InversedBooleanConverter"/>
     <BooleanToVisibilityConverter x:Key="DefaultVisibilityConverter"/>
+    <conv:InversedVisibilityConverter x:Key="InversedVisibilityConverter"/>
 </ResourceDictionary>

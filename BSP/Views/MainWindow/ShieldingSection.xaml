@@ -26,6 +26,10 @@
                   ItemsSource="{Binding ShieldingTab.ShieldLayers}"
                   SelectedItem="{Binding ShieldingTab.SelectedShieldLayer}"
                   AutoGenerateColumns="False"
+                  CanUserReorderColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False"
                   IsReadOnly="True"
                   Style="{StaticResource DefaultDataGrid}">
             <DataGrid.ContextMenu>
@@ -45,6 +49,9 @@
                             <Image Source="../../Resources/Images/remove_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <Separator/>
+                    <MenuItem Command="{Binding ShieldingTab.MoveUpCommand}" Header="{StaticResource tab_Button_MoveUp}"/>
+                    <MenuItem Command="{Binding ShieldingTab.MoveDownCommand}" Header="{StaticResource tab_Button_MoveDown}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
@@ -79,7 +86,7 @@
                     Style="{StaticResource DefaultButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../../Resources/Images/add_shield.png" Margin="0,0,5,0" MaxHeight="{StaticResource IconMaxHeight}"/>
-                    <TextBlock Text="{StaticResource btn_Add}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{StaticResource menu_Edit_ShieldingAdd}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
@@ -90,7 +97,7 @@
                     Style="{StaticResource DefaultButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../../Resources/Images/edit_shield.png" Margin="0,0,5,0" MaxHeight="{StaticResource IconMaxHeight}"/>
-                    <TextBlock Text="{StaticResource btn_Edit}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{StaticResource menu_Edit_ShieldingEdit}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
@@ -101,16 +108,14 @@
                     Style="{StaticResource DefaultButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../../Resources/Images/remove_shield.png" Margin="0,0,5,0" MaxHeight="{StaticResource IconMaxHeight}"/>
-                    <TextBlock Text="{StaticResource btn_Remove}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{StaticResource menu_Edit_ShieldingRemove}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
-            <Button Grid.Column="3" Grid.Row="0" Margin="5,0,0,0" Style="{StaticResource DefaultButton}" Command="{Binding ShieldingTab.MoveUpCommand}">
-                ↑ Move Up
-            </Button>
-            <Button Grid.Column="4" Grid.Row="0" Margin="5,0,0,0" Style="{StaticResource DefaultButton}" Command="{Binding ShieldingTab.MoveDownCommand}">
-                ↓ Move Down
-            </Button>
+            <Button Grid.Column="3" Grid.Row="0" Margin="5,0,0,0" Style="{StaticResource DefaultButton}" 
+                    Command="{Binding ShieldingTab.MoveUpCommand}" Content="{StaticResource tab_Button_MoveUp}"/>
+            <Button Grid.Column="4" Grid.Row="0" Margin="5,0,0,0" Style="{StaticResource DefaultButton}" 
+                    Command="{Binding ShieldingTab.MoveDownCommand}" Content="{StaticResource tab_Button_MoveDown}"/>
         </Grid>
     </Grid>
 </UserControl>

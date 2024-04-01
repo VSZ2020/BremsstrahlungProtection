@@ -30,6 +30,7 @@
                       CanUserDeleteRows="False"
                       CanUserResizeRows="False"
                       CanUserSortColumns="False"
+                      CanUserReorderColumns="False"
                       SelectionMode="Single" SelectionUnit="Cell"
                       MinHeight="80"
                       ItemsSource="{Binding SourceTab.SourceDimensions}"
@@ -37,7 +38,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{StaticResource tab_Source_SourceGeometry_DimensionName}" 
                                         Binding="{Binding Name}" 
-                                        IsReadOnly="True" 
+                                        IsReadOnly="True"
                                         Width="0.3*"/>
                     <DataGridTemplateColumn Header="{StaticResource tab_Source_SourceGeometry_Value}" 
                                         CellTemplate="{StaticResource DataGridDimensionColumn}"

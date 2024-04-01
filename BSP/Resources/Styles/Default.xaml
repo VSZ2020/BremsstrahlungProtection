@@ -111,6 +111,18 @@
         </Setter>
     </Style>
 
+    <!--#region DataGrid Cell ComboBox Enter to Preview Mode-->
+    <Style TargetType="DataGridCell" x:Key="ComboboxEditing">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="IsEditing" Value="True"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region DataGrid Row Highlight by green -->
     <Style x:Key="GreenDataGridRow" TargetType="DataGridRow">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMajorLine}" Value="True">
@@ -118,7 +130,8 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    
+    <!--#endregion-->
+
     <Style TargetType="DataGrid" x:Key="DefaultDataGrid">
         <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
         <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>

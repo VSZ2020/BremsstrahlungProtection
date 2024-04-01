@@ -51,7 +51,7 @@
                     <DataGridComboBoxColumn Header="{StaticResource tab_Source_SelectedRadionuclides_NuclideHeader}" 
                                             ItemsSource="{Binding Source={x:Static vm:AvailableDataController.AvailableNuclides}}" 
                                             SelectedValueBinding="{Binding Id, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id"
-                                            DisplayMemberPath="Name"
+                                            DisplayMemberPath="Name" CellStyle="{StaticResource ComboboxEditing}"
                                             Width="0.4*"/>
                     <DataGridTextColumn Header="{StaticResource tab_Source_SelectedRadionuclides_ActivityHeader}" 
                                         Binding="{Binding Activity, StringFormat={}{0:e3}, ValidatesOnDataErrors=True, UpdateSourceTrigger=Explicit}"

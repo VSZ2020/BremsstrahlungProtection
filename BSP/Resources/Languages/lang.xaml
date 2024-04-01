@@ -28,9 +28,9 @@
     <v:String x:Key="menu_Edit_Preferences">Preferences</v:String>
     <v:String x:Key="menu_Edit_RadionuclideAdd">Add radionuclide</v:String>
     <v:String x:Key="menu_Edit_RadionuclideRemove">Remove radionuclide</v:String>
-    <v:String x:Key="menu_Edit_ShieldingAdd">Add shield layer</v:String>
-    <v:String x:Key="menu_Edit_ShieldingEdit">Edit shield layer</v:String>
-    <v:String x:Key="menu_Edit_ShieldingRemove">Remove shield layer</v:String>
+    <v:String x:Key="menu_Edit_ShieldingAdd">Add shield</v:String>
+    <v:String x:Key="menu_Edit_ShieldingEdit">Edit shield</v:String>
+    <v:String x:Key="menu_Edit_ShieldingRemove">Remove shield</v:String>
 
     <v:String x:Key="menu_Bremsstrahlung">Bremsstrahlung</v:String>
     <v:String x:Key="menu_Bremsstrahlung_Import_EnergyIntensityData">Import Energy-Flux Data</v:String>
@@ -77,13 +77,14 @@
     <v:String x:Key="tab_Source_SelectedRadionuclides_ActivityHeader">Activity, Bq</v:String>
 
     <v:String x:Key="tab_Source_Bremsstrahlung_GroupHeader">Bremsstrahlung</v:String>
-    <v:String x:Key="tab_Source_Bremsstrahlung_Hint">Yields per average energy of group</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_Hint">Energy-Flux Data</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Energy">Energy, MeV</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Yield">Yield, MeV/decay</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_EnergyFlux">Energy Flux, MeV/s</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_PhotonsFlux">Photons Flux, photon/s</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Btn_UpdateYields">Update</v:String>
-
+    <v:String x:Key="tab_Source_Bremsstrahlung_UserDefinedHint">Double click to start cell editing</v:String>
+    
     <v:String x:Key="tab_Source_SourceGeometry_GroupHeader">Source Geometry</v:String>
     <v:String x:Key="tab_Source_SourceGeometry_Form">Form</v:String>
     <v:String x:Key="tab_Source_SourceGeometry_Dimensions">Dimensions</v:String>
@@ -113,6 +114,8 @@
     <v:String x:Key="tab_Shielding_Material">Material</v:String>
     <v:String x:Key="tab_Shielding_Thickness">Thickness, cm</v:String>
     <v:String x:Key="tab_Shielding_Density">Density, g/cm³</v:String>
+    <v:String x:Key="tab_Button_MoveUp">↑ Move Up</v:String>
+    <v:String x:Key="tab_Button_MoveDown">↓ Move Down</v:String>
     <!--#endregion-->
 
     
@@ -189,14 +192,13 @@
     <!--#region Tooltips -->
     <v:String x:Key="tooltipIncludeScatter">Include scattered radiation</v:String>
     <v:String x:Key="tooltipLaunchCalc">Launch calculation</v:String>
-    <v:String x:Key="tooltipStopCalc">Abort the current calculation</v:String>
-    <v:String x:Key="tooltipIncludePartial">Print dose rates for each bremsstrahlung energy group</v:String>
+    <v:String x:Key="tooltipStopCalc">Abort current calculation</v:String>
+    <v:String x:Key="tooltipIncludePartial">If selected, the dose rate for each braking radiation energy group is displayed</v:String>
     <v:String x:Key="tooltipIsSelfabsorptionOff">If selected, self-absorption in the source is not taken into account in the calculations. Works only for extended sources</v:String>
     <v:String x:Key="tooltipSumActivityBox">Total activity of selected radionuclides</v:String>
     <v:String x:Key="tooltipSumIbetaBox">Total bremsstrahlung spectrum yield</v:String>
     <v:String x:Key="tooltipSourceMaterialZeff">Effective atomic number of material</v:String>
     <v:String x:Key="tooltipSourceMaterialDensity">Density of material</v:String>
-    <v:String x:Key="tooltipShowInterpolatedInputInResults">Prints interpolated values of input coefficients for each materials and energy</v:String>
     <v:String x:Key="tooltip_InterpolationsViewer_GraphNavigation">MOVE - press mouse right button and move it. ZOOM - scroll mouse wheel or select region of interest with left mouse button. VIEW VALUE - click on graph point to view its value. RESET SCALE - double click on mouse wheel (middle mouse button)</v:String>
     <!--#endregion-->
 

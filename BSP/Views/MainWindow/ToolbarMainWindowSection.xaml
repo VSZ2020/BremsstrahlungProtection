@@ -26,10 +26,6 @@
             </ToggleButton>
 
             <Separator/>
-            <!--Show interpolated input-->
-            <ToggleButton IsChecked="{Binding IsShowInputData}" VerticalContentAlignment="Stretch" VerticalAlignment="Center" Width="{StaticResource ToolBarButtonSize}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource tooltipShowInterpolatedInputInResults}">
-                <TextBlock Text="SID" FontWeight="Black" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </ToggleButton>
 
             <Button Command="{Binding ShowRadionuclidesViewerCommand}" Height="{StaticResource ToolBarButtonSize}" ToolTip="{StaticResource menu_Tools_NuclidesViewer}">
                 <Image Source="/Resources/Images/view_nuclide.png"/>
@@ -40,12 +36,12 @@
             </Button>
 
             <Separator/>
-            <Button Content="IEFD" FontWeight="Black"
+            <Button Content="I EFD" FontWeight="Black"
                     ToolTip="{StaticResource menu_Bremsstrahlung_Import_EnergyIntensityData}"
                     Command="{Binding SourceTab.ImportEnergyIntensityDataCommand}"
                     Grid.Column="0"
                     Height="{StaticResource ToolBarButtonSize}"/>
-            <Button Content="EEFD" FontWeight="Black"
+            <Button Content="E EFD" FontWeight="Black"
                     ToolTip="{StaticResource menu_Bremsstrahlung_Import_EnergyIntensityData}"
                     Command="{Binding SourceTab.ExportEnergyIntensityDataCommand}"
                     Grid.Column="1"

@@ -102,7 +102,7 @@
                     
                     <!--Environment material-->
                     <GroupBox Grid.Row="1" Header="{StaticResource tab_Output_Environment_GroupHeader}" 
-                              Style="{StaticResource DefaultGroupBox}">
+                              Style="{StaticResource DefaultGroupBox}" VerticalAlignment="Top">
                         <StackPanel>
                             <ComboBox ItemsSource="{Binding Source={x:Static vm:AvailableDataController.AvailableMaterials}}"
                                       SelectedItem="{Binding SelectedEnvironmentMaterial}"
@@ -147,14 +147,12 @@
                             
                             <CheckBox IsChecked="{Binding IsSelfAbsorptionOff}" 
                                       Content="{StaticResource tab_Output_TurnOffSelfabsorption}" Margin="0,10,0,0" ToolTip="{StaticResource tooltipIsSelfabsorptionOff}"/>
-
+                            <TextBlock Text="{StaticResource tooltipIsSelfabsorptionOff}" Margin="20,0,0,3" TextWrapping="Wrap" Foreground="DarkSlateGray" FontStyle="Italic"/>
+                            
                             <CheckBox IsChecked="{Binding IsShowPartialDoseRates}" 
                                       Content="{StaticResource tab_Output_PartialDoseRates}" Margin="0,10,0,0" 
                                       ToolTip=""/>
-
-                            <CheckBox Content="{StaticResource tab_Output_ShowInterpolatedInput}" IsChecked="{Binding IsShowInputData}"
-                                      ToolTip="{StaticResource tooltipShowInterpolatedInputInResults}"
-                                      Margin="0,10,0,0"/>
+                            <TextBlock Text="{StaticResource tooltipIncludePartial}" Margin="20,0,0,3" TextWrapping="Wrap" Foreground="DarkSlateGray" FontStyle="Italic"/>
                         </StackPanel>
                     </GroupBox>
                 </Grid>

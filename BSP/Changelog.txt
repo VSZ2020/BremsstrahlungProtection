@@ -1,4 +1,9 @@
-﻿v1.5.0.9
+﻿v1.5.1.0
+- New versioning approach;
+- Now user can replace radionuclide, when mouse hovers radionuclide name.
+
+
+v1.5.0.9
 - Radionuclides viewer was added;
 - Fixed dose point coordinate updating after changing;
 - User can reorder shield layers;

@@ -49,7 +49,6 @@ namespace BSP.ViewModels
         private int precision = 3;
         private bool isShowPartialDoseRates = false;
         private bool isSelftabsorptionOff = false;
-        private bool isShowInterpolatedInputData = false;
         
         private string resultsText;
        
@@ -64,7 +63,6 @@ namespace BSP.ViewModels
         public int Precision { get => precision; set { precision = value > 0 && value < 10 ? value : 3; OnChanged(); } }
         public bool IsShowPartialDoseRates { get => isShowPartialDoseRates; set { isShowPartialDoseRates = value; OnChanged(); } }
         public bool IsSelfAbsorptionOff { get => isSelftabsorptionOff; set { isSelftabsorptionOff = value; OnChanged(); } }
-        public bool IsShowInputData { get => isShowInterpolatedInputData; set { isShowInterpolatedInputData = value; OnChanged(); } }
         
         public string ResultsText { get => resultsText; set { resultsText = value; OnChanged(); } }
 
@@ -228,19 +226,6 @@ namespace BSP.ViewModels
                     energies, 
                     DoseFactorsTab.SelectedExposureGeometry.Id,
                     DoseFactorsTab.SelectedOrganTissue.Id);
-
-                //Если отмечено поле вывода входных данных, то печатаем интерполированные значения входных данных расчета
-                ResultsText += builder.ExportToString(
-                    energies,
-                    SelectedEnvironmentMaterial!.Id,
-                    SourceTab.SelectedSourceMaterial.Id,
-                    shieldLayersIds,
-                    BuildupTab.SelectedBuildup.BuildupType,
-                    DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
-                    DoseFactorsTab.SelectedExposureGeometry.Id,
-                    DoseFactorsTab.SelectedOrganTissue.Id,
-                    isShowInterpolatedInputData,
-                    this.precision);
 
                 await EvaluateByPointAsync(inputBuilder, shieldsTotalLengthWithoutAirgap, energies, doseFactors);
                 

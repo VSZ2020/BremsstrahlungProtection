@@ -62,6 +62,8 @@
                     <Image Source="../../Resources/Images/remove_shield.png" Margin="0" MaxHeight="{StaticResource IconMaxHeight}"/>
                 </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Command="{Binding ShieldingTab.MoveUpCommand}" Header="{StaticResource tab_Button_MoveUp}"/>
+            <MenuItem Command="{Binding ShieldingTab.MoveDownCommand}" Header="{StaticResource tab_Button_MoveDown}"/>
             
             <Separator/>
             
