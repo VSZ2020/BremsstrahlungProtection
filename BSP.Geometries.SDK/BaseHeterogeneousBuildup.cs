@@ -2,7 +2,7 @@
 {
     public abstract class BaseHeterogeneousBuildup
     {
-        
+
         public BaseHeterogeneousBuildup(Func<double, double[], double> func)
         {
             buildup = func;

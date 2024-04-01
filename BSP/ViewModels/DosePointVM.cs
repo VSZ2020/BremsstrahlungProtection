@@ -19,7 +19,7 @@ namespace BSP.ViewModels
 
         public string Error => "";
 
-        public string this[string columnName] 
+        public string this[string columnName]
         {
             get
             {

@@ -8,14 +8,14 @@ namespace BSP.BL.Geometries
         public string Description => "";
 
         public string Author => "IVS";
-        
+
         #region GetDimensionsInfo
-        public  IEnumerable<DimensionsInfo> GetDimensionsInfo()
+        public IEnumerable<DimensionsInfo> GetDimensionsInfo()
         {
             return Enumerable.Empty<DimensionsInfo>();
         }
         #endregion
-        
+
         public double GetNormalizationFactor(float[] dims)
         {
             return 1;

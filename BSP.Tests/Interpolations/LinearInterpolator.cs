@@ -10,7 +10,7 @@ namespace BSP.Tests.Geometries
             public double[] Y;
         }
 
-        
+
         List<Dataset> _datasets = new();
 
 
@@ -42,6 +42,6 @@ namespace BSP.Tests.Geometries
             Assert.That(interpolatedData, Is.EqualTo(null).Within(1e-6));//Mathcad
         }
 
-       
+
     }
 }

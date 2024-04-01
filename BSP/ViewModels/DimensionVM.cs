@@ -28,7 +28,7 @@ namespace BSP.ViewModels
                 {
                     case nameof(Value):
                         if (Value <= 0)
-                            error = string.Format((Application.Current.TryFindResource("msg_ValidationDimension") as string)?? "Incorrect value", name);
+                            error = string.Format((Application.Current.TryFindResource("msg_ValidationDimension") as string) ?? "Incorrect value", name);
                         break;
                     case nameof(Discreteness):
                         if (discreteness <= 0)

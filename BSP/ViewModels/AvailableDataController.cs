@@ -1,7 +1,6 @@
 ﻿using BSP.BL.DTO;
 using BSP.BL.Services;
 using BSP.Common;
-using System.Collections.Generic;
 
 namespace BSP.ViewModels
 {

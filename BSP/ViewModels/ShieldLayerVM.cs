@@ -2,7 +2,7 @@
 
 namespace BSP.ViewModels;
 
-public class ShieldLayerVM: BaseViewModel
+public class ShieldLayerVM : BaseViewModel
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -11,7 +11,7 @@ public class ShieldLayerVM: BaseViewModel
 
     public float Weight { get; set; }
     public float Density { get; set; }
-    
+
     private float d = 1;
 
     /// <summary>

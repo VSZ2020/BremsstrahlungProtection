@@ -1,10 +1,6 @@
-﻿using BSP.BL.DTO;
-using BSP.BL.Services;
-using BSP.Common;
+﻿using BSP.Common;
 using BSP.Views;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using BSP.Geometries.SDK;
 
 namespace BSP.ViewModels.Tabs
 {
@@ -17,7 +13,7 @@ namespace BSP.ViewModels.Tabs
 
         private bool hasMaterials => AvailableDataController.AvailableMaterials.Count > 0;
         private ShieldLayerVM? _selectedShieldLayer;
-        
+
         public ObservableCollection<ShieldLayerVM> ShieldLayers { get; }
         public ShieldLayerVM? SelectedShieldLayer { get => _selectedShieldLayer; set { _selectedShieldLayer = value; OnChanged(); } }
 

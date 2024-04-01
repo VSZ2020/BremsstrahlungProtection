@@ -28,7 +28,7 @@ namespace BSP.BL.Geometries
         {
             return dims[1] * Math.PI * dims[0] * dims[0];
         }
-        
+
         #region GetFluence
         public double GetFluence(SingleEnergyInputData input)
         {
@@ -41,9 +41,9 @@ namespace BSP.BL.Geometries
                 NHeight = input.Discreteness[1],
                 NAngle = input.Discreteness[2]
             };
-            
+
             return AlternativeIntegrator(input);
-        } 
+        }
         #endregion
 
         #region StandardIntegrator
@@ -92,7 +92,7 @@ namespace BSP.BL.Geometries
 
                         if (!input.IsSelfAbsorptionAllowed)
                             mfp = mfp.Skip(1).ToArray();
-                        
+
                         //Полная экспонента ослабления
                         double totalLooseExp = Math.Exp(-mfp.Sum());
 
@@ -102,7 +102,7 @@ namespace BSP.BL.Geometries
                         //    Logger.Log(string.Join("\t", rho, phi, z, selfabsorptionLength, effShieldThicknessFactor, mfp[0], mfp[^1], buildupFactor));
                         //Текущее значение интеграла
                         currIntegral += rho * totalLooseExp / cFull * buildupFactor * dro * dz * dPhi;
-                       
+
                         //builder.AppendLine(string.Join(";", rho, phi, z, cFull, selfabsorptionLength, mfp[0], mfp[^1], totalLooseExp, buildupFactor, currIntegral));
                     }
                 }
@@ -184,7 +184,7 @@ namespace BSP.BL.Geometries
             var rho_b = rho * rho + b * b - 2.0 * rho * b * Math.Cos(phi);
             var x = (rho * rho - rho * b * Math.Cos(phi) + Math.Sqrt(R * R * rho_b - rho * rho * b * b * Math.Sin(phi) * Math.Sin(phi))) * Math.Sqrt(rho_b_z) / rho_b;
             return x > 0 ? x : 0;
-        } 
+        }
         #endregion
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BSP.ViewModels.RadionuclidesViewer
 {
-    public class RadionuclideEnergyIntensityVM: BaseViewModel
+    public class RadionuclideEnergyIntensityVM : BaseViewModel
     {
         private bool _isMajorLine = false;
         public bool IsMajorLine { get => _isMajorLine; set { _isMajorLine = value; OnChanged(); } }

@@ -1,7 +1,4 @@
-﻿using BSP.Source.XAML_Forms;
-using BSP.Updater;
-using System.Configuration;
-using System.Data;
+﻿using BSP.Updater;
 using System.Windows;
 
 namespace BSP.Launcher
@@ -13,7 +10,7 @@ namespace BSP.Launcher
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-          
+
             var updater = new ApplicationUpdater();
             updater.CheckApplicationUpdate();
         }

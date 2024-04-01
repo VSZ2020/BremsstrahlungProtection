@@ -1,5 +1,4 @@
 ﻿using BSP.BL.Buildups;
-using BSP.BL.Buildups.Common;
 using BSP.BL.Services;
 using System.Windows;
 
@@ -11,7 +10,7 @@ namespace BSP.ViewModels
 
         public Type BuildupType { get; set; }
 
-        
+
 
         public static List<BuildupVM> Load()
         {

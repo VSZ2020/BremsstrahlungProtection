@@ -12,7 +12,7 @@ namespace BSP.BL.Geometries
         public string Description => "";
 
         public string Author => "IVS";
-        
+
         #region GetDimensionsInfo
         public IEnumerable<DimensionsInfo> GetDimensionsInfo()
         {
@@ -24,12 +24,12 @@ namespace BSP.BL.Geometries
             };
         }
         #endregion
-        
+
         public double GetNormalizationFactor(float[] dims)
         {
             return dims[1] * Math.PI * dims[0] * dims[0];
         }
-        
+
         #region GetFluence
         public double GetFluence(SingleEnergyInputData input)
         {
@@ -42,9 +42,9 @@ namespace BSP.BL.Geometries
                 NHeight = input.Discreteness[1],
                 NAngle = input.Discreteness[2]
             };
-            
+
             return AlternativeIntegrator(input);
-        } 
+        }
         #endregion
 
         #region StandardIntegrator
@@ -79,7 +79,7 @@ namespace BSP.BL.Geometries
                 Math.Atan(R / (b + H)), Math.Atan(R / b),
                 //From To limits for inner integral
                 angle => b * sec(angle), angle => R * cosec(angle),
-                form.NAngle, form.NRadius, 
+                form.NAngle, form.NRadius,
                 input.SourceDensity,
                 input.MassAttenuationFactors,
                 layersMassThickness,
@@ -90,7 +90,7 @@ namespace BSP.BL.Geometries
 
             var sourceVolume = form.GetNormalizationFactor();
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume / (4.0 * Math.PI);
-        } 
+        }
         #endregion
 
         #region ExternalIntegralByAngle
@@ -155,7 +155,7 @@ namespace BSP.BL.Geometries
         private static double cosec(double x)
         {
             return 1.0 / Math.Sin(x);
-        } 
+        }
         #endregion
 
         #region AlternativeIntegrator
@@ -203,7 +203,7 @@ namespace BSP.BL.Geometries
 
             var sourceVolume = form.GetNormalizationFactor();
             return 2.0 * Math.PI * (P1 + P2) / sourceVolume / (4.0 * Math.PI);
-        } 
+        }
         #endregion
     }
 }

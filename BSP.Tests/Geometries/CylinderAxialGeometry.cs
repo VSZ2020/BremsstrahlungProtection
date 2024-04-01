@@ -1,7 +1,6 @@
-﻿using BSP.BL.Calculation;
-using BSP.BL.Geometries;
-using System.Diagnostics;
+﻿using BSP.BL.Geometries;
 using BSP.Geometries.SDK;
+using System.Diagnostics;
 
 namespace BSP.Tests.Geometries
 {
@@ -14,7 +13,7 @@ namespace BSP.Tests.Geometries
         {
             float[] dimensions = [20.0f, 50.0f];
             int[] discreteness = [100, 100];
-            
+
             input = new()
             {
                 Dimensions = dimensions,
@@ -29,7 +28,7 @@ namespace BSP.Tests.Geometries
         [Test]
         public void StandardIntegrator()
         {
-            
+
             var processor = new CylinderAxial();
             var fluence = processor.GetFluence(input);
             var expectedMathcad = 1.2678E-7;

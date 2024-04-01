@@ -1,6 +1,5 @@
 ﻿using BSP.ViewModels;
 using System.Windows;
-using BSP.Geometries.SDK;
 
 namespace BSP.Views
 {

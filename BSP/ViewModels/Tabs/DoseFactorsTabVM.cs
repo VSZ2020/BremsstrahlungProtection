@@ -1,7 +1,5 @@
 ﻿using BSP.BL.Services;
 using BSP.Common;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BSP.ViewModels.Tabs
 {

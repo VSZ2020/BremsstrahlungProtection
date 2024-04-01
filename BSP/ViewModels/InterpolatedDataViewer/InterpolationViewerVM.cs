@@ -14,7 +14,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
     /// <summary>
     /// Пример плохого кода, но это работает
     /// </summary>
-    public class InterpolationViewerVM: BaseViewModel
+    public class InterpolationViewerVM : BaseViewModel
     {
         public InterpolationViewerVM(double[] bremsstrahlungEnergies, int selectedEnvironmentMaterialId, int[] selectedMaterialsIds, Type selectedBuildupType, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService, Type selectedDoseFactorType, int exposureGeometryId, int OrganTissueId)
         {
@@ -42,7 +42,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             (_tableDoseFactorsEnergies, _tableDoseFactorsValues) = doseFactorsService.GetTableDoseConversionFactors(selectedDoseFactorType, exposureGeometryId, OrganTissueId);
             _interpolatedDoseFactors = doseFactorsService.GetDoseConversionFactors(selectedDoseFactorType, bremsstrahlungEnergies, exposureGeometryId, OrganTissueId);
             var doseFactorTranslation = Application.Current.TryFindResource(DoseFactorsService.GetTranslationKey(selectedDoseFactorType));
-            _doseFactorName = doseFactorTranslation != null ? (string)doseFactorTranslation: "Dose conversion factor";
+            _doseFactorName = doseFactorTranslation != null ? (string)doseFactorTranslation : "Dose conversion factor";
             _doseFactorUnits = DoseFactorsService.GetDoseConversionFactorUnits(selectedDoseFactorType);
 
             PlotModel = new PlotModel() { IsLegendVisible = true };
@@ -93,7 +93,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         public List<InterpolatedParameterType> AvailableParamaters { get; }
 
         private readonly double[] _energies;
-        
+
 
         public ObservableCollection<MaterialDto> AvailableMaterials { get; }
         public List<string> AvailableBuildupCoefficients { get; }
@@ -254,7 +254,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnDoseFactorsData()
         {
             return (_tableDoseFactorsEnergies, _tableDoseFactorsValues, _interpolatedDoseFactors, $"{_doseFactorName} ({_doseFactorUnits})");
-        } 
+        }
         #endregion
 
 
@@ -317,17 +317,19 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             var tableSeries = new LineSeries() { Color = OxyColors.Blue, Title = "Table values", RenderInLegend = true };
             tableSeries.Points.AddRange(Enumerable.Range(0, tableX.Length).Select(i => new DataPoint(tableX[i], tableY[i])).ToArray());
 
-            var userSeries = new ScatterSeries() {Title = "Interpolated values", RenderInLegend = true, MarkerFill = OxyColors.Red, MarkerType = MarkerType.Circle };
-            userSeries.Points.AddRange(Enumerable.Range(0, x.Length).Select(i => new ScatterPoint(x[i], y[i], 3, tag:"o")).ToArray());
+            var userSeries = new ScatterSeries() { Title = "Interpolated values", RenderInLegend = true, MarkerFill = OxyColors.Red, MarkerType = MarkerType.Circle };
+            userSeries.Points.AddRange(Enumerable.Range(0, x.Length).Select(i => new ScatterPoint(x[i], y[i], 3, tag: "o")).ToArray());
 
             PlotModel.Series.Add(tableSeries);
             PlotModel.Series.Add(userSeries);
 
-            PlotModel.Legends.Add(new Legend() { 
-                LegendTextColor = OxyColors.Black, 
-                IsLegendVisible = true, 
-                LegendPosition = LegendPosition.TopRight, 
-                LegendPlacement = LegendPlacement.Inside});
+            PlotModel.Legends.Add(new Legend()
+            {
+                LegendTextColor = OxyColors.Black,
+                IsLegendVisible = true,
+                LegendPosition = LegendPosition.TopRight,
+                LegendPlacement = LegendPlacement.Inside
+            });
 
             PlotModel.InvalidatePlot(true);
         }

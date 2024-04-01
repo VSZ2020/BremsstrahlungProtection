@@ -30,7 +30,7 @@ namespace BSP.BL.Buildups
         private static double GetK(double mfp, double a, double c, double d, double xi)
         {
             return (c * Math.Pow(mfp, a) + d * (Math.Tanh(mfp / xi - 2.0) - TANH_OF_MINUS_2) / ONE_MINUS_TANH_OF_MINUS_2);
-        } 
+        }
 
         private static double CalculateBuildupLess40MFP(double mfp, double a, double b, double c, double d, double xi, double barrierFactor = 1.0F)
         {
@@ -46,14 +46,14 @@ namespace BSP.BL.Buildups
             var K35 = GetK(35, a, c, d, xi);
             var K40 = GetK(40, a, c, d, xi);
             var ratio = (K40 - 1) / (K35 - 1);
-            var ksi = (Math.Pow(mfp/35, 0.1) - 1) / (Math.Pow(40 / 35, 0.1) - 1);
+            var ksi = (Math.Pow(mfp / 35, 0.1) - 1) / (Math.Pow(40 / 35, 0.1) - 1);
 
             if (0 <= ratio && ratio <= 1)
             {
                 K = (int)(1.0 + (K35 - 1) * Math.Pow(ratio, ksi));
             }
             else
-                K = (int)(K35 * Math.Pow(K40/K35, Math.Pow(ksi, fm)));
+                K = (int)(K35 * Math.Pow(K40 / K35, Math.Pow(ksi, fm)));
 
             if (K == 1)
                 return (1.0 + (b - 1.0) * mfp) * barrierFactor;

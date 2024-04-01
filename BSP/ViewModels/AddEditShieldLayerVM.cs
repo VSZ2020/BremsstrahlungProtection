@@ -1,10 +1,7 @@
 ﻿using BSP.BL.DTO;
 using BSP.Common;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
-using BSP.Geometries.SDK;
 
 namespace BSP.ViewModels
 {
@@ -92,7 +89,7 @@ namespace BSP.ViewModels
                 {
                     case nameof(Thickness):
                         if (Thickness <= 0)
-                            error =(Application.Current.TryFindResource("msg_ValidationGreaterZero") as string) ?? "Incorrect value";
+                            error = (Application.Current.TryFindResource("msg_ValidationGreaterZero") as string) ?? "Incorrect value";
                         break;
                     case nameof(Density):
                         if (Density <= 0)

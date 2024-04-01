@@ -1,6 +1,4 @@
 ﻿using BSP.Data.Entities;
-using System;
-using System.Collections.Generic;
 
 namespace BSP.Data
 {

@@ -14,15 +14,15 @@ namespace BSP.Views
         public InterpolationsViewer(double[] bremsstrahlungEnergies, int selectedEnvironmentMaterialId, int[] selectedMaterialsIds, Type selectedBuildupType, MaterialsService materialsService, BuildupService buildupService, DoseFactorsService doseFactorsService, Type selectedDoseFactorType, int exposureGeometryId, int OrganTissueId)
         {
             this.vm = new InterpolationViewerVM(
-                bremsstrahlungEnergies, 
-                selectedEnvironmentMaterialId, 
-                selectedMaterialsIds, 
-                selectedBuildupType, 
-                materialsService, 
-                buildupService, 
-                doseFactorsService, 
-                selectedDoseFactorType, 
-                exposureGeometryId, 
+                bremsstrahlungEnergies,
+                selectedEnvironmentMaterialId,
+                selectedMaterialsIds,
+                selectedBuildupType,
+                materialsService,
+                buildupService,
+                doseFactorsService,
+                selectedDoseFactorType,
+                exposureGeometryId,
                 OrganTissueId);
             DataContext = vm;
             InitializeComponent();

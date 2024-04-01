@@ -1,5 +1,4 @@
-﻿using BSP.BL.Buildups.Common;
-using BSP.Geometries.SDK;
+﻿using BSP.Geometries.SDK;
 
 namespace BSP.BL.Buildups
 {

@@ -102,7 +102,7 @@ namespace BSP.BL.Services
 
             if (doseConversionFactorType == typeof(EquivalentDoseEntity))
                 table_entities.AddRange(context.EquivalentDoseFactors.AsNoTracking().Where(e => e.ExposureGeometryId == exposureGeometryId && e.OrganTissueId == organTissueId).Cast<BaseDoseFactorEntity>().ToList());
-            
+
             return (table_entities.Select(e => (double)e.Energy).ToArray(), table_entities.Select(e => (double)e.Value).ToArray());
         }
 

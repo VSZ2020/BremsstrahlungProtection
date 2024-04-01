@@ -1,10 +1,4 @@
-﻿using BSP.BL.Buildups.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BSP.Geometries.SDK;
+﻿using BSP.Geometries.SDK;
 
 namespace BSP.BL.Buildups
 {

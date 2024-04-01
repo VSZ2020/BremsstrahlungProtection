@@ -1,5 +1,4 @@
-﻿using BSP.BL.Geometries;
-using BSP.Geometries.SDK;
+﻿using BSP.Geometries.SDK;
 
 namespace BSP.BL.Calculation
 {
@@ -13,7 +12,7 @@ namespace BSP.BL.Calculation
             int energiesCount = input.PhotonsFluxes.Length;
             OutputValue output = new OutputValue(energiesCount);
             output.DosePoint = input.CalculationPoint;
-            
+
             var calcTask = Task.Run(() =>
             {
                 int calculatedEnergiesCount = 0;
@@ -46,7 +45,7 @@ namespace BSP.BL.Calculation
                     //Вычисляем парциальную мощность воздушной кермы [Гр/ч]
                     output.PartialAirKerma[energyIndex] =
                         CONVERSION_CONST * input.massEnvironmentAbsorptionFactors[energyIndex] * output.PartialFluxDensity[energyIndex] * input.Energies[energyIndex];
-                    
+
 
                     Interlocked.Increment(ref calculatedEnergiesCount);
                     input.Progress?.Report(calculatedEnergiesCount / energiesCount);

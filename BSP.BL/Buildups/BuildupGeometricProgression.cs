@@ -1,6 +1,4 @@
 ﻿using BSP.BL.Buildups.Common;
-using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace BSP.BL.Buildups
@@ -21,7 +19,7 @@ namespace BSP.BL.Buildups
             if (K == 1)
                 return (1.0 + (b - 1.0) * mfp) * barrierFactor;
             var buildup = (1.0 + (b - 1.0) * (Math.Pow(K, mfp) - 1.0) / (K - 1.0)) * barrierFactor;
-            
+
             return buildup;
         }
 

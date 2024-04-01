@@ -11,7 +11,7 @@ namespace BSP.BL.Geometries
         public string Description => "";
 
         public string Author => "IVS";
-        
+
         #region GetDimensionsInfo
         public IEnumerable<DimensionsInfo> GetDimensionsInfo()
         {
@@ -23,12 +23,12 @@ namespace BSP.BL.Geometries
             };
         }
         #endregion
-        
+
         public double GetNormalizationFactor(float[] dims)
         {
             return dims[0] * dims[1] * dims[2];
         }
-        
+
         #region GetFluence
         /// <summary>
         /// Вычисление радиальной составляющей излучения от прямоугольного параллелепипеда. Метод средних прямоугольников
@@ -47,9 +47,9 @@ namespace BSP.BL.Geometries
                 NWidth = input.Discreteness[1],
                 NHeight = input.Discreteness[2]
             };
-            
+
             return AlternativeIntegration(input);
-        } 
+        }
         #endregion
 
         #region StandardIntegrator

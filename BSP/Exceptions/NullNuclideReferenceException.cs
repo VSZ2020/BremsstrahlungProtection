@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BSP.Exceptions
+﻿namespace BSP.Exceptions
 {
     public class NullNuclideReferenceException : NullReferenceException
     {

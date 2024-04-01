@@ -92,9 +92,9 @@
                                       MaxHeight="150"
                                       Margin="0,5,0,0">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="{StaticResource tab_Output_X_Coordinate}" Binding="{Binding X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="*"/>
-                                    <DataGridTextColumn Header="{StaticResource tab_Output_Y_Coordinate}" Binding="{Binding Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="*"/>
-                                    <DataGridTextColumn Header="{StaticResource tab_Output_Z_Coordinate}" Binding="{Binding Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="*"/>
+                                    <DataGridTextColumn Header="{StaticResource tab_Output_X_Coordinate}" Binding="{Binding X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Delay=500}" Width="*"/>
+                                    <DataGridTextColumn Header="{StaticResource tab_Output_Y_Coordinate}" Binding="{Binding Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Delay=500}" Width="*"/>
+                                    <DataGridTextColumn Header="{StaticResource tab_Output_Z_Coordinate}" Binding="{Binding Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Delay=500}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>

@@ -1,12 +1,12 @@
 ﻿using BSP.BL.Calculation;
 using BSP.BL.Services;
 using BSP.Data;
+using BSP.Source.XAML_Forms;
 using BSP.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using System.Windows;
-using BSP.Source.XAML_Forms;
 
 namespace BSP
 {
@@ -98,12 +98,12 @@ namespace BSP
         {
             AppSplashScreen splash = new AppSplashScreen();
             splash.Show();
-            
+
             LoadServices();
 
             this.MainWindow = new MainWindow();
             this.MainWindow.Show();
-            
+
             splash.Close();
         }
 

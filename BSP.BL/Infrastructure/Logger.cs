@@ -24,7 +24,7 @@ namespace BSP.BL.Infrastructure
             {
                 wr.WriteLine(string.Format(messageFormat, DateTime.Now, title, message));
             }
-            
+
         }
 
         public static void LogToConsole(string message, string title = "BSP")

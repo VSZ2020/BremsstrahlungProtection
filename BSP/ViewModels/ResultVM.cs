@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BSP.ViewModels
+﻿namespace BSP.ViewModels
 {
     public class ResultVM
     {

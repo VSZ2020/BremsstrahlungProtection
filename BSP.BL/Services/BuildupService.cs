@@ -132,7 +132,7 @@ namespace BSP.BL.Services
         {
             var energiesLog10 = energies.ToLog10();
             var coefficientsCount = buildupType == typeof(BuildupTaylor) ? 4 : 6;
-            
+
             //Пустой массив для заполнения интерполированными значениями
             var outputArray = InitializeArray(energies.Length, materialsIds.Length, coefficientsCount);
 

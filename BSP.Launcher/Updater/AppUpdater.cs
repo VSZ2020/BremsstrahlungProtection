@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BSP.Updater
+﻿namespace BSP.Updater
 {
     public static class AppUpdater
     {

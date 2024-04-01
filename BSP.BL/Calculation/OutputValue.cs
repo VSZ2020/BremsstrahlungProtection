@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace BSP.BL.Calculation
 {
@@ -37,7 +36,7 @@ namespace BSP.BL.Calculation
         /// Массив с парциальными значениями плотности потока кнватов тормозного излучения
         /// </summary>
         public double[] PartialFluxDensity;
-        
+
         public double[] ConvertToAnotherDose(double[] doseFactors)
         {
             return Enumerable.Range(0, PartialAirKerma.Length).Select(i => PartialAirKerma[i] * doseFactors[i]).ToArray();

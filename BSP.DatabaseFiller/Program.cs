@@ -1,8 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BSP.DatabaseFiller;
-using System.Reflection;
 
-var root = 
+var root =
     Directory.GetParent(
         Directory.GetParent(
             Directory.GetParent(

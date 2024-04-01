@@ -1,6 +1,6 @@
 ﻿namespace BSP.Geometries.SDK.Attributes
 {
-    public class GeometryAttribute: Attribute
+    public class GeometryAttribute : Attribute
     {
     }
 }

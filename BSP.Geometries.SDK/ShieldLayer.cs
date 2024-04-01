@@ -11,7 +11,7 @@
 
         public float Weight { get; set; }
         public float Density { get; set; }
-        
+
         /// <summary>
         /// Толщина [см]
         /// </summary>
@@ -21,6 +21,6 @@
         /// Массовая толщина [г/см2]
         /// </summary>
         public float Dm => D * Density;
-        
+
     }
 }

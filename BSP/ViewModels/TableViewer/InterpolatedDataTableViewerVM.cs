@@ -2,18 +2,18 @@
 
 namespace BSP.ViewModels.TableViewer
 {
-    public class InterpolatedDataTableViewerVM: BaseViewModel
+    public class InterpolatedDataTableViewerVM : BaseViewModel
     {
         public InterpolatedDataTableViewerVM(double[] tableX, double[] tableY, double[] X, double[] Y)
         {
-            for(var i = 0; i < tableX.Length; i++)
+            for (var i = 0; i < tableX.Length; i++)
             {
                 TableValues.Add(new EnergyValuePair() { Energy = tableX[i], Value = tableY[i] });
             }
 
             for (var i = 0; i < X.Length; i++)
             {
-                InterpolatedValues.Add(new EnergyValuePair(){ Energy = X[i], Value = Y[i]});
+                InterpolatedValues.Add(new EnergyValuePair() { Energy = X[i], Value = Y[i] });
             }
         }
 

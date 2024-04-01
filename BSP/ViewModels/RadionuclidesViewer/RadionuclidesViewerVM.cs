@@ -3,12 +3,11 @@ using BSP.Common;
 using BSP.FileUtils;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 
 namespace BSP.ViewModels.RadionuclidesViewer
 {
-    public class RadionuclidesViewerVM: BaseViewModel
+    public class RadionuclidesViewerVM : BaseViewModel
     {
         #region Constructor
         public RadionuclidesViewerVM(RadionuclidesService radionuclidesService)
@@ -34,7 +33,7 @@ namespace BSP.ViewModels.RadionuclidesViewer
         public RadionuclideEnergyIntensityVM? SelectedEnergyIntensity { get => _selectedEnergyIntensity; set { _selectedEnergyIntensity = value; OnChanged(); } }
 
         public List<TableRadionuclideVM> RadionuclidesList { get; }
-        public ObservableCollection<RadionuclideEnergyIntensityVM> EnergyIntensityList { get; } 
+        public ObservableCollection<RadionuclideEnergyIntensityVM> EnergyIntensityList { get; }
         #endregion
 
         #region Commands
@@ -71,7 +70,7 @@ namespace BSP.ViewModels.RadionuclidesViewer
         private void ClearEnergyIntensityData()
         {
             EnergyIntensityList.Clear();
-        } 
+        }
         #endregion
 
         #region Export
@@ -88,7 +87,7 @@ namespace BSP.ViewModels.RadionuclidesViewer
                 if (FileService.ExportRadionuclideEnergyIntensity(saveDialog.FileName, EnergyIntensityList.ToList()))
                     MessageBox.Show($"Successfully saved at {saveDialog.FileName}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-        } 
+        }
         #endregion
     }
 }

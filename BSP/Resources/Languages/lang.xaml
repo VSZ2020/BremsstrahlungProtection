@@ -83,7 +83,7 @@
     <v:String x:Key="tab_Source_Bremsstrahlung_EnergyFlux">Energy Flux, MeV/s</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_PhotonsFlux">Photons Flux, photon/s</v:String>
     <v:String x:Key="tab_Source_Bremsstrahlung_Btn_UpdateYields">Update</v:String>
-    <v:String x:Key="tab_Source_Bremsstrahlung_UserDefinedHint">Double click to start cell editing</v:String>
+    <v:String x:Key="tab_Source_Bremsstrahlung_UserDefinedHint">Double click to start cell editing. Press ENTER or click on another cell to finish</v:String>
     
     <v:String x:Key="tab_Source_SourceGeometry_GroupHeader">Source Geometry</v:String>
     <v:String x:Key="tab_Source_SourceGeometry_Form">Form</v:String>
@@ -110,7 +110,7 @@
 
 
     <!--#region Tab 'Shielding' -->
-    <v:String x:Key="tab_Shielding_Hint">Set shield layers</v:String>
+    <v:String x:Key="tab_Shielding_Hint">To set the protection layers between the extended source and the dose point, use the 'Add shield' button located at the bottom of the tab or access it through the context or program menu. The order of the layers will be taken into account when calculating the accumulation factor of a multilayer defense, depending on the chosen method.</v:String>
     <v:String x:Key="tab_Shielding_Material">Material</v:String>
     <v:String x:Key="tab_Shielding_Thickness">Thickness, cm</v:String>
     <v:String x:Key="tab_Shielding_Density">Density, g/cm³</v:String>
@@ -266,6 +266,7 @@
     <v:String x:Key="msg_Error_EmptyEnergyYieldData">Energy and Yield data are empty. Click update to generate data or enter it manually</v:String>
     <v:String x:Key="msg_Error_ZeroTotalActivity">Source total activity is zero or empty</v:String>
     <v:String x:Key="msg_Error_ZeroOrLessDecimalPlaces">Number of decimal places is less zero</v:String>
+    <v:String x:Key="msg_Error_DosePointInsideSourceOrShield">Dose point X coordinate is inside source and shielding thickness</v:String>
 
     <v:String x:Key="msg_ValidationDimension">{0} must be greater zero</v:String>
     <v:String x:Key="msg_ValidationDiscreteness">{0} must be greater or equal to 1</v:String>

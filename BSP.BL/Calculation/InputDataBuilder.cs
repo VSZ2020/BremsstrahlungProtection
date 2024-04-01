@@ -1,8 +1,6 @@
-﻿using BSP.BL.Buildups.Common;
-using BSP.BL.Services;
-using System.Numerics;
-using System.Text;
+﻿using BSP.BL.Services;
 using BSP.Geometries.SDK;
+using System.Numerics;
 
 namespace BSP.BL.Calculation
 {
@@ -15,7 +13,7 @@ namespace BSP.BL.Calculation
 
             inputClass = new InputData();
         }
-        
+
         private readonly MaterialsService materialsService;
         private readonly BuildupService buildupService;
 
@@ -25,13 +23,13 @@ namespace BSP.BL.Calculation
         {
             inputClass.Dimensions = dims;
             inputClass.Discreteness = discreteness;
-            return this; 
+            return this;
         }
-        
+
         public InputDataBuilder WithEnergies(double[] energies)
         {
             inputClass.Energies = energies;
-            return this; 
+            return this;
         }
 
         public InputDataBuilder WithBremsstrahlungEnergyFluxes(double[] fluxes)
@@ -93,7 +91,7 @@ namespace BSP.BL.Calculation
             inputClass.SourceDensity = density;
             return this;
         }
-        
+
         public InputDataBuilder WithSourceActivity(double activity)
         {
             inputClass.SourceActivity = activity;
@@ -108,7 +106,7 @@ namespace BSP.BL.Calculation
 
         public InputDataBuilder WithSelfabsorption(bool isSelfAbsorptionAllowed)
         {
-            inputClass.IsSelfAbsorptionAllowed = isSelfAbsorptionAllowed; 
+            inputClass.IsSelfAbsorptionAllowed = isSelfAbsorptionAllowed;
             return this;
         }
 

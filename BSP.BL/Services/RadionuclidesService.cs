@@ -1,8 +1,6 @@
 ﻿using BSP.BL.DTO;
 using BSP.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BSP.BL.Services
 {

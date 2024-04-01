@@ -1,10 +1,5 @@
-﻿using BSP.BL.Buildups.Common;
-using System;
-using System.Collections.Generic;
+﻿using BSP.Geometries.SDK;
 using System.Numerics;
-using System.Text;
-using System.Threading;
-using BSP.Geometries.SDK;
 
 namespace BSP.BL.Calculation
 {
@@ -15,7 +10,7 @@ namespace BSP.BL.Calculation
     {
         public float[] Dimensions;
         public int[] Discreteness;
-        
+
         public double[] Energies;
         public double[] massEnvironmentAbsorptionFactors;
         public double[][] massAttenuationFactors;
@@ -29,7 +24,7 @@ namespace BSP.BL.Calculation
         public float SourceDensity = 0;
 
         public double SourceActivity = 0;
-            
+
         /// <summary>
         /// Флаг учета самопоглощения в материале источника
         /// </summary>
@@ -59,7 +54,7 @@ namespace BSP.BL.Calculation
             return new SingleEnergyInputData()
             {
                 Dimensions = this.Dimensions,
-                Discreteness =  this.Discreteness,
+                Discreteness = this.Discreteness,
                 Layers = Layers,
                 MassAttenuationFactors = massAttenuationFactors[EnergyIndex],
                 SourceDensity = SourceDensity,

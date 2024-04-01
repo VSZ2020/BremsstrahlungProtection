@@ -6,17 +6,17 @@
         /// Название геометрии
         /// </summary>
         public string Name { get; }
-        
+
         /// <summary>
         /// Автор геометрии
         /// </summary>
         public string Author { get; }
-        
+
         /// <summary>
         /// Описание геометрии
         /// </summary>
         public string Description { get; }
-        
+
         /// <summary>
         /// Рассчитывает флюенс частиц
         /// </summary>
@@ -33,7 +33,7 @@
         public IEnumerable<DimensionsInfo> GetDimensionsInfo();
 
         public double GetNormalizationFactor(float[] dims);
-        
+
         /// <summary>
         /// 
         /// </summary>

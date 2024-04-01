@@ -2,6 +2,7 @@
 using BSP.BL.DTO;
 using BSP.BL.Services;
 using BSP.Common;
+using BSP.Geometries.SDK;
 using BSP.Source.XAML_Forms;
 using BSP.ViewModels.Tabs;
 using BSP.Views;
@@ -11,7 +12,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Numerics;
 using System.Windows;
-using BSP.Geometries.SDK;
 
 namespace BSP.ViewModels
 {
@@ -38,7 +38,7 @@ namespace BSP.ViewModels
             SelectedEnvironmentMaterial = AvailableDataController.AvailableMaterials.FirstOrDefault();
 
             ResultsText = ((Application.Current.TryFindResource("msg_Welcome") as string) ?? "Welcome to the 'Bremsstrahlung protection' computer code!") + "\n";
-           
+
         }
         #endregion
 
@@ -49,9 +49,9 @@ namespace BSP.ViewModels
         private int precision = 3;
         private bool isShowPartialDoseRates = false;
         private bool isSelftabsorptionOff = false;
-        
+
         private string resultsText;
-       
+
         private MaterialDto _selectedEnvironmentMaterial;
         private CancellationTokenSource tokenSource;
 
@@ -63,7 +63,7 @@ namespace BSP.ViewModels
         public int Precision { get => precision; set { precision = value > 0 && value < 10 ? value : 3; OnChanged(); } }
         public bool IsShowPartialDoseRates { get => isShowPartialDoseRates; set { isShowPartialDoseRates = value; OnChanged(); } }
         public bool IsSelfAbsorptionOff { get => isSelftabsorptionOff; set { isSelftabsorptionOff = value; OnChanged(); } }
-        
+
         public string ResultsText { get => resultsText; set { resultsText = value; OnChanged(); } }
 
         public MaterialDto? SelectedEnvironmentMaterial { get => _selectedEnvironmentMaterial; set { _selectedEnvironmentMaterial = value; OnChanged(); } }
@@ -131,7 +131,7 @@ namespace BSP.ViewModels
         /// <returns></returns>
         public bool ValidateInputs()
         {
-            
+
             base.ClearValidationMessages();
             var res = Application.Current;
 
@@ -153,7 +153,12 @@ namespace BSP.ViewModels
 
             if (Precision <= 0)
                 base.AddError((res.TryFindResource("msg_Error_ZeroOrLessDecimalPlaces") as string) ?? "Number of decimal places is less or equal zero");
-            
+
+            var sourceWidth = GeometryService.GetSubstractionTermForAirgapCalculation(SourceTab.SelectedSourceForm.FormType, SourceTab.SourceDimensions.Select(d => d.Value).ToArray());
+            var shieldsWidth = ShieldingTab.ShieldLayers.Select(l => l.D).Sum();
+            var totalWidth = sourceWidth + shieldsWidth;
+            if (SourceTab.DosePoints.Any(dp => dp.X <= totalWidth))
+                base.AddError((res.TryFindResource("msg_Error_DosePointInsideSourceOrShield") as string) ?? "Dose point X coordinate is inside source and shielding thickness");
 
             return SourceTab.ValidateModel(this) && IsValid;
         }
@@ -170,20 +175,20 @@ namespace BSP.ViewModels
                 //Блокируем интерфейс
                 IsEvaluationInProgress = true;
                 ResetProgress();
-                
+
                 //Обновляем экземпляр токена отмены операции
                 tokenSource = new CancellationTokenSource();
-                
+
                 //Данные по спектру тормозного излучения
                 (double[] energies, double[] bremsstrahlungEnergyFluxes) = SourceTab.GetBremsstrahlungSpectrum();
-                
+
                 //Сортируем массивы по возрастанию энергии, сохраняя связь значений
                 //Array.Sort(energies, bremsstrahlungEnergyFluxes);
                 var shields = ShieldingTab.ShieldLayers.Select(l => new ShieldLayer()
                 {
                     Id = l.Id,
                     Z = l.Z,
-                    D = l.D, 
+                    D = l.D,
                     Name = l.Name,
                     Weight = l.Weight,
                     Density = l.Density,
@@ -199,11 +204,11 @@ namespace BSP.ViewModels
 
                 //Выбираем идентификаторы слоев защиты
                 var shieldLayersIds = shields.Select(s => s.Id).ToArray();
-                
+
                 var builder = App.GetService<InputDataBuilder>();
                 var inputBuilder = builder
                     .WithDimensions(
-                        SourceTab.SourceDimensions.Select(d => d.Value).ToArray(), 
+                        SourceTab.SourceDimensions.Select(d => d.Value).ToArray(),
                         SourceTab.SourceDimensions.Select(d => d.Discreteness).ToArray())
                     .WithEnergies(energies)
                     .WithShieldLayers(shields)
@@ -222,13 +227,13 @@ namespace BSP.ViewModels
                     .WithSelfabsorption(!IsSelfAbsorptionOff);
 
                 var doseFactors = App.GetService<DoseFactorsService>().GetDoseConversionFactors(
-                    DoseFactorsTab.SelectedDoseFactorType.DoseFactorType, 
-                    energies, 
+                    DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
+                    energies,
                     DoseFactorsTab.SelectedExposureGeometry.Id,
                     DoseFactorsTab.SelectedOrganTissue.Id);
 
                 await EvaluateByPointAsync(inputBuilder, shieldsTotalLengthWithoutAirgap, energies, doseFactors);
-                
+
                 base.ShowStatusMessage("Completed!");
             }
             else
@@ -277,10 +282,10 @@ namespace BSP.ViewModels
                     break;
 
                 results.PartialAirKerma = results.ConvertToAnotherDose(doseFactors);
-                FillOutputTable(results, this.precision);           
+                FillOutputTable(results, this.precision);
             }
             progress?.Report(0);
-        } 
+        }
         #endregion
 
         #region FillOutputTable
@@ -296,7 +301,7 @@ namespace BSP.ViewModels
             string generalFormat = "{0,-20:dd.MM.yyyy HH:mm}{1,-30}{2,30}{3,20}{4,15:e" + precise + "} {5}\n";
 
             //Energy    FluxDensity     EnergyFluxDensity   DoseRate    Units
-            string partialDataFormat = "{0:e" + precise +"}\t{1:e"+ precise +"}\t{2:e"+ precise + "}\t{3:e" + precise + "}\t{4}\n";
+            string partialDataFormat = "{0:e" + precise + "}\t{1:e" + precise + "}\t{2:e" + precise + "}\t{3:e" + precise + "}\t{4}\n";
 
 
             //Запрашиваем единицы измерения дозы
@@ -346,7 +351,7 @@ namespace BSP.ViewModels
         private void ClearResultsView()
         {
             ResultsText = "";
-        } 
+        }
         #endregion
 
         #region ExportResults
@@ -436,14 +441,14 @@ namespace BSP.ViewModels
         private void ShowRadionuclidesViewer()
         {
             new Views.RadionuclidesViewer(App.GetService<RadionuclidesService>()).ShowDialog();
-        } 
+        }
         #endregion
 
         #region ResetProgress
         private void ResetProgress()
         {
             progress.Report(0);
-        } 
+        }
         #endregion
 
         #region IDataErrorInfo
@@ -463,7 +468,7 @@ namespace BSP.ViewModels
                 return error;
             }
         }
-        public string Error => string.Empty; 
+        public string Error => string.Empty;
         #endregion
     }
 }
