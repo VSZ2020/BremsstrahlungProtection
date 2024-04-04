@@ -1,4 +1,14 @@
-﻿v1.5.1.0
+﻿v1.5.1.2
+- Small fixes.
+
+
+v1.5.1.1
+- The locked dimension value will be hidden on the form;
+- Small fixes in translation;
+- New radionuclides: Rb-86, Ba-140, La-140, Eu-156, Au-198.
+
+
+v1.5.1.0
 - New versioning approach;
 - Now user can replace radionuclide, when mouse hovers radionuclide name;
 - Removed 'Show Interpolated Data (SID)' button and corresponding function.

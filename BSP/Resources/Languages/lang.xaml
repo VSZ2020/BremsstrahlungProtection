@@ -105,12 +105,12 @@
 
     <v:String x:Key="tab_Source_CutoffEnergy_GroupName">Bremsstrahlung cutoff energy (MeV)</v:String>
     <v:String x:Key="tab_Source_CutoffEnergy_UseCutoff">Use cutoff</v:String>
-    <v:String x:Key="tab_Source_CutoffEnergy_Hint">Bremsstrahlung with photon energies less than 'Cutoff value' are not included in dose rate calculation</v:String>
+    <v:String x:Key="tab_Source_CutoffEnergy_Hint">Bremsstrahlung with photon energies below the 'Cutoff value' is not included in the dose rate calculation</v:String>
     <!--#endregion-->
 
 
     <!--#region Tab 'Shielding' -->
-    <v:String x:Key="tab_Shielding_Hint">To set the protection layers between the extended source and the dose point, use the 'Add shield' button located at the bottom of the tab or access it through the context or program menu. The order of the layers will be taken into account when calculating the accumulation factor of a multilayer defense, depending on the chosen method.</v:String>
+    <v:String x:Key="tab_Shielding_Hint">To set the protection layers between the extended source and the dose point, use the 'Add shield' button located at the bottom of the current tab or access it through the context or program menu. The order of the layers will be taken into account when calculating the accumulation factor of a multilayer defense, depending on the chosen method.</v:String>
     <v:String x:Key="tab_Shielding_Material">Material</v:String>
     <v:String x:Key="tab_Shielding_Thickness">Thickness, cm</v:String>
     <v:String x:Key="tab_Shielding_Density">Density, g/cm³</v:String>
@@ -149,7 +149,7 @@
 
 
     <!--#region Results view -->
-    <v:String x:Key="ResultsView_GroupHeader">Launch results</v:String>
+    <v:String x:Key="ResultsView_GroupHeader">Estimation results</v:String>
     <v:String x:Key="ResultsView_LaunchTime">Launch time</v:String>
     <v:String x:Key="ResultsView_SourceForm">Form</v:String>
     <v:String x:Key="ResultsView_SourceMaterial">Source material</v:String>
@@ -275,10 +275,16 @@
     <v:String x:Key="msg_ValidationActivity">Activity for {0} must be positive value</v:String>
     <v:String x:Key="msg_ValidationTotalActivity">Activity must be positive value</v:String>
     <v:String x:Key="msg_ValidationGreaterZero">Value must be greater zero</v:String>
+    <v:String x:Key="msg_ValidationNoGroupedEnergies">First, select a radionuclide or define the desired energies</v:String>
+    <v:String x:Key="msg_ValidationNoSourceMaterial">Source material isn't chosen</v:String>
+    <v:String x:Key="msg_ValidationNoEnvironmentMaterial">Environment material isn't chosen</v:String>
+    <v:String x:Key="msg_ValidationNoDoseFactorType">Dose factor type isn't chosen</v:String>
+    <v:String x:Key="msg_ValidationNoBuildupFactorType">Buildup factor isn't chosen</v:String>
     <!--#endregion-->
 
 
     <v:String x:Key="msgError_Title">Error</v:String>
+    <v:String x:Key="msgWarning_Title">Warning</v:String>
     
     <!--Statusbar messages-->
     <v:String x:Key="msg_Progress">Progress</v:String>
@@ -306,7 +312,7 @@
     <v:String x:Key="wnd_About_Authors">Author(s):</v:String>
     <v:String x:Key="wnd_About_AuthorsName">Vyacheslav S. Izgagin, Michael V. Zhukovsky</v:String>
     <v:String x:Key="wnd_About_Affiliation">Copyright owner</v:String>
-    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences (https://iie-uran.ru)</v:String>
+    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
     <v:String x:Key="wnd_About_Website">Website</v:String>
     <v:String x:Key="wnd_About_WebsiteAddress">https://iie-uran.ru</v:String>
     <v:String x:Key="wnd_About_Email">E-mail</v:String>

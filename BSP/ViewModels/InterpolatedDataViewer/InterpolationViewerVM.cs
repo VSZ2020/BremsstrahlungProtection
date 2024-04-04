@@ -227,14 +227,14 @@ namespace BSP.ViewModels.InterpolatedDataViewer
         {
             (var table_energies, var table_values) = _materialsService.GetTableMassAttenuationFactors(_selectedMaterial!.Id);
             var interpolatedValues = _materialsService.GetInterpolatedMassAttenuationFactors(_selectedMaterial.Id, _energies);
-            return (table_energies, table_values, interpolatedValues, $"Attenuation coefficients for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm3)");
+            return (table_energies, table_values, interpolatedValues, $"Mass attenuation coefficients (cm²/g) for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm³)");
         }
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnAbsorptionData()
         {
             (var table_energies, var table_values) = _materialsService.GetTableMassAbsoprtionFactors(_selectedMaterial!.Id);
             var interpolatedValues = _materialsService.GetInterpolatedMassAbsorptionFactors(_selectedMaterial.Id, _energies);
-            return (table_energies, table_values, interpolatedValues, $"Mass absorption coefficients for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm3)");
+            return (table_energies, table_values, interpolatedValues, $"Mass absorption coefficients (cm²/g) for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm³)");
         }
 
         private (double[] tableX, double[] tableY, double[] interpolatedY, string header) ReturnBuildupData()
@@ -247,7 +247,7 @@ namespace BSP.ViewModels.InterpolatedDataViewer
             var tableValues = tableValuesArray.Select(v => v[coefficientIndex]).ToArray();
 
             var interpolatedValues = _buildupService.GetInterpolatedBuildupFactors(tableEnergies, tableValues, _energies);
-            return (tableEnergies, tableValues, interpolatedValues, $"Buildup factor '{_selectedBuildupCoefficient}' for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm3)");
+            return (tableEnergies, tableValues, interpolatedValues, $"Buildup factor '{_selectedBuildupCoefficient}' for {_selectedMaterial.Name} ({SelectedMaterial!.Density} g/cm³)");
         }
 
 

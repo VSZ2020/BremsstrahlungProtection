@@ -98,7 +98,7 @@ namespace BSP.ViewModels
         RelayCommand showInterpolatedDataViewer;
         RelayCommand showRadionuclidesViewerCommand;
 
-        public RelayCommand StartCommand => startCommand ?? (startCommand = new RelayCommand(obj => StartCalculation(), o => !IsEvaluationInProgress));
+        public RelayCommand StartCommand => startCommand ?? (startCommand = new RelayCommand(obj => ButtonStartClicked(), o => !IsEvaluationInProgress));
         public RelayCommand StopCommand => stopCommand ?? (stopCommand = new RelayCommand(obj => StopCalculation(), o => IsEvaluationInProgress));
         public RelayCommand ClearResultsCommand => clearResultsCommand ?? (clearResultsCommand = new RelayCommand(o => ClearResultsView()));
         public RelayCommand ExportResultsToTextFile => exportResultsToTextFile ?? (exportResultsToTextFile = new RelayCommand(o => ExportResults(), o => !string.IsNullOrEmpty(resultsText)));
@@ -164,49 +164,33 @@ namespace BSP.ViewModels
         }
         #endregion
 
-
-        #region StartCalculation
-        public async void StartCalculation()
+        #region GetBuilder
+        private InputDataBuilder GetBuilder(double[] energies, double[] bremsstrahlungEnergyFluxes)
         {
-            base.ShowStatusMessage((string)Application.Current.Resources["msg_Status_ValidationProcess"] ?? "Validation in progress");
+            //Обновляем экземпляр токена отмены операции
+            tokenSource = new CancellationTokenSource();
 
-            if (ValidateInputs())
+            var shields = ShieldingTab.ShieldLayers.Select(l => new ShieldLayer()
             {
-                //Блокируем интерфейс
-                IsEvaluationInProgress = true;
-                ResetProgress();
+                Id = l.Id,
+                Z = l.Z,
+                D = l.D,
+                Name = l.Name,
+                Weight = l.Weight,
+                Density = l.Density,
+            }).ToList();
 
-                //Обновляем экземпляр токена отмены операции
-                tokenSource = new CancellationTokenSource();
+            //Добавляем последним слоем слой среды
+            shields.Add(new ShieldLayer()
+            {
+                Id = SelectedEnvironmentMaterial!.Id,
+                Density = SelectedEnvironmentMaterial.Density,
+            });
 
-                //Данные по спектру тормозного излучения
-                (double[] energies, double[] bremsstrahlungEnergyFluxes) = SourceTab.GetBremsstrahlungSpectrum();
+            //Выбираем идентификаторы слоев защиты
+            var shieldLayersIds = shields.Select(s => s.Id).ToArray();
 
-                //Сортируем массивы по возрастанию энергии, сохраняя связь значений
-                //Array.Sort(energies, bremsstrahlungEnergyFluxes);
-                var shields = ShieldingTab.ShieldLayers.Select(l => new ShieldLayer()
-                {
-                    Id = l.Id,
-                    Z = l.Z,
-                    D = l.D,
-                    Name = l.Name,
-                    Weight = l.Weight,
-                    Density = l.Density,
-                }).ToList();
-                var shieldsTotalLengthWithoutAirgap = shields.Select(l => l.D).Sum();
-
-                //Добавляем последним слоем слой среды с расстоянием, равным расстоянию до точки регистрации излучения
-                shields.Add(new ShieldLayer()
-                {
-                    Id = SelectedEnvironmentMaterial!.Id,
-                    Density = SelectedEnvironmentMaterial.Density,
-                });
-
-                //Выбираем идентификаторы слоев защиты
-                var shieldLayersIds = shields.Select(s => s.Id).ToArray();
-
-                var builder = App.GetService<InputDataBuilder>();
-                var inputBuilder = builder
+            var builder = App.GetService<InputDataBuilder>()
                     .WithDimensions(
                         SourceTab.SourceDimensions.Select(d => d.Value).ToArray(),
                         SourceTab.SourceDimensions.Select(d => d.Discreteness).ToArray())
@@ -225,14 +209,33 @@ namespace BSP.ViewModels
                     .WithCancellationToken(tokenSource.Token)
                     .WithProgress(progress)
                     .WithSelfabsorption(!IsSelfAbsorptionOff);
+            return builder;
+        }
+        #endregion
 
-                var doseFactors = App.GetService<DoseFactorsService>().GetDoseConversionFactors(
+        #region GetDoseFactors
+        private double[] GetDoseFactors(double[] energies)
+        {
+            return App.GetService<DoseFactorsService>().GetDoseConversionFactors(
                     DoseFactorsTab.SelectedDoseFactorType.DoseFactorType,
                     energies,
                     DoseFactorsTab.SelectedExposureGeometry.Id,
                     DoseFactorsTab.SelectedOrganTissue.Id);
+        }
+        #endregion
 
-                await EvaluateByPointAsync(inputBuilder, shieldsTotalLengthWithoutAirgap, energies, doseFactors);
+        #region ButtonStartClicked
+        public async void ButtonStartClicked()
+        {
+            base.ShowStatusMessage((string)Application.Current.Resources["msg_Status_ValidationProcess"] ?? "Validation in progress");
+
+            if (ValidateInputs())
+            {
+                //Блокируем интерфейс
+                IsEvaluationInProgress = true;
+                ResetProgress();
+
+                await EvaluateByPointAsync();
 
                 base.ShowStatusMessage("Completed!");
             }
@@ -244,6 +247,8 @@ namespace BSP.ViewModels
                     ((Application.Current.Resources["msg_Error_CalculationCantBeStarted"] as string) ?? "Calculation can't be launched due to error(s):") +
                     "\n" + msgs);
             }
+
+            ResetProgress();
             IsEvaluationInProgress = false;
         }
         #endregion
@@ -257,18 +262,28 @@ namespace BSP.ViewModels
         #endregion
 
         #region EvaluateByPointAsync
-        private async Task EvaluateByPointAsync(InputDataBuilder inputBuilder, float shieldsTotalLengthWithoutAirgap, double[] energies, double[] doseFactors)
+        private async Task EvaluateByPointAsync(InputDataBuilder? builder = null, bool isMutedOutput = false)
         {
+            //Данные по спектру тормозного излучения
+            (double[] energies, double[] bremsstrahlungEnergyFluxes) = SourceTab.GetBremsstrahlungSpectrum();
+
+            if (builder == null)
+                builder = GetBuilder(energies, bremsstrahlungEnergyFluxes);
+
+            var doseFactors = GetDoseFactors(energies);
+
             var dimensions = SourceTab.SourceDimensions.Select(d => d.Value).ToArray();
             var formProcessor = GeometryService.GetGeometryInstance(SourceTab.SelectedSourceForm.FormType);
             var airgapSubstractionTerm = GeometryService.GetSubstractionTermForAirgapCalculation(SourceTab.SelectedSourceForm.FormType, dimensions);
+            var shieldsTotalLengthWithoutAirgap = ShieldingTab.ShieldLayers.Select(l => l.D).Sum();
 
+            var dosePointsResults = new List<OutputValue>();
             //Выполняем расчет для каждой точки регистрации излучения
             var targetPoints = SourceTab.DosePoints.Select(p => new Vector3(p.X, p.Y, p.Z)).ToArray();
             foreach (var point in targetPoints)
             {
                 base.ShowStatusMessage(string.Format("Evaluation for dose point ({0},{1},{2})", point.X, point.Y, point.Z));
-                var input = inputBuilder
+                var input = builder
                     .WithCalculationPoint(point)
                     .Build();
 
@@ -279,17 +294,22 @@ namespace BSP.ViewModels
                 var results = await Calculation.StartAsync(input, formProcessor);
 
                 if (input.CancellationToken.IsCancellationRequested)
+                {
+                    isMutedOutput = true;
                     break;
+                }
 
                 results.PartialAirKerma = results.ConvertToAnotherDose(doseFactors);
-                FillOutputTable(results, this.precision);
+                dosePointsResults.Add(results);
             }
-            progress?.Report(0);
+
+            if (!isMutedOutput)
+                FillOutputTable(dosePointsResults, this.precision);
         }
         #endregion
 
         #region FillOutputTable
-        private void FillOutputTable(OutputValue results, int precise = 3)
+        private void FillOutputTable(List<OutputValue> results, int precise = 3)
         {
             if (tokenSource.IsCancellationRequested)
             {
@@ -317,33 +337,37 @@ namespace BSP.ViewModels
                 Application.Current.Resources["ResultsView_DoseRate"] ?? "Dose rate",
                 "");
 
-            ResultsText += string.Format(generalFormat,
+            foreach (var result in results)
+            {
+                ResultsText += string.Format(generalFormat,
                 DateTime.Now,
                 SourceTab.SelectedSourceForm.Name,
                 SourceTab.SelectedSourceMaterial.Name,
-                string.Format(dosePointFormat, results.DosePoint.X, results.DosePoint.Y, results.DosePoint.Z),
-                results.TotalDoseRate,
+                string.Format(dosePointFormat, result.DosePoint.X, result.DosePoint.Y, result.DosePoint.Z),
+                result.TotalDoseRate,
                 units);
 
-            if (isShowPartialDoseRates)
-            {
-                ResultsText += string.Format(partialDataFormat,
-                    Application.Current.Resources["ResultsView_Energy"] ?? "Energy, MeV",
-                    Application.Current.Resources["ResultsView_PhotonsFluxDensity"] ?? "Flux Density, 1/cm2/s",
-                    Application.Current.Resources["ResultsView_EnergyFluxDensity"] ?? "Energy Flux Density, MeV/cm2/s",
-                    Application.Current.Resources["ResultsView_DoseRate"] ?? "Dose rate",
-                    "");
-
-                for (var i = 0; i < results.PartialAirKerma.Length; i++)
+                if (isShowPartialDoseRates)
                 {
                     ResultsText += string.Format(partialDataFormat,
-                    results.Energies[i],
-                    results.PartialFluxDensity[i],
-                    results.PartialFluxDensity[i] * results.Energies[i],
-                    results.PartialAirKerma[i],
-                    units);
+                        Application.Current.Resources["ResultsView_Energy"] ?? "Energy, MeV",
+                        Application.Current.Resources["ResultsView_PhotonsFluxDensity"] ?? "Flux Density, 1/cm2/s",
+                        Application.Current.Resources["ResultsView_EnergyFluxDensity"] ?? "Energy Flux Density, MeV/cm2/s",
+                        Application.Current.Resources["ResultsView_DoseRate"] ?? "Dose rate",
+                        "");
+
+                    for (var i = 0; i < result.PartialAirKerma.Length; i++)
+                    {
+                        ResultsText += string.Format(partialDataFormat,
+                        result.Energies[i],
+                        result.PartialFluxDensity[i],
+                        result.PartialFluxDensity[i] * result.Energies[i],
+                        result.PartialAirKerma[i],
+                        units);
+                    }
                 }
             }
+            ResultsText += "\n";
         }
         #endregion
 
@@ -383,31 +407,31 @@ namespace BSP.ViewModels
         {
             if (SourceTab.EnergyYieldList.Count == 0)
             {
-                MessageBox.Show("Firstly, group bremsstrahlung energies by click on 'Update' button", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                MessageBox.Show(Application.Current.TryFindResource("msg_ValidationNoGroupedEnergies") as string, Application.Current.TryFindResource("msgWarning_Title") as string, button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
                 return;
             }
 
             if (SourceTab.SelectedSourceMaterial == null)
             {
-                MessageBox.Show("Choose source material", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                MessageBox.Show(Application.Current.TryFindResource("msg_ValidationNoSourceMaterial") as string, Application.Current.TryFindResource("msgWarning_Title") as string, button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
                 return;
             }
 
             if (SelectedEnvironmentMaterial == null)
             {
-                MessageBox.Show("Choose environment material", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                MessageBox.Show(Application.Current.TryFindResource("msg_ValidationNoEnvironmentMaterial") as string, Application.Current.TryFindResource("msgWarning_Title") as string, button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
                 return;
             }
 
             if (DoseFactorsTab.SelectedDoseFactorType == null)
             {
-                MessageBox.Show("Choose dose factor type", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                MessageBox.Show(Application.Current.TryFindResource("msg_ValidationNoDoseFactorType") as string, Application.Current.TryFindResource("msgWarning_Title") as string, button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
                 return;
             }
 
-            if (BuildupTab.SelectedBuildup == null)
+            if (BuildupTab.SelectedBuildup == null || BuildupTab.SelectedComplexBuildup == null)
             {
-                MessageBox.Show("Choose buildup type for homogeneous medium", "Warning", button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                MessageBox.Show(Application.Current.TryFindResource("msg_ValidationNoBuildupFactorType") as string, Application.Current.TryFindResource("msgWarning_Title") as string, button: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
                 return;
             }
 

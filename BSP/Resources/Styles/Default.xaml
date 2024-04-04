@@ -76,12 +76,12 @@
     <!--#region DataGrid Cell Templates -->
     <DataTemplate x:Key="DataGridDimensionColumn">
         <Grid>
-            <TextBlock Text="{Binding Value}" IsEnabled="{Binding IsValueAvailable}" TextAlignment="Left"/>
+            <TextBlock Text="{Binding Value}" IsEnabled="{Binding IsValueAvailable}" TextAlignment="Left" Foreground="{Binding ValueColor}"/>
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="DataGridDimensionEditTemplate">
         <Grid>
-            <TextBox Text="{Binding Value}" IsEnabled="{Binding IsValueAvailable}" TextAlignment="Left" />
+            <TextBox Text="{Binding Value}" IsEnabled="{Binding IsValueAvailable}" TextAlignment="Left" Foreground="{Binding ValueColor}"/>
         </Grid>
     </DataTemplate>
     <!--#endregion-->

@@ -28,11 +28,15 @@ namespace BSP.BL.Geometries
             //Начальные координаты точки регистрации
             var R = Math.Sqrt(input.CalculationPoint.X * input.CalculationPoint.X + input.CalculationPoint.Y * input.CalculationPoint.Y + input.CalculationPoint.Z * input.CalculationPoint.Z);
 
-            var mfp = Enumerable.Range(0, layersMassThickness.Length).Select(i => layersMassThickness[i] * input.MassAttenuationFactors[i + 1]).ToArray();
+            //Исключаем первый массив, содержащий данные по материалу источника
+            var attenuationFactors = input.MassAttenuationFactors.Skip(1).ToArray();
+            var buildupCoefficients = input.BuildupFactors.Skip(1).ToArray();
+
+            var mfp = Enumerable.Range(0, layersMassThickness.Length).Select(i => layersMassThickness[i] * attenuationFactors[i]).ToArray();
             double totalLooseExp = Math.Exp(-mfp.Sum());
 
             //Расчет вклада поля рассеянного излучения
-            double buildupFactor = input.BuildupProcessor != null && mfp.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(mfp, input.BuildupFactors) : 1.0;
+            double buildupFactor = input.BuildupProcessor != null && mfp.Length > 0 ? input.BuildupProcessor.EvaluateComplexBuildup(mfp, buildupCoefficients) : 1.0;
 
             return totalLooseExp / (4.0 * Math.PI * R * R) * buildupFactor;
         }
