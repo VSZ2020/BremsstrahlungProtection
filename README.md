@@ -55,9 +55,11 @@ Contains methods of calculation of buildup factors for homogeneous and heterogen
 ![image](https://github.com/VSZ2020/Bremsstrahlung_Protection/assets/62175152/b39178a2-a7d0-4f0b-85ba-f639fd6de4fa)
 
 The following methods of calculating accumulation factors are available.
+
 For a homogeneous medium:
 - Taylor's two-exponential approximation;
 - Geometric progression.
+  
 For heterogeneous environments:
 - Broder;
 - Last layer;
@@ -79,7 +81,7 @@ Depending on the selected dosimetric value, additional filters are set: exposure
 On the same tab the distance to the registration point in centimeters and a number of additional parameters are specified.
 
 ---
-
+# Bremsstrahlung Protection (BSP)
 Програмный пакет для расчета защиты от тормозного излучения протяженных источников бета-излучения.
 
 Свидетельство о государственной регистрации программы для ЭВМ [№2021610532](https://www.fips.ru/publication-web/publications/document?type=doc&tab=PrEVM&id=1C3B52C5-02FF-43D6-8298-BA362D1E6A74) от 15 января 2021 г.
