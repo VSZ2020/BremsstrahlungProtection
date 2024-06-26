@@ -5,21 +5,56 @@
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
-        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AvaloniaUseCompiledBindingsByDefault>False</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
-        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Assets\**" />
+        <None Remove="Changelog.txt" />
+        <Folder Include="Resources\Languages\" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.0.10"/>
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.10"/>
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10"/>
+        <PackageReference Include="Avalonia" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10"/>
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaResource Include="Resources\Images\abort.png" />
+      <AvaloniaResource Include="Resources\Images\abort_disabled.png" />
+      <AvaloniaResource Include="Resources\Images\add.png" />
+      <AvaloniaResource Include="Resources\Images\add_nuclide.png" />
+      <AvaloniaResource Include="Resources\Images\add_shield.png" />
+      <AvaloniaResource Include="Resources\Images\BSP.ico" />
+      <AvaloniaResource Include="Resources\Images\edit.png" />
+      <AvaloniaResource Include="Resources\Images\edit_shield.png" />
+      <AvaloniaResource Include="Resources\Images\iconScattering.png" />
+      <AvaloniaResource Include="Resources\Images\ignore_selfabsorption.png" />
+      <AvaloniaResource Include="Resources\Images\interpolation_view.png" />
+      <AvaloniaResource Include="Resources\Images\launch.png" />
+      <AvaloniaResource Include="Resources\Images\launch_disabled.png" />
+      <AvaloniaResource Include="Resources\Images\Logo.png" />
+      <AvaloniaResource Include="Resources\Images\partial_energies.png" />
+      <AvaloniaResource Include="Resources\Images\remove.png" />
+      <AvaloniaResource Include="Resources\Images\remove_nuclide.png" />
+      <AvaloniaResource Include="Resources\Images\remove_shield.png" />
+      <AvaloniaResource Include="Resources\Images\view_nuclide.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Changelog.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BSP.BL\BSP.BL.csproj" />
     </ItemGroup>
 </Project>

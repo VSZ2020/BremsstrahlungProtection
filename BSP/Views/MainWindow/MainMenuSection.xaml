@@ -28,10 +28,10 @@
             <MenuItem Header="{StaticResource menu_Program_Exit}" Command="{Binding ExitCommand}"/>
         </MenuItem>
 
-        <MenuItem Header="{StaticResource menu_Edit}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <!--<MenuItem Header="{StaticResource menu_Edit_Add}"/>
+        <!--<MenuItem Header="{StaticResource menu_Edit}" IsEnabled="{Binding IsEvaluationNotInProgress}">
+            --><!--<MenuItem Header="{StaticResource menu_Edit_Add}"/>
             <MenuItem Header="{StaticResource menu_Edit_Edit}"/>
-            <MenuItem Header="{StaticResource menu_Edit_Remove}"/>-->
+            <MenuItem Header="{StaticResource menu_Edit_Remove}"/>--><!--
             <Separator/>
             
             <MenuItem Header="{StaticResource menu_Edit_RadionuclideAdd}" Command="{Binding SourceTab.AddNuclideCommand}">
@@ -68,7 +68,7 @@
             <Separator/>
             
             <MenuItem Header="{StaticResource menu_Edit_Preferences}" IsEnabled="false"/>
-        </MenuItem>
+        </MenuItem>-->
 
         <MenuItem Header="{StaticResource menu_Calculation}">
             <MenuItem Header="{StaticResource menu_Calculation_Start}" Command="{Binding StartCommand}">
@@ -98,7 +98,7 @@
         </MenuItem>
         
         <MenuItem Header="{StaticResource menu_Help}" IsEnabled="{Binding IsEvaluationNotInProgress}">
-            <!--<MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>-->
+            <MenuItem Header="{StaticResource menu_Help_Manual}" Command="{Binding UserManualCommand}"/>
             <MenuItem Header="{StaticResource menu_Help_Changelog}" Command="{Binding ShowChangelogCommand}"/>
             <Separator/>
             <MenuItem Header="{StaticResource menu_Help_About}" Command="{Binding AboutCommand}"/>

@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace BSP.ViewModels
 {
-    public class DosePointVM : BaseViewModel, IDataErrorInfo, IVariableClass
+    public class DosePointVM : BaseViewModel, IDataErrorInfo
     {
         private float x;
         private float y;

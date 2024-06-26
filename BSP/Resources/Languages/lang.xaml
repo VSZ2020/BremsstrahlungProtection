@@ -114,8 +114,8 @@
     <v:String x:Key="tab_Shielding_Material">Material</v:String>
     <v:String x:Key="tab_Shielding_Thickness">Thickness, cm</v:String>
     <v:String x:Key="tab_Shielding_Density">Density, g/cm³</v:String>
-    <v:String x:Key="tab_Button_MoveUp">↑ Move Up</v:String>
-    <v:String x:Key="tab_Button_MoveDown">↓ Move Down</v:String>
+    <v:String x:Key="tab_Button_MoveUp">↑ Move Layer Up</v:String>
+    <v:String x:Key="tab_Button_MoveDown">↓ Move Layer Down</v:String>
     <!--#endregion-->
 
     
@@ -173,9 +173,9 @@
 
     
     <!--#region Radionuclide viewer-->
-    <v:String x:Key="radionuclidesViewer_UserHint">The radiation line with the maximum value of the product of endpoint energy and intensity is highlighted</v:String>
+    <v:String x:Key="radionuclidesViewer_UserHint">The radiation line which has the maximum value of the product of endpoint energy and intensity is highlighted</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideName">Name</v:String>
-    <v:String x:Key="radionuclidesViewer_RadionuclideHalfLive">Half-Live</v:String>
+    <v:String x:Key="radionuclidesViewer_RadionuclideHalfLive">Half-Life</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideAverageEnergy">Average beta energy, MeV</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideEndpointEnergy">Endpoint beta energy, MeV</v:String>
     <v:String x:Key="radionuclidesViewer_RadionuclideIntensity">Yield</v:String>
@@ -193,7 +193,7 @@
     <v:String x:Key="tooltipIncludeScatter">Include scattered radiation</v:String>
     <v:String x:Key="tooltipLaunchCalc">Launch calculation</v:String>
     <v:String x:Key="tooltipStopCalc">Abort current calculation</v:String>
-    <v:String x:Key="tooltipIncludePartial">If selected, the dose rate for each braking radiation energy group is displayed</v:String>
+    <v:String x:Key="tooltipIncludePartial">If selected, the dose rate for each bremsstrahlung energy group is displayed</v:String>
     <v:String x:Key="tooltipIsSelfabsorptionOff">If selected, self-absorption in the source is not taken into account in the calculations. Works only for extended sources</v:String>
     <v:String x:Key="tooltipSumActivityBox">Total activity of selected radionuclides</v:String>
     <v:String x:Key="tooltipSumIbetaBox">Total bremsstrahlung spectrum yield</v:String>
@@ -261,8 +261,8 @@
     <!--#region Validation errors -->
     <v:String x:Key="msg_Error_CalculationCantBeStarted">Calculation can't be launched due to error(s):</v:String>
     <v:String x:Key="msg_Error_NoSelectedRadionuclides">No one radionuclide was selected for calculations</v:String>
-    <v:String x:Key="msg_Error_DimensionDiscreteness">Dimension discreteness should be greated zero</v:String>
-    <v:String x:Key="msg_Error_ZeroDimension">Dimension should be greated zero</v:String>
+    <v:String x:Key="msg_Error_DimensionDiscreteness">Dimension discreteness should be greater zero</v:String>
+    <v:String x:Key="msg_Error_ZeroDimension">Dimension should be greater zero</v:String>
     <v:String x:Key="msg_Error_EmptyEnergyYieldData">Energy and Yield data are empty. Click update to generate data or enter it manually</v:String>
     <v:String x:Key="msg_Error_ZeroTotalActivity">Source total activity is zero or empty</v:String>
     <v:String x:Key="msg_Error_ZeroOrLessDecimalPlaces">Number of decimal places is less zero</v:String>
@@ -312,8 +312,8 @@
     <v:String x:Key="wnd_About_Authors">Author(s):</v:String>
     <v:String x:Key="wnd_About_AuthorsName">Vyacheslav S. Izgagin, Michael V. Zhukovsky</v:String>
     <v:String x:Key="wnd_About_Affiliation">Copyright owner</v:String>
-    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology, Ural Branch of Russian Academy of Sciences</v:String>
-    <v:String x:Key="wnd_About_Website">Website</v:String>
+    <v:String x:Key="wnd_About_AffiliationContent">Institute of Industrial Ecology Ural Branch of Russian Academy of Sciences</v:String>
+    <v:String x:Key="wnd_About_Website">Owner website</v:String>
     <v:String x:Key="wnd_About_WebsiteAddress">https://iie-uran.ru</v:String>
     <v:String x:Key="wnd_About_Email">E-mail</v:String>
     <v:String x:Key="wnd_About_Email_Content">iie@ecko.uran.ru; ivs@ecko.uran.ru</v:String>

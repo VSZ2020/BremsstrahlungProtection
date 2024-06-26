@@ -2,7 +2,97 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="150"
              x:Class="BSP.Linux.Main.Views.MainMenuControl">
-    Welcome to Avalonia!
+	<Menu>
+		<MenuItem Header="Application">
+			<MenuItem Header="New">
+				
+			</MenuItem>
+			<MenuItem Header="Open">
+
+			</MenuItem>
+			<MenuItem Header="Save">
+
+			</MenuItem>
+			<MenuItem Header="SaveAs">
+
+			</MenuItem>
+			<Separator/>
+			<MenuItem Header="Bremsstrahlung">
+				
+			</MenuItem>
+			
+			<Separator/>
+			<MenuItem Header="Exit">
+
+			</MenuItem>
+		</MenuItem>
+
+
+		<MenuItem Header="Edit">
+			<!--<MenuItem Header="Add radionuclide" Command="{Binding TabSource.AddNuclide}">
+                    <MenuItem.Icon>
+                        <Image Source="../Resources/Images/add_nuclide.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Add shield" Command="{Binding TabShielding.AddShieldLayer}">
+                    <MenuItem.Icon>
+                        <Image Source="../Resources/Images/add_shield.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+				<MenuItem Header="Edit shield" Command="{Binding TabShielding.EditShieldLayer}" CommandParameter="{Binding ElementName=ShieldsTable, Path=SelectedItem}">
+					<MenuItem.Icon>
+						<Image Source="../Resources/Images/edit_shield.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Remove shield" Command="{Binding TabShielding.RemoveShieldLayer}" CommandParameter="{Binding ElementName=ShieldsTable, Path=SelectedItem}">
+					<MenuItem.Icon>
+						<Image Source="../Resources/Images/remove_shield.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator/>
+                <MenuItem Header="Add dose point">
+                    <MenuItem.Icon>
+                        <Image Source="../Resources/Images/add.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>-->
+		</MenuItem>
+
+
+		<MenuItem Header="Calculation">
+			<MenuItem Header="Launch" Command="{Binding ButtonStartClicked}">
+				<MenuItem.Icon>
+					<Image Source="../Resources/Images/launch.png"/>
+				</MenuItem.Icon>
+			</MenuItem>
+			<MenuItem Header="Abort" Command="{Binding ButtonAbortClicked}">
+				<MenuItem.Icon>
+					<Image Source="../Resources/Images/abort.png"/>
+				</MenuItem.Icon>
+			</MenuItem>
+		</MenuItem>
+
+
+		<MenuItem Header="Tools">
+			<MenuItem Header="Radionuclides Viewer" Command="{Binding .}">
+				<MenuItem.Icon>
+					<Image Source="../Resources/Images/view_nuclide.png"/>
+				</MenuItem.Icon>
+			</MenuItem>
+			<MenuItem Header="Interpolations Viewer" Command="{Binding .}">
+				<MenuItem.Icon>
+					<Image Source="../Resources/Images/interpolation_view.png"/>
+				</MenuItem.Icon>
+			</MenuItem>
+		</MenuItem>
+
+
+		<MenuItem Header="?">
+			<MenuItem Header="User manual" Command="{Binding UserManualCommand}"/>
+			<MenuItem Header="Changelog" Command="{Binding ChangelogCommand}" />
+			<Separator/>
+			<MenuItem Header="About" Command="{Binding AboutCommand}"/>
+		</MenuItem>
+    </Menu>
 </UserControl>

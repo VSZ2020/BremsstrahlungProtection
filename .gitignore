@@ -10,15 +10,6 @@
 *.userosscache
 *.sln.docstates
 
-# JetBrains IDEA files
-.idea/
-
-# Materials and dose factors data
-Data/
-
-# Adobe illustrator files
-*.ai
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -370,3 +361,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+
+# JetBrains IDEA files
+.idea/
+
+# Materials and dose factors data
+Data/
+
+# Adobe illustrator files
+*.ai
+
+# Linux version
+BSP.Linux.Main/
+
+#Database file
+BSP.Data/Database.*

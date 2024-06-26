@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using BSP.Linux.Main.ViewModels;
+using BSP.Linux.Main.Common;
 
 namespace BSP.Linux.Main;
 
@@ -27,6 +27,6 @@ public class ViewLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is ViewModelBase;
+        return data is BaseViewModel;
     }
 }

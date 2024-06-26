@@ -5,13 +5,16 @@ using System.Windows;
 
 namespace BSP.ViewModels
 {
-    public class BremsstrahlungEnergyYieldVM : BaseViewModel, IDataErrorInfo
+    public class PhotonsEnergyYieldVM : BaseViewModel, IDataErrorInfo
     {
-        public BremsstrahlungEnergyYieldVM(SourceTabVM vm)
+        public PhotonsEnergyYieldVM(SourceTabVM vm)
         {
             this.sourceTabVM = vm;
         }
 
+        /// <summary>
+        /// Внутренняя ссылка на ViewModel для обновления связанных данных
+        /// </summary>
         private readonly SourceTabVM sourceTabVM;
 
         private float energy;

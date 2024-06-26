@@ -3,18 +3,40 @@
         xmlns:vm="using:BSP.Linux.Main.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="850"
+		Width="1000"
         x:Class="BSP.Linux.Main.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="BSP.Linux.Main">
+        Title="BSP" WindowStartupLocation="CenterScreen"
+        xmlns:uc="using:BSP.Linux.Main.Views"
+		xmlns:ucc="using:BSP.Linux.Main.Views.Common">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
+    
+    <Grid RowDefinitions="Auto,Auto,*,1,Auto" Background="#FFF0F0F0">
+		<ucc:MessageBoxControl Grid.RowSpan="4"/>
+		
+        <!-- #region Main menu-->
+        <uc:MainMenuControl Grid.Row="0"/>
+        <!-- #endregion -->
+        
+        <uc:MainTabControl Grid.Row="2"/>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+		<GridSplitter Grid.Row="3" Height="1" Background="LightGray"></GridSplitter>
+		<Grid Grid.Row="4" RowDefinitions="auto,*" Margin="10">
+			<TextBlock Grid.Row="0" Text="Estimation results" Margin="0,0,0,5"/>
+			<ScrollViewer Grid.Row="1" Grid.Column="0" Background="Red">
+				<TextBox
+					 IsReadOnly="True" Text="{Binding ResultsText}"
+					 TextWrapping="Wrap" VerticalAlignment="Stretch"
+					 AcceptsReturn="True"
+					 MinHeight="150"/>
+			</ScrollViewer>
+		</Grid>
+    </Grid>
 </Window>

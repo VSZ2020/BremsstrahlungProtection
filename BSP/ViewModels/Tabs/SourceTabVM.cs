@@ -79,7 +79,7 @@ namespace BSP.ViewModels.Tabs
         /// <summary>
         /// Коллекция для таблицы с энергиями и выходами тормозного излучения
         /// </summary>
-        public ObservableCollection<BremsstrahlungEnergyYieldVM> EnergyYieldList { get; }
+        public ObservableCollection<PhotonsEnergyYieldVM> EnergyYieldList { get; }
 
 
         public List<SourceFormVM> AvailableSourceForms { get; }
@@ -140,7 +140,7 @@ namespace BSP.ViewModels.Tabs
 
             var energyYieldsData = Enumerable
                 .Range(0, bremsstrahlungEnergies.Length)
-                .Select(i => new BremsstrahlungEnergyYieldVM(this)
+                .Select(i => new PhotonsEnergyYieldVM(this)
                 {
                     Energy = bremsstrahlungEnergies[i],
                     EnergyYield = bremsstrahlungEnergyYields[i],
@@ -202,7 +202,7 @@ namespace BSP.ViewModels.Tabs
                 var standardEnergyIndices = Bremsstrahlung.GetEnergyBinsAverageEnergies(10);
                 for (var i = 0; i < standardEnergyIndices.Length; i++)
                 {
-                    EnergyYieldList.Add(new BremsstrahlungEnergyYieldVM(this)
+                    EnergyYieldList.Add(new PhotonsEnergyYieldVM(this)
                     {
                         Energy = standardEnergyIndices[i],
                         EnergyYield = 0,

@@ -3,6 +3,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="BSP.Linux.Main.Views.MainTabControl">
-    Welcome to Avalonia!
+             x:Class="BSP.Linux.Main.Views.MainTabControl"
+             xmlns:vm="using:BSP.Linux.Main.ViewModels"
+			 xmlns:uc="using:BSP.Linux.Main.Views">
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	
+    <TabControl>
+        <TabItem Header="Source">
+            <uc:TabSourceControl/>
+        </TabItem>
+        
+        <TabItem Header="Shielding">
+            <uc:TabShieldingControl/>
+        </TabItem>
+        
+        <TabItem Header="Buildup">
+            <uc:TabBuildupControl/>
+		</TabItem>
+
+		<TabItem Header="Dose">
+            <uc:TabDoseFactorsControl/>
+		</TabItem>
+
+		<TabItem Header="Output">
+            <uc:TabOutputControl/>
+        </TabItem>
+    </TabControl>
 </UserControl>

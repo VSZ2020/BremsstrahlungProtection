@@ -108,8 +108,7 @@ namespace BSP.ViewModels
         public RelayCommand AboutCommand => new RelayCommand(o => new About().ShowDialog());
         public RelayCommand UserManualCommand => new RelayCommand(o =>
         {
-            if (File.Exists("UserManual.pdf"))
-                Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = "UserManual.pdf" });
+            Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = "https://github.com/VSZ2020/BremsstrahlungProtection/wiki" });
         });
 
         public RelayCommand ShowChangelogCommand => new RelayCommand(o =>

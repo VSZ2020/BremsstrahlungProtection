@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.Geometries.SDK", "BSP.G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.MathUtils", "BSP.MathUtils\BSP.MathUtils.csproj", "{115282A3-36CE-427C-9658-085D4BA9973E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSP.Linux.Main", "BSP.Linux.Main\BSP.Linux.Main.csproj", "{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{115282A3-36CE-427C-9658-085D4BA9973E}.Release|x64.Build.0 = Release|Any CPU
 		{115282A3-36CE-427C-9658-085D4BA9973E}.Release|x86.ActiveCfg = Release|Any CPU
 		{115282A3-36CE-427C-9658-085D4BA9973E}.Release|x86.Build.0 = Release|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Release|x64.Build.0 = Release|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6FD0F2A-8F45-4138-8A9C-E1A0848A7D7E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

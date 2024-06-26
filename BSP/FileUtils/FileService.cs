@@ -11,7 +11,7 @@ namespace BSP.FileUtils
         private const char CSV_DELIMETER = ',';
 
         #region ExportEnergyIntensityToTextFile
-        public static void ExportEnergyIntensityToTextFile(string filename, List<BremsstrahlungEnergyYieldVM> EnergyYieldList, double activity)
+        public static void ExportEnergyIntensityToTextFile(string filename, List<PhotonsEnergyYieldVM> EnergyYieldList, double activity)
         {
             char delimeter = '\t';
             if (filename.EndsWith(".csv"))
@@ -31,7 +31,7 @@ namespace BSP.FileUtils
         #endregion
 
         #region ReadEnergyIntensityFile
-        public static (double totalActivity, IEnumerable<BremsstrahlungEnergyYieldVM> energyIntensity) ReadEnergyIntensityFile(string filename, SourceTabVM vm, char delimeter = '\t')
+        public static (double totalActivity, IEnumerable<PhotonsEnergyYieldVM> energyIntensity) ReadEnergyIntensityFile(string filename, SourceTabVM vm, char delimeter = '\t')
         {
             double totalActivity = 0;
             if (filename.EndsWith(".csv"))
@@ -39,7 +39,7 @@ namespace BSP.FileUtils
 
             try
             {
-                var items = new List<BremsstrahlungEnergyYieldVM>();
+                var items = new List<PhotonsEnergyYieldVM>();
                 using (StreamReader rd = new StreamReader(filename))
                 {
                     //Пропускаем строку с заголовками
@@ -65,7 +65,7 @@ namespace BSP.FileUtils
                         if (totalActivity != activity)
                             totalActivity = activity;
 
-                        var bey = new BremsstrahlungEnergyYieldVM(vm) { Energy = energy, EnergyYield = energyYield, EnergyFlux = energyFlux, PhotonsFlux = photonsFlux };
+                        var bey = new PhotonsEnergyYieldVM(vm) { Energy = energy, EnergyYield = energyYield, EnergyFlux = energyFlux, PhotonsFlux = photonsFlux };
                         items.Add(bey);
                     }
                 }
@@ -75,7 +75,7 @@ namespace BSP.FileUtils
             {
                 MessageBox.Show($"Error reading of file {filename}. Incorrect file content", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            return (0, Enumerable.Empty<BremsstrahlungEnergyYieldVM>());
+            return (0, Enumerable.Empty<PhotonsEnergyYieldVM>());
         }
         #endregion
 
