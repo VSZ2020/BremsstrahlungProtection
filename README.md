@@ -1,4 +1,5 @@
 # Bremsstrahlung Protection (BSP)
+[Documentation](https://github.com/VSZ2020/BremsstrahlungProtection/wiki)
 
 Program package for calculation of protection from bremsstrahlung of extended beta-radiation sources.
 
