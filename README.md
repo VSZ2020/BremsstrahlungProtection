@@ -7,7 +7,7 @@ Certificate of state registration of the computer program [№2021610532](https:
 
 ![image](https://github.com/VSZ2020/Bremsstrahlung_Protection/assets/62175152/ea82a2d1-ffc2-43d9-b5b0-6c568e4b8f87)
 
-All input parameters to the calculation are grouped into 4 tabs:
+All input parameters are grouped into 4 tabs:
 - `Source` - radiation source parameters;
 - `Shielding` - parameters of the outer layers of protection of the extended source;
 - `Buildup` - settings of the method of calculation of buildup factors;
